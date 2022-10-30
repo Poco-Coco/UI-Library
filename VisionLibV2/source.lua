@@ -108,14 +108,15 @@ do
 	LibFrame["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
 	LibFrame["1"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
 	
+	-- StarterGui.Vision Lib v2.NotifFrame
 	LibFrame["81"] = Instance.new("Frame", LibFrame["1"])
 	LibFrame["81"]["Active"] = true
 	LibFrame["81"]["BorderSizePixel"] = 0
 	LibFrame["81"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 	LibFrame["81"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
 	LibFrame["81"]["BackgroundTransparency"] = 1
-	LibFrame["81"]["Size"] = UDim2.new(0, 154, 0, 633)
-	LibFrame["81"]["Position"] = UDim2.new(0.92, 0, 0.65, 0)
+	LibFrame["81"]["Size"] = UDim2.new(0.15399999916553497, 0, 0.6330000162124634, 0)
+	LibFrame["81"]["Position"] = UDim2.new(0.925000011920929, 0, 0.6800000071525574, 0)
 	LibFrame["81"]["Name"] = [[NotifFrame]]
 	
 	-- StarterGui.Vision Lib v2.NotifFrame.UIListLayout
