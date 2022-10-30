@@ -100,6 +100,37 @@ function Library:Place_Defaults(defaults, options)
 	return defaults
 end
 
+local LibFrame = {}
+do
+	-- StarterGui.Vision Lib v2
+	LibFrame["1"] = Instance.new("ScreenGui")
+	LibFrame["1"]["Name"] = [[Vision Lib v2]]
+	LibFrame["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+	LibFrame["1"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
+	
+	LibFrame["81"] = Instance.new("Frame", LibFrame["1"])
+	LibFrame["81"]["Active"] = true
+	LibFrame["81"]["BorderSizePixel"] = 0
+	LibFrame["81"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+	LibFrame["81"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+	LibFrame["81"]["BackgroundTransparency"] = 1
+	LibFrame["81"]["Size"] = UDim2.new(0, 297, 0, 662)
+	LibFrame["81"]["Position"] = UDim2.new(0.9043645858764648, 0, 0.5202605128288269, 0)
+	LibFrame["81"]["Name"] = [[NotifFrame]]
+	
+	-- StarterGui.Vision Lib v2.NotifFrame.UIListLayout
+	LibFrame["82"] = Instance.new("UIListLayout", LibFrame["81"])
+	LibFrame["82"]["VerticalAlignment"] = Enum.VerticalAlignment.Bottom
+	LibFrame["82"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
+	LibFrame["82"]["Padding"] = UDim.new(0, 5)
+	LibFrame["82"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+
+	-- StarterGui.Vision Lib v2.NotifFrame.UIPadding
+	LibFrame["83"] = Instance.new("UIPadding", LibFrame["81"])
+	LibFrame["83"]["PaddingRight"] = UDim.new(0, 40)
+	LibFrame["83"]["PaddingBottom"] = UDim.new(0, 40)
+end
+
 function Library:Create(options)
 	options = Library:Place_Defaults({
 		Name = "Vision UI Lib v2",
@@ -118,14 +149,8 @@ function Library:Create(options)
 	local StartAnimation = {}
 	
 	do
-		-- StarterGui.Vision Lib v2
-		Gui["1"] = Instance.new("ScreenGui")
-		Gui["1"]["Name"] = [[Vision Lib v2]]
-		Gui["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
-		Gui["1"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
-
 		-- StarterGui.Vision Lib v2.GuiFrame
-		Gui["2"] = Instance.new("Frame", Gui["1"])
+		Gui["2"] = Instance.new("Frame", LibFrame["1"])
 		Gui["2"]["BorderSizePixel"] = 0
 		Gui["2"]["AutoLocalize"] = false
 		Gui["2"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
@@ -268,7 +293,7 @@ function Library:Create(options)
 	
 	do
 		-- StarterGui.Vision Lib v2.StartAnimation
-		StartAnimation["8f"] = Instance.new("Frame", Gui["1"])
+		StartAnimation["8f"] = Instance.new("Frame", LibFrame["1"])
 		StartAnimation["8f"]["ZIndex"] = 2
 		StartAnimation["8f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		StartAnimation["8f"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
@@ -1444,6 +1469,151 @@ function Library:Create(options)
 	end
 	
 	return Gui
+end
+
+
+function Library:Notify(options)
+	options = Library:Place_Defaults({
+		Name = "Ring Ring",
+		Text = "Notification!!",
+		Icon = "rbxassetid://11401835376",
+		Duration = 5,
+		Callback = function() return end
+	}, options or {})
+	
+	local Notification = {}
+	
+	do
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif
+		Notification["84"] = Instance.new("Frame", LibFrame["81"])
+		Notification["84"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["84"]["Size"] = UDim2.new(0, 257, 0, 0)
+		Notification["84"]["ClipsDescendants"] = true
+		Notification["84"]["Position"] = UDim2.new(0, -41, 0, 0)
+		Notification["84"]["Name"] = [[Notif]]
+		Notification["84"]["ClipsDescendants"] = true
+		Notification["84"]["BorderSizePixel"] = 0
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.UICorner
+		Notification["85"] = Instance.new("UICorner", Notification["84"])
+		Notification["85"]["CornerRadius"] = UDim.new(0, 4)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.ImageLabel
+		Notification["86"] = Instance.new("ImageLabel", Notification["84"])
+		Notification["86"]["BorderSizePixel"] = 0
+		Notification["86"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["86"]["Image"] = options.Icon
+		Notification["86"]["Size"] = UDim2.new(0, 18, 0, 16)
+		Notification["86"]["BackgroundTransparency"] = 1
+		Notification["86"]["Position"] = UDim2.new(0, 10, 0, 5)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.ImageLabel.ThemeColorGradient
+		Notification["87"] = Instance.new("UIGradient", Notification["86"])
+		Notification["87"]["Name"] = [[ThemeColorGradient]]
+		Notification["87"]["Rotation"] = 90
+		Notification["87"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifName
+		Notification["88"] = Instance.new("TextLabel", Notification["84"])
+		Notification["88"]["BorderSizePixel"] = 0
+		Notification["88"]["TextXAlignment"] = Enum.TextXAlignment.Left
+		Notification["88"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["88"]["TextSize"] = 12
+		Notification["88"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["88"]["Size"] = UDim2.new(0, 206, 0, 21)
+		Notification["88"]["Text"] = options.Name
+		Notification["88"]["Name"] = [[NotifName]]
+		Notification["88"]["Font"] = Enum.Font.GothamMedium
+		Notification["88"]["BackgroundTransparency"] = 1
+		Notification["88"]["Position"] = UDim2.new(0, 34, 0, 3)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifName.ThemeColorGradient
+		Notification["89"] = Instance.new("UIGradient", Notification["88"])
+		Notification["89"]["Name"] = [[ThemeColorGradient]]
+		Notification["89"]["Rotation"] = 90
+		Notification["89"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifText
+		Notification["8a"] = Instance.new("TextLabel", Notification["84"])
+		Notification["8a"]["TextWrapped"] = true
+		Notification["8a"]["BorderSizePixel"] = 0
+		Notification["8a"]["TextXAlignment"] = Enum.TextXAlignment.Left
+		Notification["8a"]["TextYAlignment"] = Enum.TextYAlignment.Top
+		Notification["8a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8a"]["TextSize"] = 10
+		Notification["8a"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8a"]["Size"] = UDim2.new(0, 242, 0, 28)
+		Notification["8a"]["Text"] = options.Text
+		Notification["8a"]["Name"] = [[NotifText]]
+		Notification["8a"]["Font"] = Enum.Font.GothamMedium
+		Notification["8a"]["BackgroundTransparency"] = 1
+		Notification["8a"]["Position"] = UDim2.new(0, 10, 0, 23)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack
+		Notification["8b"] = Instance.new("Frame", Notification["84"])
+		Notification["8b"]["BorderSizePixel"] = 0
+		Notification["8b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8b"]["Size"] = UDim2.new(0, 239, 0, 5)
+		Notification["8b"]["Position"] = UDim2.new(0.03501945361495018, 0, 0.7903226017951965, 0)
+		Notification["8b"]["Name"] = [[TimeBarBack]]
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.Frame
+		Notification["8c"] = Instance.new("Frame", Notification["8b"])
+		Notification["8c"]["BorderSizePixel"] = 0
+		Notification["8c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8c"]["Size"] = UDim2.new(0.5, 0, 1, 0)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.Frame.ThemeColorGradient
+		Notification["8d"] = Instance.new("UIGradient", Notification["8c"])
+		Notification["8d"]["Name"] = [[ThemeColorGradient]]
+		Notification["8d"]["Rotation"] = 90
+		Notification["8d"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.UIGradient
+		Notification["8e"] = Instance.new("UIGradient", Notification["8b"])
+		Notification["8e"]["Rotation"] = 270
+		Notification["8e"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.UIGradient
+		Notification["8f"] = Instance.new("UIGradient", Notification["84"])
+		Notification["8f"]["Rotation"] = 90
+		Notification["8f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(32, 32, 32)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25))}
+	end
+	
+	do
+		task.spawn(function()
+			local Completed = false
+
+			Library:Tween(Notification["84"], {
+				Length = 0.5,
+				Goal = {Size = UDim2.new(0, 257, 0, 62)}
+			})
+
+			Library:Tween(Notification["8c"], {
+				Length = options.Duration,
+				Style = Enum.EasingStyle.Linear,
+				Goal = {Size = UDim2.new(1, 0, 1, 0)}
+			}, function()
+				Completed = true
+			end)
+
+			repeat task.wait() until Completed
+			
+			local Completed = false
+			
+			Library:Tween(Notification["84"], {
+				Length = 0.5,
+				Goal = {Size = UDim2.new(0, 257, 0, 0)}
+			}, function()
+				Completed = true
+			end)
+			
+			repeat task.wait() until Completed
+			
+			options.Callback()
+			Notification["84"]:Destroy()
+		end)
+	end
 end
 
 return Library
