@@ -1,4 +1,4 @@
-local Library = loadstring(game:HttpGet('https://scripts.luawl.com/13221/JbAirdropSpyMyster.lua'))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua"))()
 
 local Window = Library:Create({
 	Name = "Vision UI Lib v2",
