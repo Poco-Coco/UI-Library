@@ -17,6 +17,19 @@
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
 ```
 
+## 🟡Creating a Notify
+```lua
+Library:Notify({
+	Name = "Ring Ring", -- String
+	Text = "Notification!!", -- String
+	Icon = "rbxassetid://11401835376", -- String
+	Duration = 5, -- Integer
+	Callback = function()
+		-- Function
+	end
+})
+```
+
 ## 🟡Creating a Window
 ```lua
 local Window = Library:Create({
