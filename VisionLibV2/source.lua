@@ -11,7 +11,8 @@ local Mouse = LocalPlayer:GetMouse()
 local Library = {
 	DragSpeed = 0.07,
 	MainFrameHover = false,
-	Sliding = false
+	Sliding = false,
+	Loaded = false
 }
 
 local TabIndex = 0
@@ -293,115 +294,128 @@ function Library:Create(options)
 	end
 	
 	do
-		-- StarterGui.Vision Lib v2.StartAnimation
-		StartAnimation["8f"] = Instance.new("Frame", LibFrame["1"])
-		StartAnimation["8f"]["ZIndex"] = 2
-		StartAnimation["8f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["8f"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-		StartAnimation["8f"]["Size"] = UDim2.new(0, 310, 0, 0)
-		StartAnimation["8f"]["Position"] = UDim2.new(0.5, 0, 0.4787112772464752, 0)
-		StartAnimation["8f"]["Name"] = [[StartAnimation]]
-		StartAnimation["8f"]["ClipsDescendants"] = true
-		StartAnimation["8f"]["BorderSizePixel"] = 0
+		
+		-- StarterGui.Vision Lib v2.StartAnimationFrame
+		StartAnimation["91"] = Instance.new("Frame", LibFrame["1"])
+		StartAnimation["91"]["BorderSizePixel"] = 0
+		StartAnimation["91"]["AutoLocalize"] = false
+		StartAnimation["91"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["91"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+		StartAnimation["91"]["BackgroundTransparency"] = 1
+		StartAnimation["91"]["Size"] = UDim2.new(0, 498, 0, 498)
+		StartAnimation["91"]["ClipsDescendants"] = true
+		StartAnimation["91"]["BorderColor3"] = Color3.fromRGB(28, 43, 54)
+		StartAnimation["91"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+		StartAnimation["91"]["Name"] = [[StartAnimationFrame]]
 
-		-- StarterGui.Vision Lib v2.StartAnimation.UIGradient
-		StartAnimation["90"] = Instance.new("UIGradient", StartAnimation["8f"])
-		StartAnimation["90"]["Rotation"] = 90
-		StartAnimation["90"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(46, 46, 46)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(40, 40, 40))}
-
-		-- StarterGui.Vision Lib v2.StartAnimation.UICorner
-		StartAnimation["91"] = Instance.new("UICorner", StartAnimation["8f"])
-		StartAnimation["91"]["CornerRadius"] = UDim.new(0, 4)
-
-		-- StarterGui.Vision Lib v2.StartAnimation.Title
-		StartAnimation["92"] = Instance.new("TextLabel", StartAnimation["8f"])
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main
+		StartAnimation["92"] = Instance.new("Frame", StartAnimation["91"])
 		StartAnimation["92"]["ZIndex"] = 2
-		StartAnimation["92"]["BorderSizePixel"] = 0
-		StartAnimation["92"]["TextXAlignment"] = Enum.TextXAlignment.Left
 		StartAnimation["92"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["92"]["TextSize"] = 20
-		StartAnimation["92"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["92"]["Size"] = UDim2.new(0, 255, 0, 32)
-		StartAnimation["92"]["Text"] = options.Name
-		StartAnimation["92"]["Name"] = [[Title]]
-		StartAnimation["92"]["Font"] = Enum.Font.GothamMedium
-		StartAnimation["92"]["BackgroundTransparency"] = 1
-		StartAnimation["92"]["Position"] = UDim2.new(0, 10, 0, 5)
+		StartAnimation["92"]["Size"] = UDim2.new(0, 310, 0, 0)
+		StartAnimation["92"]["Position"] = UDim2.new(0.186, 0, 0.167, 0)
+		StartAnimation["92"]["Name"] = [[Main]]
+		StartAnimation["92"]["ClipsDescendants"] = true
+		StartAnimation["92"]["BorderSizePixel"] = 0
 
-		-- StarterGui.Vision Lib v2.StartAnimation.Title
-		StartAnimation["93"] = Instance.new("TextLabel", StartAnimation["8f"])
-		StartAnimation["93"]["ZIndex"] = 2
-		StartAnimation["93"]["BorderSizePixel"] = 0
-		StartAnimation["93"]["TextXAlignment"] = Enum.TextXAlignment.Left
-		StartAnimation["93"]["TextYAlignment"] = Enum.TextYAlignment.Top
-		StartAnimation["93"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["93"]["TextSize"] = 11
-		StartAnimation["93"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["93"]["Size"] = UDim2.new(0, 255, 0, 18)
-		StartAnimation["93"]["Text"] = options.Footer
-		StartAnimation["93"]["Name"] = [[Title]]
-		StartAnimation["93"]["Font"] = Enum.Font.Gotham
-		StartAnimation["93"]["BackgroundTransparency"] = 1
-		StartAnimation["93"]["Position"] = UDim2.new(0, 12, 0, 32)
-		
-		-- StarterGui.Vision Lib v2.StartAnimation.LoadBack
-		StartAnimation["94"] = Instance.new("Frame", StartAnimation["8f"])
-		StartAnimation["94"]["ZIndex"] = 2
-		StartAnimation["94"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["94"]["Size"] = UDim2.new(0, 285, 0, 6)
-		StartAnimation["94"]["Position"] = UDim2.new(0.03870967775583267, 0, 0.942219614982605, 0)
-		StartAnimation["94"]["Name"] = [[LoadBack]]
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.UIGradient
+		StartAnimation["93"] = Instance.new("UIGradient", StartAnimation["92"])
+		StartAnimation["93"]["Rotation"] = 90
+		StartAnimation["93"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(46, 46, 46)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(40, 40, 40))}
 
-		-- StarterGui.Vision Lib v2.StartAnimation.LoadBack.UICorner
-		StartAnimation["95"] = Instance.new("UICorner", StartAnimation["94"])
-		StartAnimation["95"]["CornerRadius"] = UDim.new(0, 7)
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.UICorner
+		StartAnimation["94"] = Instance.new("UICorner", StartAnimation["92"])
+		StartAnimation["94"]["CornerRadius"] = UDim.new(0, 4)
 
-		-- StarterGui.Vision Lib v2.StartAnimation.LoadBack.LoadFront
-		StartAnimation["96"] = Instance.new("Frame", StartAnimation["94"])
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.Title
+		StartAnimation["95"] = Instance.new("TextLabel", StartAnimation["92"])
+		StartAnimation["95"]["ZIndex"] = 2
+		StartAnimation["95"]["BorderSizePixel"] = 0
+		StartAnimation["95"]["TextXAlignment"] = Enum.TextXAlignment.Left
+		StartAnimation["95"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["95"]["TextSize"] = 20
+		StartAnimation["95"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["95"]["Size"] = UDim2.new(0, 255, 0, 32)
+		StartAnimation["95"]["Text"] = options.Name
+		StartAnimation["95"]["Name"] = [[Title]]
+		StartAnimation["95"]["Font"] = Enum.Font.GothamMedium
+		StartAnimation["95"]["BackgroundTransparency"] = 1
+		StartAnimation["95"]["Position"] = UDim2.new(0, 10, 0, 5)
+
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.Title
+		StartAnimation["96"] = Instance.new("TextLabel", StartAnimation["92"])
 		StartAnimation["96"]["ZIndex"] = 2
-		StartAnimation["96"]["BackgroundColor3"] = Color3.fromRGB(191, 191, 191)
-		StartAnimation["96"]["Size"] = UDim2.new(0.02, 0, 1, 0)
-		StartAnimation["96"]["Position"] = UDim2.new(-0.007017544005066156, 0, 0, 0)
-		StartAnimation["96"]["Name"] = [[LoadFront]]
+		StartAnimation["96"]["BorderSizePixel"] = 0
+		StartAnimation["96"]["TextXAlignment"] = Enum.TextXAlignment.Left
+		StartAnimation["96"]["TextYAlignment"] = Enum.TextYAlignment.Top
+		StartAnimation["96"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["96"]["TextSize"] = 11
+		StartAnimation["96"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["96"]["Size"] = UDim2.new(0, 255, 0, 18)
+		StartAnimation["96"]["Text"] = options.Footer
+		StartAnimation["96"]["Name"] = [[Title]]
+		StartAnimation["96"]["Font"] = Enum.Font.Gotham
+		StartAnimation["96"]["BackgroundTransparency"] = 1
+		StartAnimation["96"]["Position"] = UDim2.new(0, 12, 0, 32)
 
-		-- StarterGui.Vision Lib v2.StartAnimation.LoadBack.LoadFront.UICorner
-		StartAnimation["97"] = Instance.new("UICorner", StartAnimation["96"])
-		StartAnimation["97"]["CornerRadius"] = UDim.new(0, 7)
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack
+		StartAnimation["97"] = Instance.new("Frame", StartAnimation["92"])
+		StartAnimation["97"]["ZIndex"] = 2
+		StartAnimation["97"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["97"]["Size"] = UDim2.new(0, 285, 0, 6)
+		StartAnimation["97"]["Position"] = UDim2.new(0.03870967775583267, 0, 0.942219614982605, 0)
+		StartAnimation["97"]["Name"] = [[LoadBack]]
 
-		-- StarterGui.Vision Lib v2.StartAnimation.LoadBack.LoadFront.UIGradient
-		StartAnimation["98"] = Instance.new("UIGradient", StartAnimation["96"])
-		StartAnimation["98"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99))}
-		
-		-- StarterGui.Vision Lib v2.StartAnimation.CharAva
-		StartAnimation["99"] = Instance.new("ImageLabel", StartAnimation["8f"])
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack.UICorner
+		StartAnimation["98"] = Instance.new("UICorner", StartAnimation["97"])
+		StartAnimation["98"]["CornerRadius"] = UDim.new(0, 7)
+
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack.LoadFront
+		StartAnimation["99"] = Instance.new("Frame", StartAnimation["97"])
 		StartAnimation["99"]["ZIndex"] = 2
-		StartAnimation["99"]["BackgroundColor3"] = Color3.fromRGB(171, 171, 171)
-		StartAnimation["99"]["Image"] = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
-		StartAnimation["99"]["Size"] = UDim2.new(0, 70, 0, 70)
-		StartAnimation["99"]["Name"] = [[CharAva]]
-		StartAnimation["99"]["Position"] = UDim2.new(0, 20, 0, 53)
-		StartAnimation["99"]["ImageTransparency"] = 1
-		StartAnimation["99"]["BackgroundTransparency"] = 1
+		StartAnimation["99"]["BackgroundColor3"] = Color3.fromRGB(191, 191, 191)
+		StartAnimation["99"]["Size"] = UDim2.new(0.035087719559669495, 0, 1, 0)
+		StartAnimation["99"]["Position"] = UDim2.new(-0.007017544005066156, 0, 0, 0)
+		StartAnimation["99"]["Name"] = [[LoadFront]]
 
-		-- StarterGui.Vision Lib v2.StartAnimation.CharAva.UICorner
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack.LoadFront.UICorner
 		StartAnimation["9a"] = Instance.new("UICorner", StartAnimation["99"])
-		StartAnimation["9a"]["CornerRadius"] = UDim.new(1, 8)
+		StartAnimation["9a"]["CornerRadius"] = UDim.new(0, 7)
 
-		-- StarterGui.Vision Lib v2.StartAnimation.WelcomeText
-		StartAnimation["9b"] = Instance.new("TextLabel", StartAnimation["8f"])
-		StartAnimation["9b"]["TextWrapped"] = true
-		StartAnimation["9b"]["ZIndex"] = 2
-		StartAnimation["9b"]["TextXAlignment"] = Enum.TextXAlignment.Left
-		StartAnimation["9b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["9b"]["TextSize"] = 19
-		StartAnimation["9b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
-		StartAnimation["9b"]["Size"] = UDim2.new(0, 282, 0, 70)
-		StartAnimation["9b"]["Text"] = "Welcome, "..LocalPlayer.DisplayName
-		StartAnimation["9b"]["Name"] = [[WelcomeText]]
-		StartAnimation["9b"]["Font"] = Enum.Font.GothamMedium
-		StartAnimation["9b"]["BackgroundTransparency"] = 1
-		StartAnimation["9b"]["Position"] = UDim2.new(0, 106, 0, 53)
-		StartAnimation["9b"]["TextTransparency"] = 1
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack.LoadFront.UIGradient
+		StartAnimation["9b"] = Instance.new("UIGradient", StartAnimation["99"])
+		StartAnimation["9b"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99))}
+
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.CharAva
+		StartAnimation["9c"] = Instance.new("ImageLabel", StartAnimation["92"])
+		StartAnimation["9c"]["ZIndex"] = 2
+		StartAnimation["9c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["9c"]["Image"] = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+		StartAnimation["9c"]["Size"] = UDim2.new(0, 70, 0, 70)
+		StartAnimation["9c"]["Name"] = [[CharAva]]
+		StartAnimation["9c"]["Position"] = UDim2.new(0, 12, 0, 49)
+		StartAnimation["9c"]["BackgroundTransparency"] = 1
+		StartAnimation["9c"]["ImageTransparency"] = 1
+
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.CharAva.UICorner
+		StartAnimation["9d"] = Instance.new("UICorner", StartAnimation["9c"])
+		StartAnimation["9d"]["CornerRadius"] = UDim.new(1, 8)
+
+		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.WelcomeText
+		StartAnimation["9e"] = Instance.new("TextLabel", StartAnimation["92"])
+		StartAnimation["9e"]["TextWrapped"] = true
+		StartAnimation["9e"]["ZIndex"] = 2
+		StartAnimation["9e"]["TextXAlignment"] = Enum.TextXAlignment.Left
+		StartAnimation["9e"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["9e"]["TextSize"] = 19
+		StartAnimation["9e"]["TextTransparency"] = 1
+		StartAnimation["9e"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["9e"]["Size"] = UDim2.new(0, 282, 0, 70)
+		StartAnimation["9e"]["Text"] = [[Welcome, Loco_CTO]]
+		StartAnimation["9e"]["Name"] = [[WelcomeText]]
+		StartAnimation["9e"]["Font"] = Enum.Font.GothamMedium
+		StartAnimation["9e"]["BackgroundTransparency"] = 1
+		StartAnimation["9e"]["Position"] = UDim2.new(0, 98, 0, 49)
 	end
 	
 	-- Start animation
@@ -409,7 +423,7 @@ function Library:Create(options)
 		task.spawn(function()
 			Library.Sliding = true
 			
-			Library:Tween(StartAnimation["8f"], {
+			Library:Tween(StartAnimation["92"], {
 				Length = 1,
 				Goal = {Size = UDim2.new(0, 310, 0, 230)}
 			})
@@ -417,46 +431,46 @@ function Library:Create(options)
 			task.wait(1)
 			
 			
-			Library:Tween(StartAnimation["96"], {
+			Library:Tween(StartAnimation["99"], {
 				Length = 2.7,
 				Direction = Enum.EasingDirection.In,
 				Goal = {Size = UDim2.new(1, 0, 1, 0)}
 			})
 			task.wait(2.7)
 			
-			Library:Tween(StartAnimation["94"], {
+			Library:Tween(StartAnimation["97"], {
 				Length = 0.5,
 				Goal = {BackgroundTransparency = 1}
 			})
 			
-			Library:Tween(StartAnimation["96"], {
+			Library:Tween(StartAnimation["99"], {
 				Length = 0.5,
 				Goal = {BackgroundTransparency = 1}
 			})
 			
 			task.wait(0.3)
 			
-			Library:Tween(StartAnimation["8f"], {
+			Library:Tween(StartAnimation["92"], {
 				Length = 1,
-				Goal = {Position = UDim2.new(0.5, 0, 0.468, 0)}
+				Goal = {Position = UDim2.new(0, 0, 0, 0)}
 			})
 
-			Library:Tween(StartAnimation["8f"], {
+			Library:Tween(StartAnimation["92"], {
 				Length = 1,
 				Goal = {Size = UDim2.new(0, 498, 0, 452)}
 			})
 
-			Library:Tween(StartAnimation["9b"], {
+			Library:Tween(StartAnimation["9e"], {
 				Length = 0.7,
 				Goal = {TextTransparency = 0}
 			})
 
-			Library:Tween(StartAnimation["99"], {
+			Library:Tween(StartAnimation["9c"] , {
 				Length = 0.7,
 				Goal = {ImageTransparency = 0}
 			})
 
-			Library:Tween(StartAnimation["99"], {
+			Library:Tween(StartAnimation["9c"], {
 				Length = 0.7,
 				Goal = {BackgroundTransparency = 0}
 			})
@@ -468,48 +482,48 @@ function Library:Create(options)
 						
 			task.wait(1.8)
 			
-			Library:Tween(StartAnimation["92"], {
+			Library:Tween(StartAnimation["96"], {
 				Length = 0.7,
 				Goal = {TextTransparency = 1}
 			})
 
-			Library:Tween(StartAnimation["93"], {
+			Library:Tween(StartAnimation["95"], {
 				Length = 0.7,
 				Goal = {TextTransparency = 1}
 			})
 			
-			Library:Tween(StartAnimation["9b"], {
+			Library:Tween(StartAnimation["9e"], {
 				Length = 0.7,
 				Goal = {TextTransparency = 1}
 			})
 
-			Library:Tween(StartAnimation["99"], {
+			Library:Tween(StartAnimation["9c"], {
 				Length = 0.7,
 				Goal = {ImageTransparency = 1}
 			})
 
-			Library:Tween(StartAnimation["99"], {
+			Library:Tween(StartAnimation["9c"], {
 				Length = 0.7,
 				Goal = {BackgroundTransparency = 1}
 			})
 			
 			task.wait(0.1)
-			Gui["2"]["Size"] = UDim2.new(0, 498, 0, 300)
-			Library:Tween(Gui["2"], {
-				Length = 1,
-				Style = Enum.EasingStyle.Sine,
-				Direction = Enum.EasingDirection.InOut,
-				Goal = {Size = UDim2.new(0, 498, 0, 496)}
+			Gui["3"]["Position"] = UDim2.new(0, 0, 0, 300)
+			Gui["2"]["Size"] = UDim2.new(0, 498, 0, 498)
+			Library:Tween(Gui["3"], {
+				Length = 1.5,
+				Goal = {Position = UDim2.new(0, 0, 0, 455)}
 			})
 			
 			task.wait(2)
 			
-			Library:Tween(StartAnimation["8f"], {
+			Library:Tween(StartAnimation["92"], {
 				Length = 0.5,
 				Goal = {BackgroundTransparency = 1}
 			})
 			
 			Library.Sliding = false
+			Library.Loaded = true
 		end)
 	end
 	
@@ -1585,6 +1599,8 @@ function Library:Notify(options)
 	
 	do
 		task.spawn(function()
+			repeat task.wait() until Library.Loaded
+			
 			local Completed = false
 
 			Library:Tween(Notification["84"], {
