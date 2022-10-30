@@ -1124,9 +1124,11 @@ function Library:Create(options)
 								local percentage = math.clamp((Mouse.X - Slider["3a"].AbsolutePosition.X) / (Slider["3a"].AbsoluteSize.X), 0, 1)
 								local value = ((options.Max - options.Min) * percentage) + options.Min
 								value = math.floor(value)
+								if value ~= Slider.OldVal then
+									options.Callback(value)
+								end
 								Slider.OldVal = value
 								Slider["3g"]["Text"] = value
-								options.Callback(value)
 								Library:Tween(Slider["3c"], {
 									Length = 0.06,
 									Goal = {Size = UDim2.fromScale(percentage, 1)}
@@ -1616,49 +1618,5 @@ function Library:Notify(options)
 		end)
 	end
 end
-
-local Window = Library:Create({
-	Name = "Vision UI Lib v2",
-	Footer = "By Loco_CTO, Sius and BruhOOFBoi",
-	ToggleKey = Enum.KeyCode.RightShift
-})
-
-local Tab = Window:Tab({
-	Name = "Main",
-	Icon = "rbxassetid://11396131982",
-	Color = Color3.new(1, 0, 0)
-})
-
-local Section1 = Tab:Section({
-	Name = "Basic controls"
-})
-
-local Button = Section1:Button({
-	Name = "Button",
-	Callback = function()
-		print("Clicked")
-	end
-})
-
-task.wait(4)
-
-Library:Notify({
-	Name = "Test",
-	Text = "You are indeed gay",
-	Icon = "rbxassetid://11401835376",
-	Duration = 5
-})
-
-task.wait(1)
-
-Library:Notify({
-	Name = "Test",
-	Text = "You are indeed gay",
-	Icon = "rbxassetid://11401835376",
-	Duration = 5,
-	Callback = function()
-		print("XD")
-	end
-})
 
 return Library
