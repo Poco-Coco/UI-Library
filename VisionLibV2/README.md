@@ -12,12 +12,12 @@
 **:warning: The UI Library is still under development, not all functions in the preview are included.**
 
 
-## 	:red_circle:Loading the library
+## 🔴Loading the library
 ```lua
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
 ```
 
-## :yellow_circle:Creating a Window
+## 🟡Creating a Window
 ```lua
 local Window = Library:Create({
 	Name = "Vision UI Lib v2", -- String
@@ -35,14 +35,14 @@ local Tab = Window:Tab({
 })
 ```
 
-## :green_circle:Creating a Section
+## 🟢Creating a Section
 ```lua
 local Section = Tab:Section({
 	Name = "Section"
 })
 ```
 
-## :purple_circle:Creating a Button
+## 🟣Creating a Button
 ```lua
 local Button = Section1:Button({
 	Name = "Button",
@@ -57,7 +57,7 @@ local Button = Section1:Button({
 Button:SetName("New Button Name")
 ```
 
-## :purple_circle:Creating a Toggle
+## 🟣Creating a Toggle
 ```lua
 local Toggle = Section:Toggle({
 	Name = "Toggle", -- String
@@ -78,7 +78,7 @@ Toggle:SetName("New Toggle Name") -- String
 Toggle:Set(false) -- Boolean
 ```
 
-## :purple_circle:Creating a Slider
+## 🟣Creating a Slider
 ```lua
 local Slider = Section:Slider({
 	Name = "Slider",
