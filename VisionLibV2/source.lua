@@ -114,8 +114,8 @@ do
 	LibFrame["81"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 	LibFrame["81"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
 	LibFrame["81"]["BackgroundTransparency"] = 1
-	LibFrame["81"]["Size"] = UDim2.new(0, 297, 0, 662)
-	LibFrame["81"]["Position"] = UDim2.new(0.9043645858764648, 0, 0.5202605128288269, 0)
+	LibFrame["81"]["Size"] = UDim2.new(0, 154, 0, 633)
+	LibFrame["81"]["Position"] = UDim2.new(0.92, 0, 0.65, 0)
 	LibFrame["81"]["Name"] = [[NotifFrame]]
 	
 	-- StarterGui.Vision Lib v2.NotifFrame.UIListLayout
@@ -1615,5 +1615,49 @@ function Library:Notify(options)
 		end)
 	end
 end
+
+local Window = Library:Create({
+	Name = "Vision UI Lib v2",
+	Footer = "By Loco_CTO, Sius and BruhOOFBoi",
+	ToggleKey = Enum.KeyCode.RightShift
+})
+
+local Tab = Window:Tab({
+	Name = "Main",
+	Icon = "rbxassetid://11396131982",
+	Color = Color3.new(1, 0, 0)
+})
+
+local Section1 = Tab:Section({
+	Name = "Basic controls"
+})
+
+local Button = Section1:Button({
+	Name = "Button",
+	Callback = function()
+		print("Clicked")
+	end
+})
+
+task.wait(4)
+
+Library:Notify({
+	Name = "Test",
+	Text = "You are indeed gay",
+	Icon = "rbxassetid://11401835376",
+	Duration = 5
+})
+
+task.wait(1)
+
+Library:Notify({
+	Name = "Test",
+	Text = "You are indeed gay",
+	Icon = "rbxassetid://11401835376",
+	Duration = 5,
+	Callback = function()
+		print("XD")
+	end
+})
 
 return Library
