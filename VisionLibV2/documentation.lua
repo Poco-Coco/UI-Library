@@ -11,7 +11,8 @@ local Mouse = LocalPlayer:GetMouse()
 local Library = {
 	DragSpeed = 0.07,
 	MainFrameHover = false,
-	Sliding = false
+	Sliding = false,
+	Loaded = false
 }
 
 local TabIndex = 0
@@ -522,6 +523,7 @@ function Library:Create(options)
 			})
 			
 			Library.Sliding = false
+			Library.Loaded = true
 		end)
 	end
 	
@@ -1597,6 +1599,8 @@ function Library:Notify(options)
 	
 	do
 		task.spawn(function()
+			repeat task.wait() until Library.Loaded
+			
 			local Completed = false
 
 			Library:Tween(Notification["84"], {
