@@ -86,8 +86,8 @@ local Slider = Section:Slider({
 	Min = 0,
 	Default = 50,
 	Callback = function(Value)
-    -- Function
-  end
+    		-- Function
+  	end
 })
 ```
 
