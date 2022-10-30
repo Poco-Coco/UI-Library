@@ -1,9 +1,9 @@
-local Library = loadstring(game:HttpGet('https://scripts.luawl.com/13221/JbAirdropSpyMyster.lua'))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua"))()
 
 local Window = Library:Create({
 	Name = "Vision UI Lib v2",
 	Footer = "By Loco_CTO, Sius and BruhOOFBoi",
-	ToggleKey = Enum.KeyCode.Return
+	ToggleKey = Enum.KeyCode.RightShift
 })
 
 local Tab = Window:Tab({
@@ -45,7 +45,9 @@ local Slider = Section2:Slider({
 	Max = 100,
 	Min = 0,
 	Default = 50,
-	Callback = function() return end
+	Callback = function(Number)
+		print(Number)
+	end
 })
 
 Slider:SetValue(100)
