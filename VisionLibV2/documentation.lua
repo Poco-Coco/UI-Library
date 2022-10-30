@@ -19,7 +19,12 @@ local Section1 = Tab:Section({
 local Button = Section1:Button({
 	Name = "Button",
 	Callback = function()
-		print("Clicked")
+		Library:Notify({
+			Name = "Button",
+			Text = "Clicked",
+			Icon = "rbxassetid://11401835376",
+			Duration = 3
+		})
 	end
 })
 
@@ -29,7 +34,12 @@ local Toggle = Section1:Toggle({
 	Name = "Toggle",
 	Default = true,
 	Callback = function(Bool) 
-		print(Bool)
+		Library:Notify({
+			Name = "Toggle",
+			Text = tostring(Bool),
+			Icon = "rbxassetid://11401835376",
+			Duration = 3
+		})
 	end
 })
 
@@ -46,9 +56,29 @@ local Slider = Section2:Slider({
 	Min = 0,
 	Default = 50,
 	Callback = function(Number)
-		print(Number)
+		Library:Notify({
+			Name = "Slider",
+			Text = tostring(Number),
+			Icon = "rbxassetid://11401835376",
+			Duration = 3
+		})
 	end
 })
 
 Slider:SetValue(100)
 Slider:SetName("New Slider Name")
+
+Library:Notify({
+	Name = "Test",
+	Text = "This is just a test",
+	Icon = "rbxassetid://11401835376",
+	Duration = 3,
+	Callback = function()
+		Library:Notify({
+			Name = "Em",
+			Text = "Notify Callback",
+			Icon = "rbxassetid://11401835376",
+			Duration = 3,
+		})
+	end
+})
