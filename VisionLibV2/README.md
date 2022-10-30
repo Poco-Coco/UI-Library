@@ -26,6 +26,15 @@ local Window = Library:Create({
 })
 ```
 
+## 🔵Creating a Tab
+```lua
+local Tab = Window:Tab({
+	Name = "Main",
+	Icon = "rbxassetid://11396131982",
+	Color = Color3.new(1, 0, 0)
+})
+```
+
 ## :green_circle:Creating a Section
 ```lua
 local Section = Tab:Section({
