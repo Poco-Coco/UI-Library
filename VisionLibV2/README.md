@@ -29,23 +29,23 @@ local Window = Library:Create({
 ## 🔵Creating a Tab
 ```lua
 local Tab = Window:Tab({
-	Name = "Main",
-	Icon = "rbxassetid://11396131982",
-	Color = Color3.new(1, 0, 0)
+	Name = "Main", -- String
+	Icon = "rbxassetid://11396131982", -- String
+	Color = Color3.new(1, 0, 0) -- Color3
 })
 ```
 
 ## 🟢Creating a Section
 ```lua
 local Section = Tab:Section({
-	Name = "Section"
+	Name = "Section" -- String
 })
 ```
 
 ## 🟣Creating a Button
 ```lua
 local Button = Section1:Button({
-	Name = "Button",
+	Name = "Button", -- String
 	Callback = function()
 		-- Function
 	end
@@ -81,10 +81,10 @@ Toggle:Set(false) -- Boolean
 ## 🟣Creating a Slider
 ```lua
 local Slider = Section:Slider({
-	Name = "Slider",
-	Max = 100,
-	Min = 0,
-	Default = 50,
+	Name = "Slider", -- String
+	Max = 100, -- Integer
+	Min = 0, -- Integer
+	Default = 50, -- Integer
 	Callback = function(Value)
     		-- Function
   	end
