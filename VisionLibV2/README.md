@@ -206,4 +206,4 @@ Library:Notify({
 })
 ```
 
-##### Created by Core Vision, Discord: https://discord.gg/Bp7wFcZeUn
+##### Created and mantained by Core Vision, Discord: https://discord.gg/Bp7wFcZeUn
