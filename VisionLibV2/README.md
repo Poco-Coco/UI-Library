@@ -40,7 +40,7 @@ local Window = Library:Create({
 ```
 ### Updating toggle key
 ```lua
-Window:ChangeTogglekey(Enum.KeyCode.LeftAlt)
+Window:ChangeTogglekey(Enum.KeyCode.LeftAlt) -- Enum.KeyCode
 ```
 
 ## 🔵Creating a Tab
@@ -71,7 +71,7 @@ local Button = Section1:Button({
 
 ### Updating button name
 ```lua
-Button:SetName("New Button Name")
+Button:SetName("New Button Name") -- String
 ```
 
 ## 🟣Creating a Toggle
@@ -116,6 +116,25 @@ Slider:SetName("New Slider Name") -- String
 ### Updating slider value
 ```lua
 Slider:SetValue(100) -- Integer
+```
+
+## 🟣Creating a Keybind
+```lua
+local Keybind = Section2:Keybind({
+	Name = "Keybind",
+	Default = Enum.KeyCode.Return,
+	Callback = function(Key)
+		-- Function
+	end,
+	UpdateKeyCallback = function(Key)
+		-- Function
+	end
+})
+```
+
+### Updating keybind name
+```lua
+Keybind:SetName("New keybind Name") -- String
 ```
 
 ## ⚪Use this to test
