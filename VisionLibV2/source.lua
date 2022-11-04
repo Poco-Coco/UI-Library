@@ -1189,6 +1189,147 @@ function Library:Create(options)
 				return Slider
 			end
 			
+			function Section:Keybind(options)
+				options = Library:Place_Defaults({
+					Name = "Keybind",
+					Default = Enum.KeyCode.Return,
+					Callback = function() return end,
+					UpdateKeyCallback = function() return end
+				}, options or {})
+
+				local Keybind = {
+					Focused = false,
+					Keybind = options.Default
+				}
+
+				do
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind
+					Keybind["59"] = Instance.new("Frame", Section["21"])
+					Keybind["59"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["59"]["Size"] = UDim2.new(0, 423, 0, 34)
+					Keybind["59"]["Position"] = UDim2.new(0, 17, 0, 104)
+					Keybind["59"]["Name"] = [[Keybind]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.UICorner
+					Keybind["5a"] = Instance.new("UICorner", Keybind["59"])
+					Keybind["5a"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.UIGradient
+					Keybind["5b"] = Instance.new("UIGradient", Keybind["59"])
+					Keybind["5b"]["Rotation"] = 270
+					Keybind["5b"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45))}
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.Label
+					Keybind["5c"] = Instance.new("TextLabel", Keybind["59"])
+					Keybind["5c"]["BorderSizePixel"] = 0
+					Keybind["5c"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					Keybind["5c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["5c"]["TextSize"] = 13
+					Keybind["5c"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["5c"]["Size"] = UDim2.new(0, 301, 0, 33)
+					Keybind["5c"]["Text"] = options.Name
+					Keybind["5c"]["Name"] = [[Label]]
+					Keybind["5c"]["Font"] = Enum.Font.GothamMedium
+					Keybind["5c"]["BackgroundTransparency"] = 1
+					Keybind["5c"]["Position"] = UDim2.new(0, 21, 0, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.TextButton
+					Keybind["5d"] = Instance.new("TextButton", Keybind["59"])
+					Keybind["5d"]["AutoButtonColor"] = false
+					Keybind["5d"]["TextSize"] = 11
+					Keybind["5d"]["BackgroundColor3"] = Color3.fromRGB(195, 195, 195)
+					Keybind["5d"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["5d"]["Size"] = UDim2.new(0, 80, 0, 21)
+					Keybind["5d"]["Text"] = [[]]
+					Keybind["5d"]["Font"] = Enum.Font.Gotham
+					Keybind["5d"]["Position"] = UDim2.new(0.7900000214576721, 0, 0.17599999904632568, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.TextButton.UICorner
+					Keybind["5e"] = Instance.new("UICorner", Keybind["5d"])
+					Keybind["5e"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.TextButton.UIGradient
+					Keybind["5f"] = Instance.new("UIGradient", Keybind["5d"])
+					Keybind["5f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99))}
+					
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.UIStroke
+					Keybind["5g"] = Instance.new("UIStroke", Keybind["59"])
+					Keybind["5g"]["Color"] = Color3.fromRGB(43, 43, 43)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.TextButton.TextLabel
+					Keybind["60"] = Instance.new("TextLabel", Keybind["5d"])
+					Keybind["60"]["BorderSizePixel"] = 0
+					Keybind["60"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["60"]["TextSize"] = 10
+					Keybind["60"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["60"]["Size"] = UDim2.new(0, 79, 0, 21)
+					Keybind["60"]["Text"] = [[LeftShift]]
+					Keybind["60"]["Font"] = Enum.Font.Gotham
+					Keybind["60"]["BackgroundTransparency"] = 1
+
+					local keybindText = string.gsub(tostring(Keybind.Keybind), "Enum.KeyCode.", "")
+
+					Keybind["60"]["Text"] = keybindText
+				end
+
+				-- Methods
+				do
+					Keybind["59"].MouseEnter:Connect(function()
+						Library:Tween(Keybind["5g"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(65, 65, 65)}
+						})
+					end)
+					
+					
+
+					Keybind["59"].MouseLeave:Connect(function()
+						Library:Tween(Keybind["5g"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(43, 43, 43)}
+						})
+					end)
+
+					Keybind["5d"].MouseButton1Click:Connect(function()
+						Keybind.Focused = true
+
+						Keybind["60"]["Text"] = "..."
+					end)
+
+					UserInputService.InputBegan:Connect(function(input, GameProcess)
+						if input.UserInputType == Enum.UserInputType.Keyboard then
+							if input.KeyCode == Keybind.Keybind then
+								pcall(function()
+									options.Callback()
+								end)
+							end
+
+							if Keybind.Focused then
+								Keybind.Keybind = input.KeyCode
+								local keybindText = string.gsub(tostring(Keybind.Keybind), "Enum.KeyCode.", "")
+								Keybind["60"]["Text"] = keybindText
+								pcall(function()
+									options.UpdateKeyCallback(input.KeyCode)
+								end)
+
+								Keybind.Focused = false
+							end
+						end
+					end)
+
+					function Keybind:SetName(name)
+						Keybind["5c"]["Text"] = "  "..name
+					end
+				end
+
+				task.spawn(function()
+					Library:ResizeSection(Section["1e"])
+					task.wait(1)
+					Library:ResizeCanvas(Tab["1d"])
+				end)
+				
+				return Keybind
+			end
 			
 			--[[
 			function Section:Template(options)
@@ -1492,7 +1633,6 @@ function Library:Create(options)
 	
 	return Gui
 end
-
 
 function Library:Notify(options)
 	options = Library:Place_Defaults({
