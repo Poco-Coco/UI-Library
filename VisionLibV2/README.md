@@ -147,6 +147,8 @@ local Window = Library:Create({
 	ToggleKey = Enum.KeyCode.RightShift
 })
 
+Window:ChangeTogglekey(Enum.KeyCode.RightShift)
+
 local Tab = Window:Tab({
 	Name = "Main",
 	Icon = "rbxassetid://11396131982",
@@ -208,6 +210,29 @@ local Slider = Section2:Slider({
 
 Slider:SetValue(100)
 Slider:SetName("New Slider Name")
+
+local Keybind = Section2:Keybind({
+	Name = "Keybind",
+	Default = Enum.KeyCode.Return,
+	Callback = function(Key)
+		Library:Notify({
+			Name = "Keybind pressed",
+			Text = tostring(Key),
+			Icon = "rbxassetid://11401835376",
+			Duration = 3,
+		})
+	end,
+	UpdateKeyCallback = function(Key)
+		Library:Notify({
+			Name = "Keybind updated",
+			Text = tostring(Key),
+			Icon = "rbxassetid://11401835376",
+			Duration = 3,
+		})
+	end
+})
+
+Keybind:SetName("New keybind Name")
 
 Library:Notify({
 	Name = "Test",
