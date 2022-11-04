@@ -1189,6 +1189,7 @@ function Library:Create(options)
 				return Slider
 			end
 			
+			
 			--[[
 			function Section:Template(options)
 				options = Library:Place_Defaults({
@@ -1483,6 +1484,10 @@ function Library:Create(options)
 				end
 			end
 		end)
+	end
+	
+	function Gui:ChangeTogglekey(key)
+		Gui.ToggleKey = key
 	end
 	
 	return Gui

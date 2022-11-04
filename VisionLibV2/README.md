@@ -38,6 +38,10 @@ local Window = Library:Create({
 	ToggleKey = Enum.KeyCode.Return -- Enum.KeyCode
 })
 ```
+### Updating toggle key
+```lua
+Window:ChangeTogglekey(Enum.KeyCode.LeftAlt)
+```
 
 ## 🔵Creating a Tab
 ```lua
