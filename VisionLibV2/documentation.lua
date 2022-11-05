@@ -77,10 +77,10 @@ Slider:SetName("New Slider Name")
 local Keybind = Section2:Keybind({
 	Name = "Keybind",
 	Default = Enum.KeyCode.Return,
-	Callback = function(Key)
+	Callback = function()
 		Library:Notify({
 			Name = "Keybind pressed",
-			Text = tostring(Key),
+			Text = "Idk sth here",
 			Icon = "rbxassetid://11401835376",
 			Duration = 3,
 		})
