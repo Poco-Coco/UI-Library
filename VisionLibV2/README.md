@@ -39,7 +39,7 @@ local Window = Library:Create({
 	KeySystem = true, -- Boolean
 	Key = "keyabc123", -- String
 	MaxAttempts = 5, -- Integer
-	DiscordLink = "https://discord.gg/Bp7wFcZeUn" -- String
+	DiscordLink = "https://discord.gg/Bp7wFcZeUn" -- String (Set it to nil if you do not have one, the button will not pop out)
 })
 ```
 ### Updating toggle key
