@@ -2354,4 +2354,8 @@ function Library:ForceNotify(options)
 	end
 end
 
+function Library:Destroy()
+	LibFrame["1"]:Destroy()
+end
+
 return Library
