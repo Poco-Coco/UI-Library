@@ -604,7 +604,7 @@ function Library:Create(options)
 								KeySystem["a4"]["Text"] = ""
 
 								if KeySystem.Attempts == 0 then
-									print("Kicked, too many attempts")
+									game.Players.LocalPlayer:Kick("Too many failed attempts")
 								end
 
 								if KeySystem.KeyTextboxHover then
