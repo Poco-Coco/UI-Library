@@ -1463,13 +1463,13 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Slider
 					Slider["3a"] = Instance.new("Frame", Slider["36"])
 					Slider["3a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-					Slider["3a"]["Size"] = UDim2.new(0, 136, 0, 18)
-					Slider["3a"]["Position"] = UDim2.new(0, 229, 0, 6)
+					Slider["3a"]["Size"] = UDim2.new(0, 136, 0, 10)
+					Slider["3a"]["Position"] = UDim2.new(0, 229, 0, 12)
 					Slider["3a"]["Name"] = [[Slider]]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Slider.UICorner
 					Slider["3b"] = Instance.new("UICorner", Slider["3a"])
-					Slider["3b"]["CornerRadius"] = UDim.new(1, 0)
+					Slider["3b"]["CornerRadius"] = UDim.new(0, 4)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Slider.Sliderbackground
 					Slider["3c"] = Instance.new("Frame", Slider["3a"])
@@ -1480,7 +1480,7 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Slider.Sliderbackground.UICorner
 					Slider["3d"] = Instance.new("UICorner", Slider["3c"])
-					Slider["3d"]["CornerRadius"] = UDim.new(1, 0)
+					Slider["3d"]["CornerRadius"] = UDim.new(0, 4)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Slider.Sliderbackground.ThemeColorGradient
 					Slider["3e"] = Instance.new("UIGradient", Slider["3c"])
@@ -1517,6 +1517,8 @@ function Library:Create(options)
 					local MouseDown
 					
 					Slider["36"].MouseEnter:Connect(function()
+						Slider.Hover = true
+						
 						Library:Tween(Slider["40"], {
 							Length = 0.5,
 							Goal = {Color = Color3.fromRGB(65, 65, 65)}
@@ -1524,18 +1526,12 @@ function Library:Create(options)
 					end)
 					
 					Slider["36"].MouseLeave:Connect(function()
+						Slider.Hover = false
+						
 						Library:Tween(Slider["40"], {
 							Length = 0.5,
 							Goal = {Color = Color3.fromRGB(43, 43, 43)}
 						})
-					end)
-					
-					Slider["3a"].MouseEnter:Connect(function()
-						Slider.Hover = true
-					end)
-
-					Slider["3a"].MouseLeave:Connect(function()
-						Slider.Hover = false
 					end)
 
 					Slider["3g"].Focused:Connect(function()
@@ -1565,16 +1561,18 @@ function Library:Create(options)
 
 							while RunService.RenderStepped:wait() and MouseDown do
 								local percentage = math.clamp((Mouse.X - Slider["3a"].AbsolutePosition.X) / (Slider["3a"].AbsoluteSize.X), 0, 1)
-								local value = ((options.Max - options.Min) * percentage) + options.Min
-								value = math.floor(value)
-								if value ~= Slider.OldVal then
-									options.Callback(value)
+								local Value = ((options.Max - options.Min) * percentage) + options.Min
+								Value = math.floor(Value)
+								
+								if Value ~= Slider.OldVal then
+									options.Callback(Value)
 								end
-								Slider.OldVal = value
-								Slider["3g"]["Text"] = value
+								Slider.OldVal = Value
+								Slider["3g"]["Text"] = Value
+								
 								Library:Tween(Slider["3c"], {
 									Length = 0.06,
-									Goal = {Size = UDim2.fromScale(percentage, 1)}
+									Goal = {Size = UDim2.fromScale(((Value - options.Min) / (options.Max - options.Min)), 1)}
 								})
 							end
 							Library.Sliding = false
