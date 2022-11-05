@@ -137,7 +137,11 @@ function Library:Create(options)
 	options = Library:Place_Defaults({
 		Name = "Vision UI Lib v2",
 		Footer = "By Loco_CTO, Sius and BruhOOFBoi",
-		ToggleKey = Enum.KeyCode.RightShift
+		ToggleKey = Enum.KeyCode.RightShift,
+		KeySystem = false,
+		Key = "123456",
+		MaxAttempts = 5,
+		DiscordLink = nil
 	}, options or {})
 	
 	local Gui = {
@@ -145,7 +149,10 @@ function Library:Create(options)
 		CurrentTabIndex = 0,
 		TweeningToggle = false,
 		ToggleKey = options.ToggleKey,
-		Hidden = false
+		Hidden = false,
+		MaxAttempts = options.MaxAttempts,
+		DiscordLink = options.DiscordLink,
+		Key = options.Key
 	}
 	
 	local StartAnimation = {}
@@ -448,6 +455,426 @@ function Library:Create(options)
 				Goal = {BackgroundTransparency = 1}
 			})
 			
+			local KeyChecked = false
+			
+			if options.KeySystem then
+				local KeySystem = {
+					CorrectKey = false,
+					KeyTextboxHover = false,
+					Attempts = Gui.MaxAttempts
+				}
+				
+				do
+					-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.Key
+					KeySystem["a0"] = Instance.new("Frame", StartAnimation["92"])
+					KeySystem["a0"]["ZIndex"] = 3
+					KeySystem["a0"]["BackgroundColor3"] = Color3.fromRGB(149, 149, 149)
+					KeySystem["a0"]["Size"] = UDim2.new(0, 253, 0, 20)
+					KeySystem["a0"]["Position"] = UDim2.new(0, 28, 0, 33)
+					KeySystem["a0"]["Name"] = [[Key]]
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.UICorner
+					KeySystem["a1"] = Instance.new("UICorner", KeySystem["a0"])
+					KeySystem["a1"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.UIStroke
+					KeySystem["a2"] = Instance.new("UIStroke", KeySystem["a0"])
+					KeySystem["a2"]["Color"] = Color3.fromRGB(43, 43, 43)
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.UIGradient
+					KeySystem["a3"] = Instance.new("UIGradient", KeySystem["a0"])
+					KeySystem["a3"]["Rotation"] = 270
+					KeySystem["a3"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(86, 86, 86)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(89, 89, 89))}
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.TextBox
+					KeySystem["a4"] = Instance.new("TextBox", KeySystem["a0"])
+					KeySystem["a4"]["CursorPosition"] = -1
+					KeySystem["a4"]["PlaceholderColor3"] = Color3.fromRGB(127, 127, 127)
+					KeySystem["a4"]["ZIndex"] = 3
+					KeySystem["a4"]["RichText"] = true
+					KeySystem["a4"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["a4"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					KeySystem["a4"]["TextSize"] = 11
+					KeySystem["a4"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					KeySystem["a4"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+					KeySystem["a4"]["PlaceholderText"] = [[Key | e.g abc123]]
+					KeySystem["a4"]["Size"] = UDim2.new(0.8999999761581421, 0, 0.8999999761581421, 0)
+					KeySystem["a4"]["Text"] = [[]]
+					KeySystem["a4"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+					KeySystem["a4"]["Font"] = Enum.Font.Gotham
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.TextBox.UICorner
+					KeySystem["a5"] = Instance.new("UICorner", KeySystem["a4"])
+					KeySystem["a5"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.KeySystemTitle
+					KeySystem["a6"] = Instance.new("TextLabel", StartAnimation["92"])
+					KeySystem["a6"]["ZIndex"] = 2
+					KeySystem["a6"]["BorderSizePixel"] = 0
+					KeySystem["a6"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					KeySystem["a6"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["a6"]["TextSize"] = 11
+					KeySystem["a6"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["a6"]["Size"] = UDim2.new(0, 158, 0, 16)
+					KeySystem["a6"]["Text"] = [[Key System]]
+					KeySystem["a6"]["Name"] = [[KeySystemTitle]]
+					KeySystem["a6"]["Font"] = Enum.Font.GothamMedium
+					KeySystem["a6"]["BackgroundTransparency"] = 1
+					KeySystem["a6"]["Position"] = UDim2.new(0, 34, 0, 14)
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.KeySystemNote
+					KeySystem["a8"] = Instance.new("Frame", StartAnimation["92"])
+					KeySystem["a8"]["ZIndex"] = 3
+					KeySystem["a8"]["BackgroundColor3"] = Color3.fromRGB(27, 27, 27)
+					KeySystem["a8"]["Size"] = UDim2.new(0, 215, 0, 50)
+					KeySystem["a8"]["Position"] = UDim2.new(0, 49, 0, 61)
+					KeySystem["a8"]["Name"] = [[KeySystemNote]]
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.KeySystemNote.TextLabel
+					KeySystem["a9"] = Instance.new("TextLabel", KeySystem["a8"])
+					KeySystem["a9"]["TextWrapped"] = true
+					KeySystem["a9"]["ZIndex"] = 2
+					KeySystem["a9"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					KeySystem["a9"]["TextYAlignment"] = Enum.TextYAlignment.Top
+					KeySystem["a9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["a9"]["TextSize"] = 9
+					KeySystem["a9"]["TextColor3"] = Color3.fromRGB(205, 205, 205)
+					KeySystem["a9"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+					KeySystem["a9"]["Size"] = UDim2.new(0.949999988079071, 0, 0.800000011920929, 0)
+					KeySystem["a9"]["Text"] = [[Note: Join our discord to get the key!]]
+					KeySystem["a9"]["Font"] = Enum.Font.Gotham
+					KeySystem["a9"]["BackgroundTransparency"] = 1
+					KeySystem["a9"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+					
+					KeySystem["a0"]["BackgroundTransparency"] = 1
+					KeySystem["a4"]["BackgroundTransparency"] = 1
+					KeySystem["a8"]["BackgroundTransparency"] = 1
+					KeySystem["a4"]["TextTransparency"] = 1
+					KeySystem["a9"]["TextTransparency"] = 1
+					KeySystem["a6"]["TextTransparency"] = 1
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.KeySystemNote.UICorner
+					KeySystem["aa"] = Instance.new("UICorner", KeySystem["a8"])
+					
+					-- Methods
+					do
+						KeySystem["a0"].MouseEnter:Connect(function()
+							Library:Tween(KeySystem["a2"], {
+								Length = 0.2,
+								Goal = {Color = Color3.fromRGB(93, 93, 93)}
+							})
+							
+							KeySystem.KeyTextboxHover = true
+						end)
+						
+						KeySystem["a0"].MouseLeave:Connect(function()
+							Library:Tween(KeySystem["a2"], {
+								Length = 0.2,
+								Goal = {Color = Color3.fromRGB(43, 43, 43)}
+							})
+							
+							KeySystem.KeyTextboxHover = false
+						end)
+						
+						KeySystem["a4"].FocusLost:Connect(function()
+							local keyEntered = KeySystem["a4"]["Text"]
+							
+							if keyEntered ~= "" then
+
+								if keyEntered == Gui.Key then
+									KeySystem.CorrectKey = true
+
+									Library:ForceNotify({
+										Name = "KeySystem",
+										Text = "Correct key!",
+										Icon = "rbxassetid://11401835376",
+										Duration = 3
+									})
+								else
+									KeySystem.Attempts -= 1
+
+									Library:ForceNotify({
+										Name = "KeySystem",
+										Text = "Incorrect key! You still have "..tostring(KeySystem.Attempts).." attempts left!",
+										Icon = "rbxassetid://11401835376",
+										Duration = 3
+									})
+								end
+
+								KeySystem["a4"]["Text"] = ""
+
+								if KeySystem.Attempts == 0 then
+									print("Kicked, too many attempts")
+								end
+
+								if KeySystem.KeyTextboxHover then
+									Library:Tween(KeySystem["a2"], {
+										Length = 0.2,
+										Goal = {Color = Color3.fromRGB(93, 93, 93)}
+									})
+								else
+									Library:Tween(KeySystem["a2"], {
+										Length = 0.2,
+										Goal = {Color = Color3.fromRGB(43, 43, 43)}
+									})
+								end
+							end
+						end)
+					end
+				end
+				
+				
+				do
+					-- Others tween
+					do
+						Library:Tween(StartAnimation["92"], {
+							Length = 1,
+							Goal = {Position = UDim2.new(0, 92, 0, 159)}
+						})
+
+						Library:Tween(StartAnimation["92"], {
+							Length = 1,
+							Goal = {Size = UDim2.new(0, 310, 0, 154)}
+						})
+						
+
+						Library:Tween(StartAnimation["96"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 1}
+						})
+
+						Library:Tween(StartAnimation["95"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 1}
+						})
+					end
+					
+					task.wait(1)
+					
+					-- Ui tween
+					do
+						Library:Tween(KeySystem["a4"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 0}
+						})
+						
+						Library:Tween(KeySystem["a9"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 0}
+						})
+						
+						Library:Tween(KeySystem["a6"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 0}
+						})
+						
+						Library:Tween(KeySystem["a8"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 0}
+						})
+						
+						Library:Tween(KeySystem["a4"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 0}
+						})
+						
+						Library:Tween(KeySystem["a0"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 0}
+						})
+					end
+				end
+				
+				if Gui.DiscordLink ~= nil then
+					
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.DiscordServerButton
+					KeySystem["ab"] = Instance.new("TextButton", StartAnimation["92"])
+					KeySystem["ab"]["TextStrokeTransparency"] = 0
+					KeySystem["ab"]["ZIndex"] = 3
+					KeySystem["ab"]["AutoButtonColor"] = false
+					KeySystem["ab"]["TextSize"] = 12
+					KeySystem["ab"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["ab"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["ab"]["Size"] = UDim2.new(0, 100, 0, 19)
+					KeySystem["ab"]["Name"] = [[DiscordServerButton]]
+					KeySystem["ab"]["Text"] = [[Copy discord invite]]
+					KeySystem["ab"]["Font"] = Enum.Font.Gotham
+					KeySystem["ab"]["Position"] = UDim2.new(0, 104, 0, 118)
+					KeySystem["ab"]["MaxVisibleGraphemes"] = 0
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.DiscordServerButton.TextLabel
+					KeySystem["ac"] = Instance.new("TextLabel", KeySystem["ab"])
+					KeySystem["ac"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["ac"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["ac"]["TextSize"] = 9
+					KeySystem["ac"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["ac"]["Size"] = UDim2.new(1, 0, 1, 0)
+					KeySystem["ac"]["Text"] = [[Copy discord invite]]
+					KeySystem["ac"]["Font"] = Enum.Font.GothamMedium
+					KeySystem["ac"]["BackgroundTransparency"] = 1
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.DiscordServerButton.UIStroke
+					KeySystem["ad"] = Instance.new("UIStroke", KeySystem["ab"])
+					KeySystem["ad"]["Color"] = Color3.fromRGB(89, 102, 243)
+					KeySystem["ad"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.DiscordServerButton.UIGradient
+					KeySystem["ae"] = Instance.new("UIGradient", KeySystem["ab"])
+					KeySystem["ae"]["Rotation"] = 90
+					KeySystem["ae"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(89, 102, 243)),ColorSequenceKeypoint.new(0.516, Color3.fromRGB(78, 90, 213)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(63, 74, 172))}
+
+					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.DiscordServerButton.UICorner
+					KeySystem["af"] = Instance.new("UICorner", KeySystem["ab"])
+					KeySystem["af"]["CornerRadius"] = UDim.new(0, 4)
+					
+					KeySystem["ab"]["BackgroundTransparency"] = 1
+					KeySystem["ac"]["TextTransparency"] = 1
+					KeySystem["ad"]["Transparency"] = 1
+					
+					do
+						Library:Tween(KeySystem["ad"], {
+							Length = 0.7,
+							Goal = {Transparency = 0}
+						})
+						
+						Library:Tween(KeySystem["ab"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 0}
+						})
+						
+						Library:Tween(KeySystem["ac"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 0}
+						})
+					end
+					
+					-- Handler
+					do
+						KeySystem["ab"].MouseEnter:Connect(function()
+							Library:Tween(KeySystem["ad"], {
+								Length = 0.2,
+								Goal = {Color = Color3.fromRGB(137, 145, 213)}
+							})
+						end)
+						
+						KeySystem["ab"].MouseLeave:Connect(function()
+							Library:Tween(KeySystem["ad"], {
+								Length = 0.2,
+								Goal = {Color = Color3.fromRGB(89, 102, 243)}
+							})
+						end)
+						
+						KeySystem["ab"].MouseButton1Click:Connect(function()
+							
+							task.spawn(function()
+								Library:ForceNotify({
+									Name = "Discord",
+									Text = "Copied the discord link to clipboard!",
+									Icon = "rbxassetid://11401835376",
+									Duration = 3
+								})
+								
+								Library:Tween(KeySystem["ad"], {
+									Length = 0.2,
+									Goal = {Color = Color3.fromRGB(183, 188, 213)}
+								})
+								
+								task.wait(0.2)
+
+								Library:Tween(KeySystem["ad"], {
+									Length = 0.2,
+									Goal = {Color = Color3.fromRGB(137, 145, 213)}
+								})
+							end)
+							
+							pcall(function()
+								setclipboard(Gui.DiscordLink)
+							end)
+						end)
+					end
+				end
+				
+				repeat
+					task.wait()
+				until KeySystem.CorrectKey
+				
+				do
+					do
+						Library:Tween(KeySystem["a4"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 1}
+						})
+
+						Library:Tween(KeySystem["a9"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 1}
+						})
+
+						Library:Tween(KeySystem["a6"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 1}
+						})
+
+						Library:Tween(KeySystem["a8"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 1}
+						})
+
+						Library:Tween(KeySystem["a4"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 1}
+						})
+
+						Library:Tween(KeySystem["a0"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 1}
+						})
+						
+						Library:Tween(KeySystem["a2"], {
+							Length = 0.7,
+							Goal = {Transparency = 1}
+						})
+					end
+					
+					do
+						Library:Tween(KeySystem["ad"], {
+							Length = 0.7,
+							Goal = {Transparency = 1}
+						})
+
+						Library:Tween(KeySystem["ab"], {
+							Length = 0.7,
+							Goal = {BackgroundTransparency = 1}
+						})
+
+						Library:Tween(KeySystem["ac"], {
+							Length = 0.7,
+							Goal = {TextTransparency = 1}
+						})
+					end
+				end
+				
+				task.wait(1)
+				
+				Library:Tween(StartAnimation["96"], {
+					Length = 0.7,
+					Goal = {TextTransparency = 0}
+				})
+
+				Library:Tween(StartAnimation["95"], {
+					Length = 0.7,
+					Goal = {TextTransparency = 0}
+				})
+				
+				KeyChecked = true
+			else
+				KeyChecked = true
+			end
+			
+			repeat
+				task.wait()
+			until KeyChecked
+			
 			task.wait(0.3)
 			
 			Library:Tween(StartAnimation["92"], {
@@ -508,8 +935,10 @@ function Library:Create(options)
 			})
 			
 			task.wait(0.1)
+			
 			Gui["3"]["Position"] = UDim2.new(0, 0, 0, 300)
 			Gui["2"]["Size"] = UDim2.new(0, 498, 0, 498)
+			
 			Library:Tween(Gui["3"], {
 				Length = 1.5,
 				Goal = {Position = UDim2.new(0, 0, 0, 455)}
@@ -1634,6 +2063,7 @@ function Library:Create(options)
 	return Gui
 end
 
+
 function Library:Notify(options)
 	options = Library:Place_Defaults({
 		Name = "Ring Ring",
@@ -1774,6 +2204,150 @@ function Library:Notify(options)
 			
 			repeat task.wait() until Completed
 			
+			options.Callback()
+			Notification["84"]:Destroy()
+		end)
+	end
+end
+
+function Library:ForceNotify(options)
+	options = Library:Place_Defaults({
+		Name = "Ring Ring",
+		Text = "Notification!!",
+		Icon = "rbxassetid://11401835376",
+		Duration = 5,
+		Callback = function() return end
+	}, options or {})
+
+	local Notification = {}
+
+	do
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif
+		Notification["84"] = Instance.new("Frame", LibFrame["81"])
+		Notification["84"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["84"]["Size"] = UDim2.new(0, 257, 0, 0)
+		Notification["84"]["ClipsDescendants"] = true
+		Notification["84"]["Position"] = UDim2.new(0, -41, 0, 0)
+		Notification["84"]["Name"] = [[Notif]]
+		Notification["84"]["ClipsDescendants"] = true
+		Notification["84"]["BorderSizePixel"] = 0
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.UICorner
+		Notification["85"] = Instance.new("UICorner", Notification["84"])
+		Notification["85"]["CornerRadius"] = UDim.new(0, 4)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.ImageLabel
+		Notification["86"] = Instance.new("ImageLabel", Notification["84"])
+		Notification["86"]["BorderSizePixel"] = 0
+		Notification["86"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["86"]["Image"] = options.Icon
+		Notification["86"]["Size"] = UDim2.new(0, 18, 0, 16)
+		Notification["86"]["BackgroundTransparency"] = 1
+		Notification["86"]["Position"] = UDim2.new(0, 10, 0, 5)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.ImageLabel.ThemeColorGradient
+		Notification["87"] = Instance.new("UIGradient", Notification["86"])
+		Notification["87"]["Name"] = [[ThemeColorGradient]]
+		Notification["87"]["Rotation"] = 90
+		Notification["87"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifName
+		Notification["88"] = Instance.new("TextLabel", Notification["84"])
+		Notification["88"]["BorderSizePixel"] = 0
+		Notification["88"]["TextXAlignment"] = Enum.TextXAlignment.Left
+		Notification["88"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["88"]["TextSize"] = 12
+		Notification["88"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["88"]["Size"] = UDim2.new(0, 206, 0, 21)
+		Notification["88"]["Text"] = options.Name
+		Notification["88"]["Name"] = [[NotifName]]
+		Notification["88"]["Font"] = Enum.Font.GothamMedium
+		Notification["88"]["BackgroundTransparency"] = 1
+		Notification["88"]["Position"] = UDim2.new(0, 34, 0, 3)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifName.ThemeColorGradient
+		Notification["89"] = Instance.new("UIGradient", Notification["88"])
+		Notification["89"]["Name"] = [[ThemeColorGradient]]
+		Notification["89"]["Rotation"] = 90
+		Notification["89"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifText
+		Notification["8a"] = Instance.new("TextLabel", Notification["84"])
+		Notification["8a"]["TextWrapped"] = true
+		Notification["8a"]["BorderSizePixel"] = 0
+		Notification["8a"]["TextXAlignment"] = Enum.TextXAlignment.Left
+		Notification["8a"]["TextYAlignment"] = Enum.TextYAlignment.Top
+		Notification["8a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8a"]["TextSize"] = 10
+		Notification["8a"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8a"]["Size"] = UDim2.new(0, 242, 0, 28)
+		Notification["8a"]["Text"] = options.Text
+		Notification["8a"]["Name"] = [[NotifText]]
+		Notification["8a"]["Font"] = Enum.Font.GothamMedium
+		Notification["8a"]["BackgroundTransparency"] = 1
+		Notification["8a"]["Position"] = UDim2.new(0, 10, 0, 23)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack
+		Notification["8b"] = Instance.new("Frame", Notification["84"])
+		Notification["8b"]["BorderSizePixel"] = 0
+		Notification["8b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8b"]["Size"] = UDim2.new(0, 239, 0, 5)
+		Notification["8b"]["Position"] = UDim2.new(0.03501945361495018, 0, 0.7903226017951965, 0)
+		Notification["8b"]["Name"] = [[TimeBarBack]]
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.Frame
+		Notification["8c"] = Instance.new("Frame", Notification["8b"])
+		Notification["8c"]["BorderSizePixel"] = 0
+		Notification["8c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8c"]["Size"] = UDim2.new(0.5, 0, 1, 0)
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.Frame.ThemeColorGradient
+		Notification["8d"] = Instance.new("UIGradient", Notification["8c"])
+		Notification["8d"]["Name"] = [[ThemeColorGradient]]
+		Notification["8d"]["Rotation"] = 90
+		Notification["8d"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.UIGradient
+		Notification["8e"] = Instance.new("UIGradient", Notification["8b"])
+		Notification["8e"]["Rotation"] = 270
+		Notification["8e"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45))}
+
+		-- StarterGui.Vision Lib v2.NotifFrame.Notif.UIGradient
+		Notification["8f"] = Instance.new("UIGradient", Notification["84"])
+		Notification["8f"]["Rotation"] = 90
+		Notification["8f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(32, 32, 32)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25))}
+	end
+
+	do
+		task.spawn(function()
+			local Completed = false
+
+			Library:Tween(Notification["84"], {
+				Length = 0.5,
+				Goal = {Size = UDim2.new(0, 257, 0, 62)}
+			})
+
+			Library:Tween(Notification["8c"], {
+				Length = options.Duration,
+				Style = Enum.EasingStyle.Linear,
+				Goal = {Size = UDim2.new(1, 0, 1, 0)}
+			}, function()
+				Completed = true
+			end)
+
+			repeat task.wait() until Completed
+
+			local Completed = false
+
+			Library:Tween(Notification["84"], {
+				Length = 0.5,
+				Goal = {Size = UDim2.new(0, 257, 0, 0)}
+			}, function()
+				Completed = true
+			end)
+
+			repeat task.wait() until Completed
+
 			options.Callback()
 			Notification["84"]:Destroy()
 		end)
