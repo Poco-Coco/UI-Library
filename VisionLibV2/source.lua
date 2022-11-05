@@ -418,7 +418,7 @@ function Library:Create(options)
 		StartAnimation["9e"]["TextTransparency"] = 1
 		StartAnimation["9e"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
 		StartAnimation["9e"]["Size"] = UDim2.new(0, 282, 0, 70)
-		StartAnimation["9e"]["Text"] = [[Welcome, Loco_CTO]]
+		StartAnimation["9e"]["Text"] = [[Welcome, ]]..Players.LocalPlayer.Name
 		StartAnimation["9e"]["Name"] = [[WelcomeText]]
 		StartAnimation["9e"]["Font"] = Enum.Font.GothamMedium
 		StartAnimation["9e"]["BackgroundTransparency"] = 1
