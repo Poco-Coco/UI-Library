@@ -1426,7 +1426,8 @@ function Library:Create(options)
 
 				local Slider = {
 					Hover = false,
-					OldVal = options.Default
+					OldVal = options.Default,
+					TextboxHover = false
 				}
 
 				do
@@ -1533,9 +1534,19 @@ function Library:Create(options)
 							Goal = {Color = Color3.fromRGB(43, 43, 43)}
 						})
 					end)
+					
+					Slider["3g"].MouseEnter:Connect(function()
+						Slider.TextboxHover = true
+					end)
+					
+					Slider["3g"].MouseLeave:Connect(function()
+						Slider.TextboxHover = false
+					end)
 
 					Slider["3g"].Focused:Connect(function()
 						Slider["3g"]["Text"] = [[]]
+						
+						Library.Sliding = true
 					end)
 
 					Slider["3g"].FocusLost:Connect(function()
@@ -1552,10 +1563,12 @@ function Library:Create(options)
 						if not success then
 							Slider["3g"].Text = Slider.OldVal
 						end
+						
+						Library.Sliding = false
 					end)
 
 					UserInputService.InputBegan:connect(function(key)
-						if key.UserInputType == Enum.UserInputType.MouseButton1 and Slider.Hover then
+						if key.UserInputType == Enum.UserInputType.MouseButton1 and Slider.Hover and not Slider.TextboxHover then
 							Library.Sliding = true
 							MouseDown = true
 
@@ -1745,7 +1758,7 @@ function Library:Create(options)
 					end)
 
 					function Keybind:SetName(name)
-						Keybind["5c"]["Text"] = "  "..name
+						Keybind["5c"]["Text"] = name
 					end
 				end
 
