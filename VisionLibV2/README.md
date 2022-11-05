@@ -17,6 +17,11 @@
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
 ```
 
+### Destroy the library
+```lua
+Library:Destroy()
+```
+
 ## 🟡Creating a Notify
 ```lua
 Library:Notify({
