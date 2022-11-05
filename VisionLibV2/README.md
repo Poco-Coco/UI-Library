@@ -184,11 +184,9 @@ local Button = Section1:Button({
 	end
 })
 
-Button:SetName("New Button Name")
-
 local Toggle = Section1:Toggle({
 	Name = "Toggle",
-	Default = true,
+	Default = false,
 	Callback = function(Bool) 
 		Library:Notify({
 			Name = "Toggle",
@@ -198,9 +196,6 @@ local Toggle = Section1:Toggle({
 		})
 	end
 })
-
-Toggle:SetName("New Toggle Name")
-Toggle:Set(false)
 
 local Section2 = Tab:Section({
 	Name = "Advance controls"
@@ -220,9 +215,6 @@ local Slider = Section2:Slider({
 		})
 	end
 })
-
-Slider:SetValue(100)
-Slider:SetName("New Slider Name")
 
 local Keybind = Section2:Keybind({
 	Name = "Keybind",
@@ -245,8 +237,6 @@ local Keybind = Section2:Keybind({
 	end
 })
 
-Keybind:SetName("New keybind Name")
-
 Library:Notify({
 	Name = "Test",
 	Text = "This is just a test",
@@ -259,6 +249,23 @@ Library:Notify({
 			Icon = "rbxassetid://11401835376",
 			Duration = 3,
 		})
+	end
+})
+
+local Tab = Window:Tab({
+	Name = "Others",
+	Icon = "rbxassetid://11476626403",
+	Color = Color3.new(0.474509, 0.474509, 0.474509)
+})
+
+local Section = Tab:Section({
+	Name = "Miscs"
+})
+
+local Button = Section:Button({
+	Name = "Destroy library",
+	Callback = function()
+		Library:Destroy()
 	end
 })
 ```
