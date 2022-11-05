@@ -3,7 +3,11 @@ local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-
 local Window = Library:Create({
 	Name = "Vision UI Lib v2",
 	Footer = "By Loco_CTO, Sius and BruhOOFBoi",
-	ToggleKey = Enum.KeyCode.RightShift
+	ToggleKey = Enum.KeyCode.RightShift,
+	KeySystem = true,
+	Key = "keyabc123",
+	MaxAttempts = 5,
+	DiscordLink = "https://discord.gg/Bp7wFcZeUn"
 })
 
 Window:ChangeTogglekey(Enum.KeyCode.RightShift)
