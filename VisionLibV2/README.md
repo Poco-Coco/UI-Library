@@ -35,7 +35,11 @@ Library:Notify({
 local Window = Library:Create({
 	Name = "Vision UI Lib v2", -- String
 	Footer = "By Loco_CTO, Sius and BruhOOFBoi", -- String
-	ToggleKey = Enum.KeyCode.Return -- Enum.KeyCode
+	ToggleKey = Enum.KeyCode.RightShift, -- Enum.KeyCode
+	KeySystem = true, -- Boolean
+	Key = "keyabc123", -- String
+	MaxAttempts = 5, -- Integer
+	DiscordLink = "https://discord.gg/Bp7wFcZeUn" -- String
 })
 ```
 ### Updating toggle key
@@ -144,7 +148,11 @@ local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-
 local Window = Library:Create({
 	Name = "Vision UI Lib v2",
 	Footer = "By Loco_CTO, Sius and BruhOOFBoi",
-	ToggleKey = Enum.KeyCode.RightShift
+	ToggleKey = Enum.KeyCode.RightShift,
+	KeySystem = true,
+	Key = "keyabc123",
+	MaxAttempts = 5,
+	DiscordLink = "https://discord.gg/Bp7wFcZeUn"
 })
 
 Window:ChangeTogglekey(Enum.KeyCode.RightShift)
