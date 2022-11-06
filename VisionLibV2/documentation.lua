@@ -53,9 +53,9 @@ local Section2 = Tab:Section({
 
 local Slider = Section2:Slider({
 	Name = "Slider",
-	Max = 100,
+	Max = 50,
 	Min = 0,
-	Default = 50,
+	Default = 25,
 	Callback = function(Number)
 		Library:Notify({
 			Name = "Slider",
@@ -84,6 +84,52 @@ local Keybind = Section2:Keybind({
 			Icon = "rbxassetid://11401835376",
 			Duration = 3,
 		})
+	end
+})
+
+local SmallTextbox = Section2:SmallTextbox({
+	Name = "Small Textbox",
+	Default = "Default Text",
+	Callback = function(Text)
+		Library:Notify({
+			Name = "Small Textbox updated",
+			Text = Text,
+			Icon = "rbxassetid://11401835376",
+			Duration = 3,
+		})
+	end
+})
+
+local Dropdown = Section2:Dropdown({
+	Name = "Dropdown",
+	Items = {1, 2, 3, 4, "XD"},
+	Callback = function(item)
+		print(typeof(item))
+		print(item)
+	end
+})
+
+local Button = Section2:Button({
+	Name = "Clear dropdown",
+	Callback = function()
+		Dropdown:Clear()
+	end
+})
+
+local Button = Section2:Button({
+	Name = "Update dropdown",
+	Callback = function()
+		Dropdown:UpdateList({
+			Items = {"bruh", 1, 2, 3},
+			Replace = true
+		})
+	end
+})
+
+local Button = Section2:Button({
+	Name = "Additem",
+	Callback = function()
+		Dropdown:AddItem("Item")
 	end
 })
 
