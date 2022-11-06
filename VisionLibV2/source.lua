@@ -58,7 +58,7 @@ function Library:ResizeCanvas(Tab)
 	local CanvasSizeY = NumChildOffset + ChildOffset + 10
 
 	Library:Tween(Tab, {
-		Length = 1,
+		Length = 0.5,
 		Goal = {CanvasSize = UDim2.new(0, 0, 0, CanvasSizeY)}
 	})
 end
@@ -82,12 +82,12 @@ function Library:ResizeSection(Section)
 	local SectionSize = ContainerSize + 26
 
 	Library:Tween(SectionContainer, {
-		Length = 1,
+		Length = 0.5,
 		Goal = {Size = UDim2.new(0, 458, 0, ContainerSize)}
 	})
 	
 	Library:Tween(Section, {
-		Length = 1,
+		Length = 0.5,
 		Goal = {Size = UDim2.new(0, 458, 0, SectionSize)}
 	})
 end
@@ -1938,6 +1938,441 @@ function Library:Create(options)
 				end)
 
 				return Textbox
+			end
+			
+			function Section:Dropdown(options)
+				options = Library:Place_Defaults({
+					Name = "Dropdown",
+					Items = {},
+					Callback = function(item) return end
+				}, options or {})
+
+				local Dropdown = {
+					Items = options.Items,
+					SelectedItem = nil,
+					ContainerOpened = false,
+					NameText = options.Name,
+					Hover = false
+				}
+
+				do
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown
+					Dropdown["46"] = Instance.new("Frame", Section["21"])
+					Dropdown["46"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["46"]["Size"] = UDim2.new(0, 423, 0, 34)
+					Dropdown["46"]["ClipsDescendants"] = true
+					Dropdown["46"]["Position"] = UDim2.new(0, 0, 0, 117)
+					Dropdown["46"]["Name"] = [[Dropdown]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.UICorner
+					Dropdown["47"] = Instance.new("UICorner", Dropdown["46"])
+					Dropdown["47"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Label
+					Dropdown["48"] = Instance.new("TextLabel", Dropdown["46"])
+					Dropdown["48"]["BorderSizePixel"] = 0
+					Dropdown["48"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					Dropdown["48"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["48"]["TextSize"] = 13
+					Dropdown["48"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["48"]["Size"] = UDim2.new(0, 301, 0, 33)
+					Dropdown["48"]["Text"] = [[Dropdown]]
+					Dropdown["48"]["Name"] = [[Label]]
+					Dropdown["48"]["Font"] = Enum.Font.GothamMedium
+					Dropdown["48"]["BackgroundTransparency"] = 1
+					Dropdown["48"]["Position"] = UDim2.new(0, 21, 0, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Open
+					Dropdown["49"] = Instance.new("ImageButton", Dropdown["46"])
+					Dropdown["49"]["ScaleType"] = Enum.ScaleType.Crop
+					Dropdown["49"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["49"]["Image"] = [[rbxassetid://11400266375]]
+					Dropdown["49"]["Size"] = UDim2.new(0, 14, 0, 10)
+					Dropdown["49"]["Name"] = [[Open]]
+					Dropdown["49"]["Position"] = UDim2.new(0, 397, 0, 10)
+					Dropdown["49"]["BackgroundTransparency"] = 1
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.UIStroke
+					Dropdown["4a"] = Instance.new("UIStroke", Dropdown["46"])
+					Dropdown["4a"]["Color"] = Color3.fromRGB(43, 43, 43)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container
+					Dropdown["4b"] = Instance.new("Frame", Dropdown["46"])
+					Dropdown["4b"]["BorderSizePixel"] = 0
+					Dropdown["4b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["4b"]["BackgroundTransparency"] = 1
+					Dropdown["4b"]["Size"] = UDim2.new(0, 423, 0, 72)
+					Dropdown["4b"]["Position"] = UDim2.new(0, 0, 0, 39)
+					Dropdown["4b"]["Name"] = [[Container]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.UIListLayout
+					Dropdown["4c"] = Instance.new("UIListLayout", Dropdown["4b"])
+					Dropdown["4c"]["Padding"] = UDim.new(0, 4)
+					Dropdown["4c"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.UIPadding
+					Dropdown["57"] = Instance.new("UIPadding", Dropdown["4b"])
+					Dropdown["57"]["PaddingLeft"] = UDim.new(0, 8)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.UIGradient
+					Dropdown["58"] = Instance.new("UIGradient", Dropdown["46"])
+					Dropdown["58"]["Rotation"] = 270
+					Dropdown["58"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45))}
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame
+					Dropdown["59"] = Instance.new("Frame", Dropdown["46"])
+					Dropdown["59"]["BorderSizePixel"] = 0
+					Dropdown["59"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["59"]["BackgroundTransparency"] = 1
+					Dropdown["59"]["Size"] = UDim2.new(0, 390, 0, 34)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.UIListLayout
+					Dropdown["5a"] = Instance.new("UIListLayout", Dropdown["59"])
+					Dropdown["5a"]["VerticalAlignment"] = Enum.VerticalAlignment.Center
+					Dropdown["5a"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
+					Dropdown["5a"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.TextLabel
+					Dropdown["5b"] = Instance.new("TextLabel", Dropdown["59"])
+					Dropdown["5b"]["BorderSizePixel"] = 0
+					Dropdown["5b"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Dropdown["5b"]["TextSize"] = 9
+					Dropdown["5b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["5b"]["Size"] = UDim2.new(0, 50, 0, 15)
+					Dropdown["5b"]["Font"] = Enum.Font.Gotham
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.TextLabel.UICorner
+					Dropdown["5c"] = Instance.new("UICorner", Dropdown["5b"])
+					Dropdown["5c"]["CornerRadius"] = UDim.new(0, 4)
+				end
+
+				-- Handler
+				do					
+					Dropdown["46"].MouseEnter:Connect(function()
+						Dropdown.Hover = true
+						
+						Library:Tween(Dropdown["4a"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(65, 65, 65)}
+						})
+					end)
+
+					Dropdown["46"].MouseLeave:Connect(function()
+						Dropdown.Hover = false
+						
+						Library:Tween(Dropdown["4a"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(43, 43, 43)}
+						})
+					end)
+					
+					UserInputService.InputBegan:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 and Dropdown.Hover then
+							Library:Tween(Dropdown["4a"], {
+								Length = 0.2,
+								Goal = {Color = Color3.fromRGB(86, 86, 86)}
+							})
+
+							if Dropdown.Hover then
+								Library:Tween(Dropdown["4a"], {
+									Length = 0.2,
+									Goal = {Color = Color3.fromRGB(65, 65, 65)}
+								})
+							else
+								Library:Tween(Dropdown["4a"], {
+									Length = 0.2,
+									Goal = {Color = Color3.fromRGB(43, 43, 43)}
+								})
+							end
+							
+							do
+								if Dropdown.ContainerOpened then
+									Dropdown.ContainerOpened = false
+									
+									Library:Tween(Dropdown["46"], {
+										Length = 0.5,
+										Goal = {Size = UDim2.fromOffset(423, 34)}
+									})
+									
+									task.wait(0.7)
+
+									task.spawn(function()
+										Library:ResizeSection(Section["1e"])
+										task.wait(0.7)
+										Library:ResizeCanvas(Tab["1d"])
+									end)
+								else
+									Dropdown.ContainerOpened = true
+									
+									Dropdown:ResizeOpenedFrame()
+								end
+
+								task.wait(0.7)
+
+								task.spawn(function()
+									Library:ResizeCanvas(Tab["1d"])
+								end)
+							end
+						end
+					end)
+				end
+
+				-- Methods
+				do
+					
+					function Dropdown:AddItem(value)
+						local DropdownOption = {
+							Hover = false,
+							CallbackVal = value
+						}
+
+						do
+							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1
+							DropdownOption["4d"] = Instance.new("Frame", Dropdown["4b"])
+							DropdownOption["4d"]["BackgroundColor3"] = Color3.fromRGB(149, 149, 149)
+							DropdownOption["4d"]["Size"] = UDim2.new(0, 407, 0, 27)
+							DropdownOption["4d"]["Position"] = UDim2.new(0, 7, 0, 22)
+							DropdownOption["4d"]["Name"] = [[Option 1]]
+
+							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1.UICorner
+							DropdownOption["4e"] = Instance.new("UICorner", DropdownOption["4d"])
+							DropdownOption["4e"]["CornerRadius"] = UDim.new(0, 4)
+
+							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1.Label
+							DropdownOption["4f"] = Instance.new("TextLabel", DropdownOption["4d"])
+							DropdownOption["4f"]["BorderSizePixel"] = 0
+							DropdownOption["4f"]["TextXAlignment"] = Enum.TextXAlignment.Left
+							DropdownOption["4f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+							DropdownOption["4f"]["TextSize"] = 13
+							DropdownOption["4f"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+							DropdownOption["4f"]["Size"] = UDim2.new(0, 301, 0, 33)
+							DropdownOption["4f"]["Text"] = tostring(value)
+							DropdownOption["4f"]["Name"] = [[Label]]
+							DropdownOption["4f"]["Font"] = Enum.Font.GothamMedium
+							DropdownOption["4f"]["BackgroundTransparency"] = 1
+							DropdownOption["4f"]["Position"] = UDim2.new(0, 14, 0, -3)
+
+							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1.UIStroke
+							DropdownOption["50"] = Instance.new("UIStroke", DropdownOption["4d"])
+							DropdownOption["50"]["Color"] = Color3.fromRGB(43, 43, 43)
+
+							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1.UIGradient
+							DropdownOption["51"] = Instance.new("UIGradient", DropdownOption["4d"])
+							DropdownOption["51"]["Rotation"] = 270
+							DropdownOption["51"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(86, 86, 86)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(89, 89, 89))}
+						end
+
+						DropdownOption["4d"].MouseEnter:Connect(function()
+							DropdownOption.Hover = true
+
+							Library:Tween(DropdownOption["50"], {
+								Length = 0.5,
+								Goal = {Color = Color3.fromRGB(65, 65, 65)}
+							})
+						end)
+
+						DropdownOption["4d"].MouseLeave:Connect(function()
+							DropdownOption.Hover = false
+
+							Library:Tween(DropdownOption["50"], {
+								Length = 0.5,
+								Goal = {Color = Color3.fromRGB(43, 43, 43)}
+							})
+						end)
+
+						UserInputService.InputBegan:Connect(function(input)
+							if input.UserInputType == Enum.UserInputType.MouseButton1 and DropdownOption.Hover then
+								Library:Tween(DropdownOption["50"], {
+									Length = 0.2,
+									Goal = {Color = Color3.fromRGB(86, 86, 86)}
+								})
+
+								task.spawn(function()
+									options.Callback(DropdownOption.CallbackVal)
+								end)
+
+								if DropdownOption.Hover then
+									Library:Tween(DropdownOption["50"], {
+										Length = 0.2,
+										Goal = {Color = Color3.fromRGB(65, 65, 65)}
+									})
+								else
+									Library:Tween(DropdownOption["50"], {
+										Length = 0.2,
+										Goal = {Color = Color3.fromRGB(43, 43, 43)}
+									})
+								end
+								
+								Dropdown.SelectedItem = DropdownOption.CallbackVal
+								Dropdown["5b"].Text = tostring(Dropdown.SelectedItem)
+								
+								local Bound = TextService:GetTextSize(Dropdown["5b"].Text, Dropdown["5b"].TextSize, Dropdown["5b"].Font, Vector2.new(Dropdown["5b"].AbsoluteSize.X, Dropdown["5b"].AbsoluteSize.Y))
+
+								Library:Tween(Dropdown["5b"], {
+									Length = 0.2,
+									Goal = {Size = UDim2.new(0, (Bound.X + 14), 0, 21)}
+								})
+							end
+						end)
+						
+						if Dropdown.SelectedItem == nil then
+							Dropdown.SelectedItem = DropdownOption.CallbackVal
+							Dropdown["5b"].Text = tostring(Dropdown.SelectedItem)
+							
+							local Bound = TextService:GetTextSize(Dropdown["5b"].Text, Dropdown["5b"].TextSize, Dropdown["5b"].Font, Vector2.new(Dropdown["5b"].AbsoluteSize.X, Dropdown["5b"].AbsoluteSize.Y))
+
+							Library:Tween(Dropdown["5b"], {
+								Length = 0.2,
+								Goal = {Size = UDim2.new(0, (Bound.X + 14), 0, 21)}
+							})
+						end
+						
+						if Dropdown.ContainerOpened then
+							Dropdown:ResizeOpenedFrame()
+						end
+
+						task.wait(0.6)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							task.wait(1)
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+					
+					function Dropdown:Clear()
+						for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+							if v:IsA("Frame") then
+								v:Destroy()
+							end
+						end
+						
+						local FrameYOffset = 34 + 4
+
+						if Dropdown.ContainerOpened then
+							Dropdown:ResizeOpenedFrame()
+						end
+						
+						task.wait(0.6)
+						
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							task.wait(1)
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+					
+					function Dropdown:UpdateList(options)
+						options = Library:Place_Defaults({
+							Items = {},
+							Replace = true
+						}, options or {})
+						
+						if options.Replace then
+							for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+								if v:IsA("Frame") then
+									v:Destroy()
+								end
+							end
+						end
+						
+						for i, v in pairs(options.Items) do
+							Dropdown:AddItem(v)
+						end
+						
+						if Dropdown.ContainerOpened then
+							Dropdown:ResizeOpenedFrame()
+						end
+
+						task.wait(0.6)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							task.wait(1)
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+					
+					function Dropdown:ResizeOpenedFrame()
+						local FrameYOffset
+
+						do
+							local NumChild = 0
+
+							for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+								if v:IsA("Frame") then
+									NumChild += 1
+								end
+							end
+
+							FrameYOffset = 27 * NumChild + 4 * NumChild + 4
+						end
+						
+						local SectionContainer = Section["21"]
+
+						local NumChild = 0
+						local ChildOffset = 0
+
+						for i, v in pairs(SectionContainer:GetChildren()) do
+							if v:IsA("Frame") then
+								NumChild += 1
+								ChildOffset = ChildOffset + v.Size.Y.Offset
+							end
+						end
+
+						local NumChildOffset = NumChild * 5
+
+						if Dropdown.ContainerOpened then
+							NumChildOffset += FrameYOffset
+						else
+							NumChildOffset -= FrameYOffset
+						end
+
+						local ContainerSize = NumChildOffset + ChildOffset + 10
+						local SectionSize = ContainerSize + 26
+
+						Library:Tween(SectionContainer, {
+							Length = 0.5,
+							Goal = {Size = UDim2.new(0, 458, 0, ContainerSize)}
+						})
+
+						Library:Tween(Section["1e"], {
+							Length = 0.5,
+							Goal = {Size = UDim2.new(0, 458, 0, SectionSize)}
+						})
+						
+						do
+							local NumChild = 0
+
+							for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+								if v:IsA("Frame") then
+									NumChild += 1
+								end
+							end
+
+							local FrameYOffset = 27 * NumChild + 4 * NumChild + 38
+
+							Library:Tween(Dropdown["46"], {
+								Length = 0.5,
+								Goal = {Size = UDim2.fromOffset(423, FrameYOffset)}
+							})
+						end
+					end
+				end
+				
+				do
+					for i, v in options.Items do
+						Dropdown:AddItem(v)
+					end
+				end
+
+				task.spawn(function()
+					Library:ResizeSection(Section["1e"])
+					task.wait(1)
+					Library:ResizeCanvas(Tab["1d"])
+				end)
+
+				return Dropdown
 			end
 			
 			--[[
