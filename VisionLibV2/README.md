@@ -304,8 +304,12 @@ local Dropdown = Section2:Dropdown({
 	Name = "Dropdown",
 	Items = {1, 2, 3, 4, "XD"},
 	Callback = function(item)
-		print(typeof(item))
-		print(item)
+		Library:Notify({
+			Name = "Dropdown",
+			Text = item,
+			Icon = "rbxassetid://11401835376",
+			Duration = 3,
+		})
 	end
 })
 
