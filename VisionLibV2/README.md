@@ -146,6 +146,27 @@ local Keybind = Section2:Keybind({
 Keybind:SetName("New keybind Name") -- String
 ```
 
+## 🟣Creating a Small Textbox
+```lua
+local SmallTextbox = Section2:SmallTextbox({
+	Name = "Small Textbox", -- String
+	Default = "Default Text", -- String
+	Callback = function(Text)
+		-- Function
+	end
+})
+```
+
+### Updating small textbox name
+```lua
+SmallTextbox:SetName("New Textbox name") -- String
+```
+
+### Updating small textbox text
+```lua
+SmallTextbox:SetText("Another text") -- String
+```
+
 ## ⚪Use this to test
 ```lua
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
@@ -203,9 +224,9 @@ local Section2 = Tab:Section({
 
 local Slider = Section2:Slider({
 	Name = "Slider",
-	Max = 100,
+	Max = 50,
 	Min = 0,
-	Default = 50,
+	Default = 25,
 	Callback = function(Number)
 		Library:Notify({
 			Name = "Slider",
@@ -231,6 +252,19 @@ local Keybind = Section2:Keybind({
 		Library:Notify({
 			Name = "Keybind updated",
 			Text = tostring(Key),
+			Icon = "rbxassetid://11401835376",
+			Duration = 3,
+		})
+	end
+})
+
+local SmallTextbox = Section2:SmallTextbox({
+	Name = "Small Textbox",
+	Default = "Default Text",
+	Callback = function(Text)
+		Library:Notify({
+			Name = "Small Textbox updated",
+			Text = Text,
 			Icon = "rbxassetid://11401835376",
 			Duration = 3,
 		})
