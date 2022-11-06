@@ -3,6 +3,7 @@ local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
+local TextService = game:GetService("TextService")
 local LocalPlayer = Players.LocalPlayer
 
 local Mouse = LocalPlayer:GetMouse() 
@@ -1771,6 +1772,174 @@ function Library:Create(options)
 				return Keybind
 			end
 			
+			function Section:SmallTextbox(options)
+				options = Library:Place_Defaults({
+					Name = "Small Textbox",
+					Default = "Text",
+					Callback = function() return end
+				}, options or {})
+
+				local Textbox = {
+					Hover = false
+				}
+
+				do
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1
+					Textbox["2e"] = Instance.new("Frame", Section["21"])
+					Textbox["2e"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Textbox["2e"]["Size"] = UDim2.new(0, 423, 0, 34)
+					Textbox["2e"]["Position"] = UDim2.new(0, 17, 0, 104)
+					Textbox["2e"]["Name"] = [[Textbox1]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.UICorner
+					Textbox["2f"] = Instance.new("UICorner", Textbox["2e"])
+					Textbox["2f"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.UIGradient
+					Textbox["30"] = Instance.new("UIGradient", Textbox["2e"])
+					Textbox["30"]["Rotation"] = 270
+					Textbox["30"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45))}
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Label
+					Textbox["31"] = Instance.new("TextLabel", Textbox["2e"])
+					Textbox["31"]["BorderSizePixel"] = 0
+					Textbox["31"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					Textbox["31"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Textbox["31"]["TextSize"] = 13
+					Textbox["31"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Textbox["31"]["Size"] = UDim2.new(0, 301, 0, 33)
+					Textbox["31"]["Text"] = options.Name
+					Textbox["31"]["Name"] = [[Label]]
+					Textbox["31"]["Font"] = Enum.Font.GothamMedium
+					Textbox["31"]["BackgroundTransparency"] = 1
+					Textbox["31"]["Position"] = UDim2.new(0, 21, 0, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.UIStroke
+					Textbox["32"] = Instance.new("UIStroke", Textbox["2e"])
+					Textbox["32"]["Color"] = Color3.fromRGB(43, 43, 43)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Frame
+					Textbox["33"] = Instance.new("Frame", Textbox["2e"])
+					Textbox["33"]["BorderSizePixel"] = 0
+					Textbox["33"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Textbox["33"]["BackgroundTransparency"] = 1
+					Textbox["33"]["Size"] = UDim2.new(0.9810874462127686, 0, 1, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Frame.TextBox
+					Textbox["34"] = Instance.new("TextBox", Textbox["33"])
+					Textbox["34"]["PlaceholderColor3"] = Color3.fromRGB(127, 127, 127)
+					Textbox["34"]["RichText"] = true
+					Textbox["34"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Textbox["34"]["TextSize"] = 11
+					Textbox["34"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Textbox["34"]["Size"] = UDim2.new(0, 92, 0, 21)
+					Textbox["34"]["Text"] = [[]]
+					Textbox["34"]["Position"] = UDim2.new(0.7612293362617493, 0, 0.1764705926179886, 0)
+					Textbox["34"]["Font"] = Enum.Font.Gotham
+					Textbox["34"]["TextWrapped"] = false
+					Textbox["34"]["PlaceholderText"] = [[...]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Frame.TextBox.UICorner
+					Textbox["35"] = Instance.new("UICorner", Textbox["34"])
+					Textbox["35"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Frame.TextBox.UIGradient
+					Textbox["36"] = Instance.new("UIGradient", Textbox["34"])
+					Textbox["36"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99))}
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Frame.UIListLayout
+					Textbox["37"] = Instance.new("UIListLayout", Textbox["33"])
+					Textbox["37"]["VerticalAlignment"] = Enum.VerticalAlignment.Center
+					Textbox["37"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
+					Textbox["37"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+				end
+
+				-- Handler
+				do			
+					Textbox["2e"].MouseEnter:Connect(function()
+						Library:Tween(Textbox["32"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(65, 65, 65)}
+						})
+					end)
+
+					Textbox["2e"].MouseLeave:Connect(function()
+						Library:Tween(Textbox["32"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(43, 43, 43)}
+						})
+					end)
+					
+
+					Textbox["34"].Focused:Connect(function()						
+						Textbox["34"].Text = ""
+						
+						Library.Sliding = true
+					end)
+					
+					Textbox["34"].FocusLost:Connect(function()						
+						Library.Sliding = false
+						
+						task.spawn(function()
+							options.Callback(Textbox["34"].Text)
+						end)
+					end)
+					
+					Textbox["34"]:GetPropertyChangedSignal("Text"):Connect(function()
+						if Textbox["34"].Text == "" then
+							Library:Tween(Textbox["34"], {
+								Length = 0.2,
+								Goal = {Size = UDim2.new(0, 35, 0, 21)}
+							})
+						else
+							local Bound = TextService:GetTextSize(Textbox["34"].Text, Textbox["34"].TextSize, Textbox["34"].Font, Vector2.new(Textbox["34"].AbsoluteSize.X,Textbox["34"].AbsoluteSize.Y))
+
+							Library:Tween(Textbox["34"], {
+								Length = 0.2,
+								Goal = {Size = UDim2.new(0, (Bound.X + 18), 0, 21)}
+							})
+						end
+					end)
+				end
+
+				-- Methods
+				do
+					function Textbox:SetText(Text)
+						Textbox["34"].Text = Text
+					end
+					
+					function Textbox:SetName(Name)
+						Textbox["31"].Text = Name
+					end
+				end
+				
+				Textbox:SetText(options.Default)
+				
+				do
+					if Textbox["34"].Text == "" then
+						Library:Tween(Textbox["34"], {
+							Length = 0.2,
+							Goal = {Size = UDim2.new(0, 35, 0, 21)}
+						})
+					else
+						local Bound = TextService:GetTextSize(Textbox["34"].Text, Textbox["34"].TextSize, Textbox["34"].Font, Vector2.new(Textbox["34"].AbsoluteSize.X,Textbox["34"].AbsoluteSize.Y))
+
+						Library:Tween(Textbox["34"], {
+							Length = 0.2,
+							Goal = {Size = UDim2.new(0, (Bound.X + 18), 0, 21)}
+						})
+					end
+				end
+
+				task.spawn(function()
+					Library:ResizeSection(Section["1e"])
+					task.wait(1)
+					Library:ResizeCanvas(Tab["1d"])
+				end)
+
+				return Textbox
+			end
+			
 			--[[
 			function Section:Template(options)
 				options = Library:Place_Defaults({
@@ -1987,6 +2156,7 @@ function Library:Create(options)
 			if Library.MainFrameHover then
 				if input.UserInputType == Enum.UserInputType.MouseButton1 and not Library.Sliding then
 					local ObjectPosition = Vector2.new(Mouse.X - Gui["2"].AbsolutePosition.X, Mouse.Y - Gui["2"].AbsolutePosition.Y)
+					
 					while RunService.RenderStepped:wait() and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
 						if not Library.Sliding then
 							Library:Tween(Gui["2"], {
