@@ -167,6 +167,35 @@ SmallTextbox:SetName("New Textbox name") -- String
 SmallTextbox:SetText("Another text") -- String
 ```
 
+## 🟣Creating a Dropdown
+```lua
+local Dropdown = Section2:Dropdown({
+	Name = "Dropdown", -- String
+	Items = {1, 2, 3, 4, "Item"}, -- Table
+	Callback = function(item)
+		-- Function
+	end
+})
+```
+
+### Updating a Dropdown
+```lua
+Dropdown:UpdateList({
+	Items = {"New item", 1, 2, 3}, -- Table
+	Replace = true -- Boolean (Clear all items in the dropdown)
+})
+```
+
+### Adding an item to dropdown
+```lua
+Dropdown:AddItem("Item") -- String, Integer, Instance
+```
+
+### Clear the dropdown
+```lua
+Dropdown:Clear()
+```
+
 ## ⚪Use this to test
 ```lua
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
