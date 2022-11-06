@@ -271,6 +271,39 @@ local SmallTextbox = Section2:SmallTextbox({
 	end
 })
 
+local Dropdown = Section2:Dropdown({
+	Name = "Dropdown",
+	Items = {1, 2, 3, 4, "XD"},
+	Callback = function(item)
+		print(typeof(item))
+		print(item)
+	end
+})
+
+local Button = Section2:Button({
+	Name = "Clear dropdown",
+	Callback = function()
+		Dropdown:Clear()
+	end
+})
+
+local Button = Section2:Button({
+	Name = "Update dropdown",
+	Callback = function()
+		Dropdown:UpdateList({
+			Items = {"bruh", 1, 2, 3},
+			Replace = true
+		})
+	end
+})
+
+local Button = Section2:Button({
+	Name = "Additem",
+	Callback = function()
+		Dropdown:AddItem("Item")
+	end
+})
+
 Library:Notify({
 	Name = "Test",
 	Text = "This is just a test",
