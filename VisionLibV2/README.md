@@ -405,6 +405,16 @@ local Button = Section:Button({
 		Window:TaskBarOnly(false)
 	end
 })
+
+local Keybind = Section:Keybind({
+    Name = "Toggle keybind",
+    Default = Enum.KeyCode.Return,
+    Callback = function() return end,
+    UpdateKeyCallback = function(Key)
+		task.wait(0.1)
+        Window:ChangeTogglekey(Key)
+    end
+})
 ```
 
 ##### Created and mantained by Core Vision, Discord: https://discord.gg/Bp7wFcZeUn
