@@ -18,6 +18,8 @@ local Library = {
 
 local TabIndex = 0
 
+ScreeenY = Mouse.ViewSizeY
+ScreeenX = Mouse.ViewSizeX
 -- Lib
 
 
@@ -139,10 +141,12 @@ function Library:Create(options)
 		Name = "Vision UI Lib v2",
 		Footer = "By Loco_CTO, Sius and BruhOOFBoi",
 		ToggleKey = Enum.KeyCode.RightShift,
+		LoadedCallback = function() return end,
 		KeySystem = false,
 		Key = "123456",
 		MaxAttempts = 5,
-		DiscordLink = nil
+		DiscordLink = nil,
+		ToggledRelativeY = 0.5
 	}, options or {})
 	
 	local Gui = {
@@ -157,6 +161,18 @@ function Library:Create(options)
 	}
 	
 	local StartAnimation = {}
+	
+	task.spawn(function()
+		repeat
+			task.wait()
+		until Library.Loaded
+		options.LoadedCallback()
+		
+		Library:Tween(Gui["2"], {
+			Length = 0.3,
+			Goal = {Position = UDim2.new(0.5, 0, options.ToggledRelativeY, 0) }
+		})
+	end)
 	
 	do
 		-- StarterGui.Vision Lib v2.GuiFrame
@@ -2642,31 +2658,82 @@ function Library:Create(options)
 	end
 	
 	-- Toggle Handler
+	function Gui:Toggled(bool)
+		Gui.TweeningToggle = true
+		if (bool == nil) then
+			if Gui["2"].Visible then
+				Library:Tween(Gui["2"], {
+					Length = 1,
+					Goal = {Size = UDim2.new(0, 498, 0, 0)}
+				})
+
+				task.wait(1)
+				Gui["2"].Visible = false
+			else
+				Gui["2"].Visible = true
+				Library:Tween(Gui["2"], {
+					Length = 1,
+					Goal = {Size = UDim2.new(0, 498, 0, 496)}
+				})
+
+				task.wait(1)
+			end
+		elseif bool then
+			Gui["2"].Visible = true
+			Library:Tween(Gui["2"], {
+				Length = 1,
+				Goal = {Size = UDim2.new(0, 498, 0, 496)}
+			})
+
+			task.wait(1)
+		elseif not bool then
+			Library:Tween(Gui["2"], {
+				Length = 1,
+				Goal = {Size = UDim2.new(0, 498, 0, 0)}
+			})
+
+			task.wait(1)
+			Gui["2"].Visible = false
+		end
+		
+		Gui.TweeningToggle = false
+	end
+	
+	function Gui:TaskBarOnly(bool)
+		if bool then
+			Library:Tween(Gui["18"], {
+				Length = 0.3,
+				Goal = {Position = UDim2.new(0, 0, 0, 452)}
+			})
+
+			Library:Tween(Gui["18"], {
+				Length = 0.3,
+				Goal = {Size = UDim2.new(0, 498, 0, 0)}
+			})
+
+			Gui.Hidden = true
+		else
+			Library:Tween(Gui["18"], {
+				Length = 0.3,
+				Goal = {Position = UDim2.new(0, 0, 0, 0)}
+			})
+
+			Library:Tween(Gui["18"], {
+				Length = 0.3,
+				Goal = {Size = UDim2.new(0, 498, 0, 452)}
+			})
+
+			Gui.Hidden = false
+		end
+	end
+	
+
+	
 	do
 		UserInputService.InputBegan:Connect(function(input)
 			if input.KeyCode == Gui.ToggleKey then
 				if not Gui.TweeningToggle then
-					Gui.TweeningToggle = true
-
-					if Gui["2"].Visible then
-						Library:Tween(Gui["2"], {
-							Length = 1,
-							Goal = {Size = UDim2.new(0, 498, 0, 0)}
-						})
-						
-						task.wait(1)
-						Gui["2"].Visible = false
-					else
-						Gui["2"].Visible = true
-						Library:Tween(Gui["2"], {
-							Length = 1,
-							Goal = {Size = UDim2.new(0, 498, 0, 496)}
-						})
-						
-						task.wait(1)
-					end
-
-					Gui.TweeningToggle = false
+					Gui:Toggled()
 				end
 			end
 		end)
