@@ -853,21 +853,23 @@ function Library:Create(options)
 						})
 					end
 					
-					do
-						Library:Tween(KeySystem["ad"], {
-							Length = 0.7,
-							Goal = {Transparency = 1}
-						})
+					if Gui.DiscordLink ~= nil then
+						do
+							Library:Tween(KeySystem["ad"], {
+								Length = 0.7,
+								Goal = {Transparency = 1}
+							})
 
-						Library:Tween(KeySystem["ab"], {
-							Length = 0.7,
-							Goal = {BackgroundTransparency = 1}
-						})
+							Library:Tween(KeySystem["ab"], {
+								Length = 0.7,
+								Goal = {BackgroundTransparency = 1}
+							})
 
-						Library:Tween(KeySystem["ac"], {
-							Length = 0.7,
-							Goal = {TextTransparency = 1}
-						})
+							Library:Tween(KeySystem["ac"], {
+								Length = 0.7,
+								Goal = {TextTransparency = 1}
+							})
+						end
 					end
 				end
 				
