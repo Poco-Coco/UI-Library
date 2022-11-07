@@ -49,7 +49,7 @@ local Window = Library:Create({
 	Key = "keyabc123", -- String
 	MaxAttempts = 5, -- Integer
 	DiscordLink = "https://discord.gg/Bp7wFcZeUn", -- String (Set it to nil if you do not have one, the button will not pop out)
-	ToggledRelativeY = 0.5 -- Number (0-1, set it to nil if you want it to be centred)
+	ToggledRelativeYOffset = 5 -- Number (Y Offset from bottom of your screen. Set it to nil if you want it to be centred)
 })
 ```
 ### Updating toggle key
