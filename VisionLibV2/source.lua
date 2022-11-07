@@ -145,7 +145,7 @@ function Library:Create(options)
 		Key = "123456",
 		MaxAttempts = 5,
 		DiscordLink = nil,
-		ToggledRelativeY = nil
+		ToggledRelativeYOffset = nil
 	}, options or {})
 	
 	local Gui = {
@@ -167,10 +167,10 @@ function Library:Create(options)
 		until Library.Loaded
 		options.LoadedCallback()
 		
-		if options.ToggledRelativeY ~= nil then
+		if options.ToggledRelativeYOffset ~= nil then
 			Library:Tween(Gui["2"], {
 				Length = 0.3,
-				Goal = {Position = UDim2.new(0.5, 0, 0, ScreeenY*options.ToggledRelativeY) }
+				Goal = {Position = UDim2.new(0.5, 0, 0, ScreeenY-options.ToggledRelativeYOffset-221) }
 			})
 		end
 	end)
