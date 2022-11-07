@@ -20,9 +20,8 @@ local TabIndex = 0
 
 ScreeenY = Mouse.ViewSizeY
 ScreeenX = Mouse.ViewSizeX
+
 -- Lib
-
-
 function Library:Tween(object, options, callback)
 	local options = Library:Place_Defaults({
 		Length = 2,
@@ -146,7 +145,7 @@ function Library:Create(options)
 		Key = "123456",
 		MaxAttempts = 5,
 		DiscordLink = nil,
-		ToggledRelativeY = 0.5
+		ToggledRelativeY = nil
 	}, options or {})
 	
 	local Gui = {
@@ -168,10 +167,12 @@ function Library:Create(options)
 		until Library.Loaded
 		options.LoadedCallback()
 		
-		Library:Tween(Gui["2"], {
-			Length = 0.3,
-			Goal = {Position = UDim2.new(0.5, 0, options.ToggledRelativeY, 0) }
-		})
+		if options.ToggledRelativeY ~= nil then
+			Library:Tween(Gui["2"], {
+				Length = 0.3,
+				Goal = {Position = UDim2.new(0.5, 0, 0, ScreeenY*options.ToggledRelativeY) }
+			})
+		end
 	end)
 	
 	do
