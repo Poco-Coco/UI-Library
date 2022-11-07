@@ -41,15 +41,30 @@ local Window = Library:Create({
 	Name = "Vision UI Lib v2", -- String
 	Footer = "By Loco_CTO, Sius and BruhOOFBoi", -- String
 	ToggleKey = Enum.KeyCode.RightShift, -- Enum.KeyCode
+	LoadedCallback = function()
+		-- Function
+	end,
+	
 	KeySystem = true, -- Boolean
 	Key = "keyabc123", -- String
 	MaxAttempts = 5, -- Integer
-	DiscordLink = "https://discord.gg/Bp7wFcZeUn" -- String (Set it to nil if you do not have one, the button will not pop out)
+	DiscordLink = "https://discord.gg/Bp7wFcZeUn", -- String (Set it to nil if you do not have one, the button will not pop out)
+	ToggledRelativeY = 0.5
 })
 ```
 ### Updating toggle key
 ```lua
 Window:ChangeTogglekey(Enum.KeyCode.LeftAlt) -- Enum.KeyCode
+```
+
+### Toggle UI
+```lua
+Window:Toggled(true) -- Boolean
+```
+
+### Updating toggle taskbar only
+```lua
+Window:TaskBarOnly(true) -- Boolean
 ```
 
 ## 🔵Creating a Tab
@@ -200,14 +215,18 @@ Dropdown:Clear()
 ```lua
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
 
-local Window = Library:Create({
+Window = Library:Create({
 	Name = "Vision UI Lib v2",
 	Footer = "By Loco_CTO, Sius and BruhOOFBoi",
 	ToggleKey = Enum.KeyCode.RightShift,
-	KeySystem = true,
-	Key = "keyabc123",
+	LoadedCallback = function()
+		Window:TaskBarOnly(true)
+	end,
+	KeySystem = false,
+	Key = "123456",
 	MaxAttempts = 5,
-	DiscordLink = "https://discord.gg/Bp7wFcZeUn"
+	DiscordLink = nil,
+	ToggledRelativeY = 0.62
 })
 
 Window:ChangeTogglekey(Enum.KeyCode.RightShift)
@@ -304,12 +323,8 @@ local Dropdown = Section2:Dropdown({
 	Name = "Dropdown",
 	Items = {1, 2, 3, 4, "XD"},
 	Callback = function(item)
-		Library:Notify({
-			Name = "Dropdown",
-			Text = item,
-			Icon = "rbxassetid://11401835376",
-			Duration = 3,
-		})
+		print(typeof(item))
+		print(item)
 	end
 })
 
@@ -366,6 +381,28 @@ local Button = Section:Button({
 	Name = "Destroy library",
 	Callback = function()
 		Library:Destroy()
+	end
+})
+
+local Button = Section:Button({
+	Name = "Hide UI",
+	Callback = function()
+		Window:Toggled(false)
+		
+		task.wait(3)
+		
+		Window:Toggled(true)
+	end
+})
+
+local Button = Section:Button({
+	Name = "Task Bar Only",
+	Callback = function()
+		Window:TaskBarOnly(true)
+
+		task.wait(3)
+
+		Window:TaskBarOnly(false)
 	end
 })
 ```
