@@ -2380,9 +2380,11 @@ function Library:Create(options)
 				end
 				
 				do
-					for i, v in options.Items do
-						Dropdown:AddItem(v)
-					end
+					task.spawn(function()
+						for i, v in pairs(options.Items) do
+							Dropdown:AddItem(v)
+						end
+					end)
 				end
 
 				task.spawn(function()
