@@ -2664,6 +2664,10 @@ function Library:Create(options)
 	
 	-- Toggle Handler
 	function Gui:Toggled(bool)
+		if not Library.Loaded then
+			return
+		end
+		
 		Gui.TweeningToggle = true
 		if (bool == nil) then
 			if Gui["2"].Visible then
@@ -2704,7 +2708,7 @@ function Library:Create(options)
 		Gui.TweeningToggle = false
 	end
 	
-	function Gui:TaskBarOnly(bool)
+	function Gui:TaskBarOnly(bool)		
 		if bool then
 			Library:Tween(Gui["18"], {
 				Length = 0.3,
