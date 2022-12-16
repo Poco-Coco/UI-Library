@@ -85,7 +85,7 @@ local Section = Tab:Section({
 
 ## 🟣Creating a Label
 ```lua
-local Label = Section1:Label({
+local Label = Section:Label({
 	Name = "Label", -- String
 })
 ```
@@ -97,7 +97,7 @@ Label:SetName("New Label Name") -- String
 
 ## 🟣Creating a Button
 ```lua
-local Button = Section1:Button({
+local Button = Section:Button({
 	Name = "Button", -- String
 	Callback = function()
 		-- Function
@@ -156,7 +156,7 @@ Slider:SetValue(100) -- Integer
 
 ## 🟣Creating a Keybind
 ```lua
-local Keybind = Section2:Keybind({
+local Keybind = Section:Keybind({
 	Name = "Keybind",
 	Default = Enum.KeyCode.Return,
 	Callback = function()
@@ -175,7 +175,7 @@ Keybind:SetName("New keybind Name") -- String
 
 ## 🟣Creating a Small Textbox
 ```lua
-local SmallTextbox = Section2:SmallTextbox({
+local SmallTextbox = Section:SmallTextbox({
 	Name = "Small Textbox", -- String
 	Default = "Default Text", -- String
 	Callback = function(Text)
@@ -196,7 +196,7 @@ SmallTextbox:SetText("Another text") -- String
 
 ## 🟣Creating a Dropdown
 ```lua
-local Dropdown = Section2:Dropdown({
+local Dropdown = Section:Dropdown({
 	Name = "Dropdown", -- String
 	Items = {1, 2, 3, 4, "Item"}, -- Table
 	Callback = function(item)
