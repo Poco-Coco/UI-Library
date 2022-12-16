@@ -2398,7 +2398,7 @@ function Library:Create(options)
 			
 			function Section:Label(options)
 				options = Library:Place_Defaults({
-					Name = "Button",
+					Name = "Label",
 				}, options or {})
 
 				local Label = {}
@@ -2426,9 +2426,10 @@ function Library:Create(options)
 					Label["7b"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Label["7b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Label["7b"]["TextSize"] = 13
+					Label["7b"]["Text"] = options.Name
 					Label["7b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
 					Label["7b"]["Size"] = UDim2.new(0, 301, 0, 33)
-					Label["7b"]["Name"] = options.Name
+					Label["7b"]["Name"] = "Label"
 					Label["7b"]["Font"] = Enum.Font.GothamMedium
 					Label["7b"]["BackgroundTransparency"] = 1
 					Label["7b"]["Position"] = UDim2.new(0, 21, 0, 0)
