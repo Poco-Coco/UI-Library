@@ -2396,6 +2396,64 @@ function Library:Create(options)
 				return Dropdown
 			end
 			
+			function Section:Label(options)
+				options = Library:Place_Defaults({
+					Name = "Button",
+				}, options or {})
+
+				local Label = {}
+
+				do
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label
+					Label["78"] = Instance.new("Frame", Section["21"])
+					Label["78"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Label["78"]["Size"] = UDim2.new(0, 423, 0, 34)
+					Label["78"]["Position"] = UDim2.new(0, 17, 0, 22)
+					Label["78"]["Name"] = [[Label]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.UICorner
+					Label["79"] = Instance.new("UICorner", Label["78"])
+					Label["79"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.UIGradient
+					Label["7a"] = Instance.new("UIGradient", Label["78"])
+					Label["7a"]["Rotation"] = 270
+					Label["7a"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(28, 28, 28)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(32, 32, 32))}
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.Label
+					Label["7b"] = Instance.new("TextLabel", Label["78"])
+					Label["7b"]["BorderSizePixel"] = 0
+					Label["7b"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					Label["7b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Label["7b"]["TextSize"] = 13
+					Label["7b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Label["7b"]["Size"] = UDim2.new(0, 301, 0, 33)
+					Label["7b"]["Name"] = options.Name
+					Label["7b"]["Font"] = Enum.Font.GothamMedium
+					Label["7b"]["BackgroundTransparency"] = 1
+					Label["7b"]["Position"] = UDim2.new(0, 21, 0, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.UIStroke
+					Label["7c"] = Instance.new("UIStroke", Label["78"])
+					Label["7c"]["Color"] = Color3.fromRGB(43, 43, 43)
+				end
+
+				-- Methods
+				do
+					function Label:SetName(name)
+						Label["7b"]["Text"] = name
+					end
+				end
+
+				task.spawn(function()
+					Library:ResizeSection(Section["1e"])
+					task.wait(1)
+					Library:ResizeCanvas(Tab["1d"])
+				end)
+
+				return Label
+			end
+			
 			--[[
 			function Section:Template(options)
 				options = Library:Place_Defaults({
