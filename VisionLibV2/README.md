@@ -83,6 +83,18 @@ local Section = Tab:Section({
 })
 ```
 
+## 🟣Creating a Label
+```lua
+local Label = Section1:Label({
+	Name = "Label", -- String
+})
+```
+
+### Updating label name
+```lua
+Label:SetName("New Label Name") -- String
+```
+
 ## 🟣Creating a Button
 ```lua
 local Button = Section1:Button({
