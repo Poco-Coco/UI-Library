@@ -2426,19 +2426,17 @@ function Library:Create(options)
 					Label["7b"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Label["7b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Label["7b"]["TextSize"] = 13
-					Label["7b"]["Text"] = options.Name
 					Label["7b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
 					Label["7b"]["Name"] = "Label"
+					Label["7b"]["Text"] = options.Name
 					Label["7b"]["Font"] = Enum.Font.GothamMedium
 					Label["7b"]["BackgroundTransparency"] = 1
 					Label["7b"]["Position"] = UDim2.new(0, 21, 0, 0)
+					Label["7b"]["TextWrapped"] = true
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.UIStroke
 					Label["7c"] = Instance.new("UIStroke", Label["78"])
 					Label["7c"]["Color"] = Color3.fromRGB(43, 43, 43)
-					
-					Label["78"]["Size"] = UDim2.new(0, 423, 0, Label["7b"].TextBounds.Y + 21)
-					Label["7b"]["Size"] = Label["78"]["Size"]
 				end
 
 				-- Methods
@@ -2446,12 +2444,25 @@ function Library:Create(options)
 					function Label:SetName(name)
 						Label["7b"]["Text"] = name
 						
-						Label["78"]["Size"] = UDim2.new(0, 423, 0, Label["7b"].TextBounds.Y + 21)
-						Label["7b"]["Size"] = Label["78"]["Size"]
+						local Val
+						repeat
+							Val = Label["7b"].TextBounds.Y
+
+							Label["78"]["Size"] = UDim2.new(0, 423, 0, Label["7b"].TextBounds.Y + 21)
+							Label["7b"]["Size"] = UDim2.new(0, 398, 0, Label["7b"].TextBounds.Y + 21)
+						until Val == Label["7b"].TextBounds.Y
 					end
 				end
 
 				task.spawn(function()
+					local Val
+					repeat
+						Val = Label["7b"].TextBounds.Y
+						
+						Label["78"]["Size"] = UDim2.new(0, 423, 0, Label["7b"].TextBounds.Y + 21)
+						Label["7b"]["Size"] = UDim2.new(0, 398, 0, Label["7b"].TextBounds.Y + 21)
+					until Val == Label["7b"].TextBounds.Y
+					
 					Library:ResizeSection(Section["1e"])
 					task.wait(1)
 					Library:ResizeCanvas(Tab["1d"])
