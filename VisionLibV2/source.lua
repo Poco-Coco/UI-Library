@@ -1995,7 +1995,7 @@ function Library:Create(options)
 					Dropdown["48"]["TextSize"] = 13
 					Dropdown["48"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
 					Dropdown["48"]["Size"] = UDim2.new(0, 301, 0, 33)
-					Dropdown["48"]["Text"] = [[Dropdown]]
+					Dropdown["48"]["Text"] = options.Name
 					Dropdown["48"]["Name"] = [[Label]]
 					Dropdown["48"]["Font"] = Enum.Font.GothamMedium
 					Dropdown["48"]["BackgroundTransparency"] = 1
@@ -2428,7 +2428,6 @@ function Library:Create(options)
 					Label["7b"]["TextSize"] = 13
 					Label["7b"]["Text"] = options.Name
 					Label["7b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
-					Label["7b"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Label["7b"]["Name"] = "Label"
 					Label["7b"]["Font"] = Enum.Font.GothamMedium
 					Label["7b"]["BackgroundTransparency"] = 1
@@ -2437,12 +2436,18 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.UIStroke
 					Label["7c"] = Instance.new("UIStroke", Label["78"])
 					Label["7c"]["Color"] = Color3.fromRGB(43, 43, 43)
+					
+					Label["78"]["Size"] = UDim2.new(0, 423, 0, Label["7b"].TextBounds.Y + 21)
+					Label["7b"]["Size"] = Label["78"]["Size"]
 				end
 
 				-- Methods
 				do
 					function Label:SetName(name)
 						Label["7b"]["Text"] = name
+						
+						Label["78"]["Size"] = UDim2.new(0, 423, 0, Label["7b"].TextBounds.Y + 21)
+						Label["7b"]["Size"] = Label["78"]["Size"]
 					end
 				end
 
