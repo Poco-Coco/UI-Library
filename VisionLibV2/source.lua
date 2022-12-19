@@ -852,6 +852,11 @@ function Library:Create(options)
 							Length = 0.7,
 							Goal = {Transparency = 1}
 						})
+
+						task.spawn(function()
+							task.wait(2)
+							KeySystem["a0"]:Destroy()
+						end)
 					end
 					
 					if Gui.DiscordLink ~= nil then
