@@ -652,7 +652,7 @@ function Library:Create(options)
 
 						Library:Tween(StartAnimation["92"], {
 							Length = 1,
-							Goal = {Size = UDim2.new(0, 310, 0, Colorpicker)}
+							Goal = {Size = UDim2.new(0, 310, 0, 154)}
 						})
 						
 
