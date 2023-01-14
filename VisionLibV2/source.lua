@@ -135,6 +135,42 @@ do
 	LibFrame["83"]["PaddingBottom"] = UDim.new(0, 40)
 end
 
+function Library:ToolTip(Text)
+	local ToolTip = {}
+
+	do
+		-- StarterGui.ScreenGui.ToolTip
+		ToolTip["2"] = Instance.new("TextLabel", LibFrame["1"])
+		ToolTip["2"]["BorderSizePixel"] = 0
+		ToolTip["2"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+		ToolTip["2"]["TextSize"] = 12
+		ToolTip["2"]["Text"] = Text
+		ToolTip["2"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		ToolTip["2"]["Size"] = UDim2.new(0, 68, 0, 18)
+		ToolTip["2"]["Name"] = [[ToolTip]]
+		ToolTip["2"]["Font"] = Enum.Font.Gotham
+		ToolTip["2"]["BackgroundTransparency"] = 0.5
+		ToolTip["2"]["Position"] = UDim2.new(0, Mouse.X, 0, Mouse.Y)
+	end
+	
+	local Bound = TextService:GetTextSize(ToolTip["2"].Text, ToolTip["2"].TextSize, ToolTip["2"].Font, Vector2.new(ToolTip["2"].AbsoluteSize.X,ToolTip["2"].AbsoluteSize.Y))
+	ToolTip["2"].Size = UDim2.new(0, (Bound.X + 28), 0, 18)
+	
+	local RSSync = RunService.Heartbeat:Connect(function()
+		ToolTip["2"].Position = UDim2.new(0, Mouse.X, 0, Mouse.Y)
+		
+	end)
+
+	do
+		function ToolTip:Destroy()
+			RSSync:Disconnect()
+			ToolTip["2"]:Destroy()
+		end
+	end
+
+	return ToolTip
+end
+
 function Library:Create(options)
 	options = Library:Place_Defaults({
 		Name = "Vision UI Lib v2",
@@ -3075,7 +3111,10 @@ function Library:Create(options)
 		
 		-- Handler
 		do	
+			local ToolTip
+			
 			Tab["8"].MouseEnter:Connect(function()
+				ToolTip = Library:ToolTip(options.Name)
 				Tab.Hover = true
 				
 				if not Tab.Active then
@@ -3087,6 +3126,7 @@ function Library:Create(options)
 			end)
 			
 			Tab["8"].MouseLeave:Connect(function()
+				ToolTip:Destroy()
 				Tab.Hover = false
 				
 				if not Tab.Active then
