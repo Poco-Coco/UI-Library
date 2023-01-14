@@ -66,7 +66,7 @@ end
 
 function Library:ResizeSection(Section)
 	local SectionContainer = Section:WaitForChild("SectionContainer")
-	
+
 	local NumChild = 0
 	local ChildOffset = 0
 
@@ -86,7 +86,7 @@ function Library:ResizeSection(Section)
 		Length = 0.5,
 		Goal = {Size = UDim2.new(0, 458, 0, ContainerSize)}
 	})
-	
+
 	Library:Tween(Section, {
 		Length = 0.5,
 		Goal = {Size = UDim2.new(0, 458, 0, SectionSize)}
@@ -353,6 +353,85 @@ function Library:Create(options)
 		Gui["1c"]["BackgroundTransparency"] = 1
 		Gui["1c"]["Position"] = UDim2.new(0, 14, 0, 5)
 	end
+	
+	function Library:ResizeTabCanvas()
+		local NumChild = 0
+		local ChildOffset = 0
+
+		for i, v in pairs(Gui["6"]:GetChildren()) do
+			if v:IsA("Frame") then
+				NumChild += 1
+				ChildOffset = ChildOffset + v.Size.X.Offset
+			end
+		end
+
+		local NumChildOffset = NumChild * 7
+
+		local CanvasSizeX = NumChildOffset + ChildOffset + 7
+
+		Library:Tween(Gui["6"], {
+			Length = 0.5,
+			Goal = {CanvasSize = UDim2.new(0, CanvasSizeX, 0, 0)}
+		})
+		
+		task.spawn(function()
+			task.wait(1)
+
+			local MaxPos = Gui["6"].CanvasSize.X.Offset - Gui["6"].Size.X.Offset
+
+			if Gui["6"].CanvasPosition.X > 0 then
+				Library:Tween(Gui["15"], {
+					Length = 0.1,
+					Goal = {TextColor3 = Color3.fromRGB(255, 255, 255)}
+				})
+			else
+				Library:Tween(Gui["15"], {
+					Length = 0.1,
+					Goal = {TextColor3 = Color3.fromRGB(96, 96, 96)}
+				})
+			end
+
+			if Gui["6"].CanvasPosition.X < MaxPos then
+				Library:Tween(Gui["16"], {
+					Length = 0.1,
+					Goal = {TextColor3 = Color3.fromRGB(255, 255, 255)}
+				})
+			else
+				Library:Tween(Gui["16"], {
+					Length = 0.1,
+					Goal = {TextColor3 = Color3.fromRGB(96, 96, 96)}
+				})
+			end
+		end)
+	end
+	
+	Gui["6"]:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
+		local MaxPos = Gui["6"].CanvasSize.X.Offset - Gui["6"].Size.X.Offset
+
+		if Gui["6"].CanvasPosition.X > 0 then
+			Library:Tween(Gui["15"], {
+				Length = 0.1,
+				Goal = {TextColor3 = Color3.fromRGB(255, 255, 255)}
+			})
+		else
+			Library:Tween(Gui["15"], {
+				Length = 0.1,
+				Goal = {TextColor3 = Color3.fromRGB(96, 96, 96)}
+			})
+		end
+
+		if Gui["6"].CanvasPosition.X < MaxPos then
+			Library:Tween(Gui["16"], {
+				Length = 0.1,
+				Goal = {TextColor3 = Color3.fromRGB(255, 255, 255)}
+			})
+		else
+			Library:Tween(Gui["16"], {
+				Length = 0.1,
+				Goal = {TextColor3 = Color3.fromRGB(96, 96, 96)}
+			})
+		end
+	end)
 	
 	do
 		
@@ -1144,6 +1223,10 @@ function Library:Create(options)
 				Section["7b"]["Color"] = Color3.fromRGB(43, 43, 43)
 			end
 			
+			Section["1e"]:GetPropertyChangedSignal("Size"):Connect(function()
+				Library:ResizeCanvas(Tab["1d"])
+			end)
+			
 			function Section:Button(options)
 				options = Library:Place_Defaults({
 					Name = "Button",
@@ -1266,9 +1349,12 @@ function Library:Create(options)
 					end
 				end
 				
+				Button["74"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
+				
 				task.spawn(function()
 					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
 					Library:ResizeCanvas(Tab["1d"])
 				end)
 				
@@ -1358,7 +1444,11 @@ function Library:Create(options)
 					Toggle["2e"] = Instance.new("UIStroke", Toggle["24"])
 					Toggle["2e"]["Color"] = Color3.fromRGB(43, 43, 43)
 				end
-
+				
+				Toggle["24"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
+				
 				-- Handler
 				do
 					Toggle["24"].MouseEnter:Connect(function()
@@ -1464,7 +1554,6 @@ function Library:Create(options)
 				
 				task.spawn(function()
 					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
 					Library:ResizeCanvas(Tab["1d"])
 				end)
 
@@ -1568,6 +1657,10 @@ function Library:Create(options)
 					Slider["3g"]["Font"] = Enum.Font.Gotham
 					Slider["3g"]["BorderSizePixel"] = 0
 				end
+				
+				Slider["36"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
 
 				-- Handler
 				do
@@ -1674,11 +1767,9 @@ function Library:Create(options)
 						Slider["39"]["Text"] = name
 					end
 				end
-
+				
 				task.spawn(function()
-					Slider:SetValue(options.Default)
 					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
 					Library:ResizeCanvas(Tab["1d"])
 				end)
 
@@ -1767,6 +1858,10 @@ function Library:Create(options)
 
 					Keybind["60"]["Text"] = keybindText
 				end
+				
+				Keybind["59"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
 
 				-- Methods
 				do
@@ -1817,13 +1912,12 @@ function Library:Create(options)
 						Keybind["5c"]["Text"] = name
 					end
 				end
-
+				
 				task.spawn(function()
 					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
 					Library:ResizeCanvas(Tab["1d"])
 				end)
-				
+
 				return Keybind
 			end
 			
@@ -1908,7 +2002,11 @@ function Library:Create(options)
 					Textbox["37"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
 					Textbox["37"]["SortOrder"] = Enum.SortOrder.LayoutOrder
 				end
-
+				
+				Textbox["2e"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
+				
 				-- Handler
 				do			
 					Textbox["2e"].MouseEnter:Connect(function()
@@ -1985,10 +2083,9 @@ function Library:Create(options)
 						})
 					end
 				end
-
+				
 				task.spawn(function()
 					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
 					Library:ResizeCanvas(Tab["1d"])
 				end)
 
@@ -2100,6 +2197,10 @@ function Library:Create(options)
 					Dropdown["5c"] = Instance.new("UICorner", Dropdown["5b"])
 					Dropdown["5c"]["CornerRadius"] = UDim.new(0, 4)
 				end
+				
+				Dropdown["46"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
 
 				-- Handler
 				do					
@@ -2150,23 +2251,28 @@ function Library:Create(options)
 									})
 									
 									task.wait(0.7)
-
-									task.spawn(function()
-										Library:ResizeSection(Section["1e"])
-										task.wait(0.8)
-										Library:ResizeCanvas(Tab["1d"])
-									end)
 								else
 									Dropdown.ContainerOpened = true
 									
-									Dropdown:ResizeOpenedFrame()
+									do
+										local NumChild = 0
+
+										for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+											if v:IsA("Frame") then
+												NumChild += 1
+											end
+										end
+
+										local FrameYOffset = 27 * NumChild + 4 * NumChild + 38
+
+										Library:Tween(Dropdown["46"], {
+											Length = 0.5,
+											Goal = {Size = UDim2.fromOffset(423, FrameYOffset)}
+										})
+									end
 								end
 
 								task.wait(0.7)
-
-								task.spawn(function()
-									Library:ResizeCanvas(Tab["1d"])
-								end)
 							end
 						end
 					end)
@@ -2281,18 +2387,6 @@ function Library:Create(options)
 								Goal = {Size = UDim2.new(0, (Bound.X + 14), 0, 21)}
 							})
 						end
-						
-						if Dropdown.ContainerOpened then
-							Dropdown:ResizeOpenedFrame()
-						end
-
-						task.wait(0.6)
-
-						task.spawn(function()
-							Library:ResizeSection(Section["1e"])
-							task.wait(0.8)
-							Library:ResizeCanvas(Tab["1d"])
-						end)
 					end
 					
 					function Dropdown:Clear()
@@ -2303,18 +2397,6 @@ function Library:Create(options)
 						end
 						
 						local FrameYOffset = 34 + 4
-
-						if Dropdown.ContainerOpened then
-							Dropdown:ResizeOpenedFrame()
-						end
-						
-						task.wait(0.6)
-						
-						task.spawn(function()
-							Library:ResizeSection(Section["1e"])
-							task.wait(0.8)
-							Library:ResizeCanvas(Tab["1d"])
-						end)
 					end
 					
 					function Dropdown:UpdateList(options)
@@ -2334,84 +2416,6 @@ function Library:Create(options)
 						for i, v in pairs(options.Items) do
 							Dropdown:AddItem(v)
 						end
-						
-						if Dropdown.ContainerOpened then
-							Dropdown:ResizeOpenedFrame()
-						end
-
-						task.wait(0.6)
-
-						task.spawn(function()
-							Library:ResizeSection(Section["1e"])
-							task.wait(0.8)
-							Library:ResizeCanvas(Tab["1d"])
-						end)
-					end
-					
-					function Dropdown:ResizeOpenedFrame()
-						local FrameYOffset
-
-						do
-							local NumChild = 0
-
-							for i, v in pairs(Dropdown["4b"]:GetChildren()) do
-								if v:IsA("Frame") then
-									NumChild += 1
-								end
-							end
-
-							FrameYOffset = 27 * NumChild + 4 * NumChild + 4
-						end
-						
-						local SectionContainer = Section["21"]
-
-						local NumChild = 0
-						local ChildOffset = 0
-
-						for i, v in pairs(SectionContainer:GetChildren()) do
-							if v:IsA("Frame") then
-								NumChild += 1
-								ChildOffset = ChildOffset + v.Size.Y.Offset
-							end
-						end
-
-						local NumChildOffset = NumChild * 5
-
-						if Dropdown.ContainerOpened then
-							NumChildOffset += FrameYOffset
-						else
-							NumChildOffset -= FrameYOffset
-						end
-
-						local ContainerSize = NumChildOffset + ChildOffset + 10
-						local SectionSize = ContainerSize + 26
-
-						Library:Tween(SectionContainer, {
-							Length = 0.5,
-							Goal = {Size = UDim2.new(0, 458, 0, ContainerSize)}
-						})
-
-						Library:Tween(Section["1e"], {
-							Length = 0.5,
-							Goal = {Size = UDim2.new(0, 458, 0, SectionSize)}
-						})
-						
-						do
-							local NumChild = 0
-
-							for i, v in pairs(Dropdown["4b"]:GetChildren()) do
-								if v:IsA("Frame") then
-									NumChild += 1
-								end
-							end
-
-							local FrameYOffset = 27 * NumChild + 4 * NumChild + 38
-
-							Library:Tween(Dropdown["46"], {
-								Length = 0.5,
-								Goal = {Size = UDim2.fromOffset(423, FrameYOffset)}
-							})
-						end
 					end
 				end
 				
@@ -2422,10 +2426,9 @@ function Library:Create(options)
 						end
 					end)
 				end
-
+				
 				task.spawn(function()
 					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
 					Library:ResizeCanvas(Tab["1d"])
 				end)
 
@@ -2474,6 +2477,10 @@ function Library:Create(options)
 					Label["7c"] = Instance.new("UIStroke", Label["78"])
 					Label["7c"]["Color"] = Color3.fromRGB(43, 43, 43)
 				end
+				
+				Label["78"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
 
 				-- Methods
 				do
@@ -2498,9 +2505,10 @@ function Library:Create(options)
 						Label["78"]["Size"] = UDim2.new(0, 423, 0, Label["7b"].TextBounds.Y + 21)
 						Label["7b"]["Size"] = UDim2.new(0, 398, 0, Label["7b"].TextBounds.Y + 21)
 					until Val == Label["7b"].TextBounds.Y
-					
+				end)
+				
+				task.spawn(function()
 					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
 					Library:ResizeCanvas(Tab["1d"])
 				end)
 
@@ -2810,6 +2818,10 @@ function Library:Create(options)
 					Colorpicker["9d"]["BackgroundTransparency"] = 1
 				end
 				
+				Colorpicker["7d"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
+				
 				-- Methods
 				do
 					function Colorpicker:UpdateColorPicker()
@@ -2904,13 +2916,6 @@ function Library:Create(options)
 								Goal = {Size = UDim2.fromOffset(423, 35)}
 							})
 						end
-						
-						task.spawn(function()
-							task.wait(0.8)
-							Library:ResizeSection(Section["1e"])
-							task.wait(0.8)
-							Library:ResizeCanvas(Tab["1d"])
-						end)
 					end)
 					
 					local SelectingColor
@@ -3056,14 +3061,13 @@ function Library:Create(options)
 						end
 					end)
 				end
-
-				task.spawn(function()
-					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
-					Library:ResizeCanvas(Tab["1d"])
-				end)
 				
 				Colorpicker:SetColor(options.DefaultColor)
+				
+				task.spawn(function()
+					Library:ResizeSection(Section["1e"])
+					Library:ResizeCanvas(Tab["1d"])
+				end)
 				return Colorpicker
 			end
 			
@@ -3090,21 +3094,9 @@ function Library:Create(options)
 					
 				end
 
-				task.spawn(function()
-					Library:ResizeSection(Section["1e"])
-					task.wait(0.8)
-					Library:ResizeCanvas(Tab["1d"])
-				end)
-
 				return Template
 			end
 			]]--
-			
-			task.spawn(function()
-				Library:ResizeSection(Section["1e"])
-				task.wait(0.8)
-				Library:ResizeCanvas(Tab["1d"])
-			end)
 			
 			return Section
 		end
@@ -3277,6 +3269,8 @@ function Library:Create(options)
 				Tab:Activate()
 			end
 		end
+		
+		Library:ResizeTabCanvas()
 		
 		return Tab
 	end
