@@ -2092,6 +2092,228 @@ function Library:Create(options)
 				return Textbox
 			end
 			
+			function Section:BigTextbox(options)
+				options = Library:Place_Defaults({
+					Name = "Big Textbox",
+					Default = "",
+					PlaceHolderText = "Placeholder | Text",
+					ResetOnFocus = false,
+					Callback = function() return end
+				}, options or {})
+
+				local BigTextbox = {
+					Hover = false
+				}
+
+				do
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2
+					BigTextbox["66"] = Instance.new("Frame", Section["21"])
+					BigTextbox["66"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					BigTextbox["66"]["Size"] = UDim2.new(0, 423, 0, 69)
+					BigTextbox["66"]["Position"] = UDim2.new(0, 0, 0, 262)
+					BigTextbox["66"]["Name"] = [[Textbox2]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.UICorner
+					BigTextbox["67"] = Instance.new("UICorner", BigTextbox["66"])
+					BigTextbox["67"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.UIGradient
+					BigTextbox["68"] = Instance.new("UIGradient", BigTextbox["66"])
+					BigTextbox["68"]["Rotation"] = 270
+					BigTextbox["68"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45))}
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Label
+					BigTextbox["69"] = Instance.new("TextLabel", BigTextbox["66"])
+					BigTextbox["69"]["BorderSizePixel"] = 0
+					BigTextbox["69"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					BigTextbox["69"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					BigTextbox["69"]["TextSize"] = 13
+					BigTextbox["69"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					BigTextbox["69"]["Size"] = UDim2.new(0, 301, 0, 33)
+					BigTextbox["69"]["Text"] = options.Name
+					BigTextbox["69"]["Name"] = [[Label]]
+					BigTextbox["69"]["Font"] = Enum.Font.GothamMedium
+					BigTextbox["69"]["BackgroundTransparency"] = 1
+					BigTextbox["69"]["Position"] = UDim2.new(0, 21, 0, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.UIStroke
+					BigTextbox["6a"] = Instance.new("UIStroke", BigTextbox["66"])
+					BigTextbox["6a"]["Color"] = Color3.fromRGB(43, 43, 43)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1
+					BigTextbox["6b"] = Instance.new("Frame", BigTextbox["66"])
+					BigTextbox["6b"]["BackgroundColor3"] = Color3.fromRGB(149, 149, 149)
+					BigTextbox["6b"]["Size"] = UDim2.new(0, 407, 0, 27)
+					BigTextbox["6b"]["Position"] = UDim2.new(0, 8, 0, 32)
+					BigTextbox["6b"]["Name"] = [[Option 1]]
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.UICorner
+					BigTextbox["6c"] = Instance.new("UICorner", BigTextbox["6b"])
+					BigTextbox["6c"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.UIStroke
+					BigTextbox["6d"] = Instance.new("UIStroke", BigTextbox["6b"])
+					BigTextbox["6d"]["Color"] = Color3.fromRGB(43, 43, 43)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.UIGradient
+					BigTextbox["6e"] = Instance.new("UIGradient", BigTextbox["6b"])
+					BigTextbox["6e"]["Rotation"] = 270
+					BigTextbox["6e"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(86, 86, 86)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(89, 89, 89))}
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.TextBox
+					BigTextbox["6f"] = Instance.new("TextBox", BigTextbox["6b"])
+					BigTextbox["6f"]["PlaceholderColor3"] = Color3.fromRGB(127, 127, 127)
+					BigTextbox["6f"]["RichText"] = true
+					BigTextbox["6f"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					BigTextbox["6f"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					BigTextbox["6f"]["TextSize"] = 11
+					BigTextbox["6f"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					BigTextbox["6f"]["PlaceholderText"] = options.PlaceHolderText
+					BigTextbox["6f"]["Size"] = UDim2.new(0, 389, 0, 21)
+					BigTextbox["6f"]["Text"] = [[]]
+					BigTextbox["6f"]["Position"] = UDim2.new(0, 13, 0, 2)
+					BigTextbox["6f"]["Font"] = Enum.Font.Gotham
+					BigTextbox["6f"]["BackgroundTransparency"] = 1
+					BigTextbox["6f"]["AutomaticSize"] = Enum.AutomaticSize.Y
+					BigTextbox["6f"]["TextWrapped"] = true
+					BigTextbox["6f"]["ClearTextOnFocus"] = false
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.TextBox.UICorner
+					BigTextbox["70"] = Instance.new("UICorner", BigTextbox["6f"])
+					BigTextbox["70"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Open
+					BigTextbox["71"] = Instance.new("ImageButton", BigTextbox["66"])
+					BigTextbox["71"]["ScaleType"] = Enum.ScaleType.Crop
+					BigTextbox["71"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					BigTextbox["71"]["Image"] = [[rbxassetid://11401860490]]
+					BigTextbox["71"]["Size"] = UDim2.new(0, 23, 0, 18)
+					BigTextbox["71"]["Name"] = [[Open]]
+					BigTextbox["71"]["Position"] = UDim2.new(0, 390, 0, 7)
+					BigTextbox["71"]["BackgroundTransparency"] = 1
+				end
+
+				BigTextbox["66"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:ResizeSection(Section["1e"])
+				end)	
+				
+				BigTextbox["6b"]:GetPropertyChangedSignal("Size"):Connect(function()
+					Library:Tween(BigTextbox["66"], {
+						Length = 0.2,
+						Goal = {Size = UDim2.new(0, 423, 0, (BigTextbox["6b"].Size.Y.Offset + 42))},
+					})
+				end)	
+
+				-- Handler
+				do			
+					BigTextbox["66"].MouseEnter:Connect(function()
+						Library:Tween(BigTextbox["6a"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(65, 65, 65)}
+						})
+					end)
+
+					BigTextbox["66"].MouseLeave:Connect(function()
+						Library:Tween(BigTextbox["6a"], {
+							Length = 0.5,
+							Goal = {Color = Color3.fromRGB(43, 43, 43)}
+						})
+					end)
+
+
+					BigTextbox["6f"].Focused:Connect(function()		
+						if options.ResetOnFocus then
+							BigTextbox["6f"].Text = ""
+						end
+
+						Library.Sliding = true
+					end)
+
+					BigTextbox["6f"].FocusLost:Connect(function()						
+						Library.Sliding = false
+
+						task.spawn(function()
+							options.Callback(BigTextbox["6f"].Text)
+						end)
+						
+						local Val
+						repeat
+							Val = BigTextbox["6f"].TextBounds.Y
+							print(BigTextbox["6f"].TextBounds.Y)
+
+							local Finished = false
+
+							Library:Tween(BigTextbox["6f"], {
+								Length = 0.2,
+								Goal = {Size = UDim2.new(0, 389, 0, (BigTextbox["6f"].TextBounds.Y + 10))}
+							})
+
+							Library:Tween(BigTextbox["6b"], {
+								Length = 0.2,
+								Goal = {Size = UDim2.new(0, 407, 0, (BigTextbox["6f"].TextBounds.Y + 16))},
+								Callback = function()
+									Finished = true
+								end,
+							})
+							repeat task.wait() until Finished
+
+						until Val == BigTextbox["6f"].TextBounds.Y
+						
+						print("Waited")
+						Library:Tween(BigTextbox["66"], {
+							Length = 0.2,
+							Goal = {Size = UDim2.new(0, 423, 0, (BigTextbox["6b"].Size.Y.Offset + 42))},
+						})
+						print("Finished")
+					end)
+
+					BigTextbox["6f"]:GetPropertyChangedSignal("Text"):Connect(function()
+						local Val
+						repeat
+							Val = BigTextbox["6f"].TextBounds.Y
+							print(BigTextbox["6f"].TextBounds.Y)
+							
+							local Finished = false
+							
+							Library:Tween(BigTextbox["6f"], {
+								Length = 0.2,
+								Goal = {Size = UDim2.new(0, 389, 0, (BigTextbox["6f"].TextBounds.Y + 10))}
+							})
+
+							Library:Tween(BigTextbox["6b"], {
+								Length = 0.2,
+								Goal = {Size = UDim2.new(0, 407, 0, (BigTextbox["6f"].TextBounds.Y + 16))},
+								Callback = function()
+									Finished = true
+								end,
+							})
+							repeat task.wait() until Finished
+							
+						until Val == BigTextbox["6f"].TextBounds.Y
+					end)
+				end
+
+				-- Methods
+				do
+					function BigTextbox:SetText(Text)
+						BigTextbox["6f"].Text = Text
+					end
+
+					function BigTextbox:SetName(Name)
+						BigTextbox["69"].Text = Name
+					end
+				end
+				
+				BigTextbox:SetText(options.Default)
+
+				task.spawn(function()
+					Library:ResizeSection(Section["1e"])
+					Library:ResizeCanvas(Tab["1d"])
+				end)
+
+				return BigTextbox
+			end
+			
 			function Section:Dropdown(options)
 				options = Library:Place_Defaults({
 					Name = "Dropdown",

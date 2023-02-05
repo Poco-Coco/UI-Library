@@ -194,6 +194,29 @@ SmallTextbox:SetName("New Textbox name") -- String
 SmallTextbox:SetText("Another text") -- String
 ```
 
+## 🟣Creating a Big Textbox
+```lua
+local SmallTextbox = Section:SmallTextbox({
+	Name = "Big Textbox", -- String
+	Default = "Default Text", -- String
+	PlaceHolderText = "Textbox | Placeholder Text", -- String
+	ResetOnFocus = true, -- Bool
+	Callback = function(Text)
+		-- Function
+	end
+})
+```
+
+### Updating big textbox name
+```lua
+SmallTextbox:SetName("New Textbox name") -- String
+```
+
+### Updating big textbox text
+```lua
+SmallTextbox:SetText("Another text") -- String
+```
+
 ## 🟣Creating a Dropdown
 ```lua
 local Dropdown = Section:Dropdown({
