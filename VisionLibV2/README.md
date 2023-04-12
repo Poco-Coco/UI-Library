@@ -1,28 +1,32 @@
 ![Vison Lib Title only](https://user-images.githubusercontent.com/112562956/198860495-6f486850-4919-4b28-9692-6b4125ae116c.png)
 
 # Vision UI Lib v2
+
 - Desigend by Sius and BruhOOFBoi
 - Scripted by Loco_CTO
 
-*Heavily inspired by [Rayfield UI Library](https://github.com/shlexware/Rayfield/blob/main/Documentation.md)*
+_Heavily inspired by [Rayfield UI Library](https://github.com/shlexware/Rayfield/blob/main/Documentation.md)_
 
 ## Preview
+
 ![image](https://user-images.githubusercontent.com/112562956/198860516-a5f74c21-d911-4bed-aabc-06e350faeae0.png)
 
 **:warning: The UI Library is still under development, not all functions in the preview are included.**
 
-
 ## 🔴Loading the library
+
 ```lua
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
 ```
 
 ### Destroy the library
+
 ```lua
 Library:Destroy()
 ```
 
 ## 🟡Creating a Notify
+
 ```lua
 Library:Notify({
 	Name = "Ring Ring", -- String
@@ -36,6 +40,7 @@ Library:Notify({
 ```
 
 ## 🟡Creating a Window
+
 ```lua
 local Window = Library:Create({
 	Name = "Vision UI Lib v2", -- String
@@ -44,7 +49,7 @@ local Window = Library:Create({
 	LoadedCallback = function()
 		-- Function
 	end,
-	
+
 	KeySystem = true, -- Boolean
 	Key = "keyabc123", -- String
 	MaxAttempts = 5, -- Integer
@@ -52,22 +57,27 @@ local Window = Library:Create({
 	ToggledRelativeYOffset = 5 -- Number (Y Offset from bottom of your screen. Set it to nil if you want it to be centred)
 })
 ```
+
 ### Updating toggle key
+
 ```lua
 Window:ChangeTogglekey(Enum.KeyCode.LeftAlt) -- Enum.KeyCode
 ```
 
 ### Toggle UI
+
 ```lua
 Window:Toggled(true) -- Boolean
 ```
 
 ### Updating toggle taskbar only
+
 ```lua
 Window:TaskBarOnly(true) -- Boolean
 ```
 
 ## 🔵Creating a Tab
+
 ```lua
 local Tab = Window:Tab({
 	Name = "Main", -- String
@@ -77,6 +87,7 @@ local Tab = Window:Tab({
 ```
 
 ## 🟢Creating a Section
+
 ```lua
 local Section = Tab:Section({
 	Name = "Section" -- String
@@ -84,6 +95,7 @@ local Section = Tab:Section({
 ```
 
 ## 🟣Creating a Label
+
 ```lua
 local Label = Section:Label({
 	Name = "Label", -- String
@@ -91,11 +103,13 @@ local Label = Section:Label({
 ```
 
 ### Updating label name
+
 ```lua
 Label:SetName("New Label Name") -- String
 ```
 
 ## 🟣Creating a Button
+
 ```lua
 local Button = Section:Button({
 	Name = "Button", -- String
@@ -106,32 +120,37 @@ local Button = Section:Button({
 ```
 
 ### Updating button name
+
 ```lua
 Button:SetName("New Button Name") -- String
 ```
 
 ## 🟣Creating a Toggle
+
 ```lua
 local Toggle = Section:Toggle({
 	Name = "Toggle", -- String
 	Default = true, -- Boolean
-	Callback = function(Bool) 
+	Callback = function(Bool)
 		-- Function
 	end
 })
 ```
 
 ### Updating toggle name
+
 ```lua
 Toggle:SetName("New Toggle Name") -- String
 ```
 
 ### Updating toggle value
+
 ```lua
 Toggle:Set(false) -- Boolean
 ```
 
 ## 🟣Creating a Slider
+
 ```lua
 local Slider = Section:Slider({
 	Name = "Slider", -- String
@@ -145,16 +164,19 @@ local Slider = Section:Slider({
 ```
 
 ### Updating slider name
+
 ```lua
 Slider:SetName("New Slider Name") -- String
 ```
 
 ### Updating slider value
+
 ```lua
 Slider:SetValue(100) -- Integer
 ```
 
 ## 🟣Creating a Keybind
+
 ```lua
 local Keybind = Section:Keybind({
 	Name = "Keybind",
@@ -169,11 +191,13 @@ local Keybind = Section:Keybind({
 ```
 
 ### Updating keybind name
+
 ```lua
 Keybind:SetName("New keybind Name") -- String
 ```
 
 ## 🟣Creating a Small Textbox
+
 ```lua
 local SmallTextbox = Section:SmallTextbox({
 	Name = "Small Textbox", -- String
@@ -185,16 +209,19 @@ local SmallTextbox = Section:SmallTextbox({
 ```
 
 ### Updating small textbox name
+
 ```lua
 SmallTextbox:SetName("New Textbox name") -- String
 ```
 
 ### Updating small textbox text
+
 ```lua
 SmallTextbox:SetText("Another text") -- String
 ```
 
 ## 🟣Creating a Big Textbox
+
 ```lua
 local SmallTextbox = Section:SmallTextbox({
 	Name = "Big Textbox", -- String
@@ -208,16 +235,19 @@ local SmallTextbox = Section:SmallTextbox({
 ```
 
 ### Updating big textbox name
+
 ```lua
 SmallTextbox:SetName("New Textbox name") -- String
 ```
 
 ### Updating big textbox text
+
 ```lua
 SmallTextbox:SetText("Another text") -- String
 ```
 
 ## 🟣Creating a Dropdown
+
 ```lua
 local Dropdown = Section:Dropdown({
 	Name = "Dropdown", -- String
@@ -229,6 +259,7 @@ local Dropdown = Section:Dropdown({
 ```
 
 ### Updating a Dropdown
+
 ```lua
 Dropdown:UpdateList({
 	Items = {"New item", 1, 2, 3}, -- Table
@@ -237,16 +268,19 @@ Dropdown:UpdateList({
 ```
 
 ### Adding an item to dropdown
+
 ```lua
 Dropdown:AddItem("Item") -- String, Integer, Instance
 ```
 
 ### Clear the dropdown
+
 ```lua
 Dropdown:Clear()
 ```
 
 ## 🟣Creating a Colour Picker
+
 ```lua
 local Colorpicker = Section:Colorpicker({
 	Name = "Colorpicker", -- String
@@ -258,11 +292,13 @@ local Colorpicker = Section:Colorpicker({
 ```
 
 ### Set the colour
+
 ```lua
 Colorpicker:SetColor(Colorpicker:SetColor(Color3.new(0, 0, 0))) -- Color 3
 ```
 
 ## ⚪Use this to test
+
 ```lua
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Loco-CTO/UI-Library/main/VisionLibV2/source.lua'))()
 
@@ -316,7 +352,7 @@ local Button = Section1:Button({
 local Toggle = Section1:Toggle({
 	Name = "Real Toggle",
 	Default = false,
-	Callback = function(Bool) 
+	Callback = function(Bool)
 		Library:Notify({
 			Name = "Toggle",
 			Text = tostring(Bool),
@@ -487,9 +523,9 @@ local Button = Section:Button({
 	Name = "Hide UI",
 	Callback = function()
 		Window:Toggled(false)
-		
+
 		task.wait(3)
-		
+
 		Window:Toggled(true)
 	end
 })
