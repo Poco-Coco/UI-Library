@@ -1,3 +1,5 @@
+print([[Vision UI Library v2 | Made by Raphs Software > https://raph.lococto.com]])
+
 -- Services
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -10,6 +12,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local Mouse = LocalPlayer:GetMouse()
 local ConnectionBin = {}
+local ControlsConnectionBin = {}
 
 -- Var
 local Library = {
@@ -17,7 +20,6 @@ local Library = {
 	MainFrameHover = false,
 	Sliding = false,
 	Loaded = false,
-	TimeLineEditorExists = false,
 }
 
 local TabIndex = 0
@@ -1313,6 +1315,7 @@ function Library:Create(options)
 
 				local Button = {
 					Hover = false,
+					Connections = {},
 				}
 
 				do
@@ -1366,7 +1369,7 @@ function Library:Create(options)
 				-- Handler
 				do
 					table.insert(
-						ConnectionBin,
+						Button.Connections,
 						Button["74"].MouseEnter:Connect(function()
 							Library:Tween(Button["78"], {
 								Length = 0.5,
@@ -1378,7 +1381,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Button.Connections,
 						Button["74"].MouseLeave:Connect(function()
 							Library:Tween(Button["78"], {
 								Length = 0.5,
@@ -1390,7 +1393,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Button.Connections,
 						UserInputService.InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 and Button.Hover then
 								Library:Tween(Button["78"], {
@@ -1434,13 +1437,42 @@ function Library:Create(options)
 
 				-- Methods
 				do
+					function Button:Destroy()
+						table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Button.Connections))
+
+						local TotalConnection = #Button.Connections
+						local Disconnected = 0
+						for i, v in next, Button.Connections do
+							pcall(function()
+								v:Disconnect()
+								Disconnected = Disconnected + 1
+							end)
+						end
+
+						Button["74"]:Destroy()
+						warn(
+							"Removed button, "
+								.. tostring(Disconnected)
+								.. " connections out of "
+								.. TotalConnection
+								.. " were disconnected."
+						)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+
+					table.insert(ControlsConnectionBin, Button.Connections)
+
 					function Button:SetName(name)
 						Button["77"]["Text"] = name
 					end
 				end
 
 				table.insert(
-					ConnectionBin,
+					Button.Connections,
 					Button["74"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -1466,6 +1498,7 @@ function Library:Create(options)
 				local Toggle = {
 					Hover = false,
 					Bool = options.Default,
+					Connections = {},
 				}
 
 				do
@@ -1547,7 +1580,7 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					Toggle.Connections,
 					Toggle["24"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -1556,7 +1589,7 @@ function Library:Create(options)
 				-- Handler
 				do
 					table.insert(
-						ConnectionBin,
+						Toggle.Connections,
 						Toggle["24"].MouseEnter:Connect(function()
 							Library:Tween(Toggle["2e"], {
 								Length = 0.5,
@@ -1568,7 +1601,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Toggle.Connections,
 						Toggle["24"].MouseLeave:Connect(function()
 							Library:Tween(Toggle["2e"], {
 								Length = 0.5,
@@ -1580,7 +1613,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Toggle.Connections,
 						UserInputService.InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 and Toggle.Hover then
 								Library:Tween(Toggle["2e"], {
@@ -1608,6 +1641,35 @@ function Library:Create(options)
 
 				-- Methods
 				do
+					function Toggle:Destroy()
+						table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Toggle.Connections))
+
+						local TotalConnection = #Toggle.Connections
+						local Disconnected = 0
+						for i, v in next, Toggle.Connections do
+							pcall(function()
+								v:Disconnect()
+								Disconnected = Disconnected + 1
+							end)
+						end
+
+						Toggle["24"]:Destroy()
+						warn(
+							"Removed toggle, "
+								.. tostring(Disconnected)
+								.. " connections out of "
+								.. TotalConnection
+								.. " were disconnected."
+						)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+
+					table.insert(ControlsConnectionBin, Toggle.Connections)
+
 					function Toggle:Toggle(toggle)
 						if toggle then
 							Toggle.Bool = true
@@ -1686,6 +1748,7 @@ function Library:Create(options)
 					Hover = false,
 					OldVal = options.Default,
 					TextboxHover = false,
+					Connections = {},
 				}
 
 				do
@@ -1781,7 +1844,7 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					Slider.Connections,
 					Slider["36"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -1792,7 +1855,7 @@ function Library:Create(options)
 					local MouseDown
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						Slider["36"].MouseEnter:Connect(function()
 							Slider.Hover = true
 
@@ -1804,7 +1867,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						Slider["36"].MouseLeave:Connect(function()
 							Slider.Hover = false
 
@@ -1816,21 +1879,21 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						Slider["3g"].MouseEnter:Connect(function()
 							Slider.TextboxHover = true
 						end)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						Slider["3g"].MouseLeave:Connect(function()
 							Slider.TextboxHover = false
 						end)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						Slider["3g"].Focused:Connect(function()
 							Slider["3g"]["Text"] = [[]]
 
@@ -1839,7 +1902,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						Slider["3g"].FocusLost:Connect(function()
 							local success = pcall(function()
 								local NumVal = tonumber(Slider["3g"].Text)
@@ -1860,7 +1923,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						UserInputService.InputBegan:Connect(function(key)
 							if
 								key.UserInputType == Enum.UserInputType.MouseButton1
@@ -1901,7 +1964,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Slider.Connections,
 						UserInputService.InputEnded:Connect(function(key)
 							if key.UserInputType == Enum.UserInputType.MouseButton1 then
 								MouseDown = false
@@ -1928,6 +1991,35 @@ function Library:Create(options)
 					function Slider:SetName(name)
 						Slider["39"]["Text"] = name
 					end
+
+					function Slider:Destroy()
+						table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Slider.Connections))
+
+						local TotalConnection = #Slider.Connections
+						local Disconnected = 0
+						for i, v in next, Slider.Connections do
+							pcall(function()
+								v:Disconnect()
+								Disconnected = Disconnected + 1
+							end)
+						end
+
+						Slider["36"]:Destroy()
+						warn(
+							"Removed slider, "
+								.. tostring(Disconnected)
+								.. " connections out of "
+								.. TotalConnection
+								.. " were disconnected."
+						)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+
+					table.insert(ControlsConnectionBin, Slider.Connections)
 				end
 
 				task.spawn(function()
@@ -1955,6 +2047,7 @@ function Library:Create(options)
 				local Keybind = {
 					Focused = false,
 					Keybind = options.Default,
+					Connections = {},
 				}
 
 				do
@@ -2034,7 +2127,7 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					Keybind.Connections,
 					Keybind["59"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -2043,7 +2136,7 @@ function Library:Create(options)
 				-- Methods
 				do
 					table.insert(
-						ConnectionBin,
+						Keybind.Connections,
 						Keybind["59"].MouseEnter:Connect(function()
 							Library:Tween(Keybind["5g"], {
 								Length = 0.5,
@@ -2053,7 +2146,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Keybind.Connections,
 						Keybind["59"].MouseLeave:Connect(function()
 							Library:Tween(Keybind["5g"], {
 								Length = 0.5,
@@ -2063,7 +2156,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Keybind.Connections,
 						Keybind["5d"].MouseButton1Click:Connect(function()
 							Keybind.Focused = true
 
@@ -2072,7 +2165,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Keybind.Connections,
 						UserInputService.InputBegan:Connect(function(input, GameProcess)
 							if input.UserInputType == Enum.UserInputType.Keyboard then
 								if input.KeyCode == Keybind.Keybind then
@@ -2095,8 +2188,40 @@ function Library:Create(options)
 						end)
 					)
 
-					function Keybind:SetName(name)
-						Keybind["5c"]["Text"] = name
+					-- Methods
+					do
+						function Keybind:SetName(name)
+							Keybind["5c"]["Text"] = name
+						end
+
+						function Keybind:Destroy()
+							table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Keybind.Connections))
+
+							local TotalConnection = #Keybind.Connections
+							local Disconnected = 0
+							for i, v in next, Keybind.Connections do
+								pcall(function()
+									v:Disconnect()
+									Disconnected = Disconnected + 1
+								end)
+							end
+
+							Keybind["59"]:Destroy()
+							warn(
+								"Removed keybind, "
+									.. tostring(Disconnected)
+									.. " connections out of "
+									.. TotalConnection
+									.. " were disconnected."
+							)
+
+							task.spawn(function()
+								Library:ResizeSection(Section["1e"])
+								Library:ResizeCanvas(Tab["1d"])
+							end)
+						end
+
+						table.insert(ControlsConnectionBin, Keybind.Connections)
 					end
 				end
 
@@ -2119,6 +2244,7 @@ function Library:Create(options)
 
 				local Textbox = {
 					Hover = false,
+					Connections = {},
 				}
 
 				do
@@ -2199,7 +2325,7 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					Textbox.Connections,
 					Textbox["2e"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -2208,7 +2334,7 @@ function Library:Create(options)
 				-- Handler
 				do
 					table.insert(
-						ConnectionBin,
+						Textbox.Connections,
 						Textbox["2e"].MouseEnter:Connect(function()
 							Library:Tween(Textbox["32"], {
 								Length = 0.5,
@@ -2218,7 +2344,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Textbox.Connections,
 						Textbox["2e"].MouseLeave:Connect(function()
 							Library:Tween(Textbox["32"], {
 								Length = 0.5,
@@ -2228,7 +2354,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Textbox.Connections,
 						Textbox["34"].Focused:Connect(function()
 							Textbox["34"].Text = ""
 
@@ -2237,7 +2363,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Textbox.Connections,
 						Textbox["34"].FocusLost:Connect(function()
 							Library.Sliding = false
 
@@ -2248,7 +2374,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Textbox.Connections,
 						Textbox["34"]:GetPropertyChangedSignal("Text"):Connect(function()
 							if Textbox["34"].Text == "" then
 								Library:Tween(Textbox["34"], {
@@ -2281,6 +2407,35 @@ function Library:Create(options)
 					function Textbox:SetName(Name)
 						Textbox["31"].Text = Name
 					end
+
+					function Textbox:Destroy()
+						table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Textbox.Connections))
+
+						local TotalConnection = #Textbox.Connections
+						local Disconnected = 0
+						for i, v in next, Textbox.Connections do
+							pcall(function()
+								v:Disconnect()
+								Disconnected = Disconnected + 1
+							end)
+						end
+
+						Textbox["2e"]:Destroy()
+						warn(
+							"Removed textbox, "
+								.. tostring(Disconnected)
+								.. " connections out of "
+								.. TotalConnection
+								.. " were disconnected."
+						)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+
+					table.insert(ControlsConnectionBin, Textbox.Connections)
 				end
 
 				Textbox:SetText(options.Default)
@@ -2327,6 +2482,7 @@ function Library:Create(options)
 
 				local BigTextbox = {
 					Hover = false,
+					Connections = {},
 				}
 
 				do
@@ -2424,14 +2580,14 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					BigTextbox.Connections,
 					BigTextbox["66"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
 				)
 
 				table.insert(
-					ConnectionBin,
+					BigTextbox.Connections,
 					BigTextbox["6b"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:Tween(BigTextbox["66"], {
 							Length = 0.2,
@@ -2443,7 +2599,7 @@ function Library:Create(options)
 				-- Handler
 				do
 					table.insert(
-						ConnectionBin,
+						BigTextbox.Connections,
 						BigTextbox["66"].MouseEnter:Connect(function()
 							Library:Tween(BigTextbox["6a"], {
 								Length = 0.5,
@@ -2453,7 +2609,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						BigTextbox.Connections,
 						BigTextbox["66"].MouseLeave:Connect(function()
 							Library:Tween(BigTextbox["6a"], {
 								Length = 0.5,
@@ -2463,7 +2619,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						BigTextbox.Connections,
 						BigTextbox["6f"].Focused:Connect(function()
 							if options.ResetOnFocus then
 								BigTextbox["6f"].Text = ""
@@ -2474,7 +2630,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						BigTextbox.Connections,
 						BigTextbox["6f"].FocusLost:Connect(function()
 							Library.Sliding = false
 
@@ -2506,7 +2662,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						BigTextbox.Connections,
 						BigTextbox["6f"]:GetPropertyChangedSignal("Text"):Connect(function()
 							local Val
 							repeat
@@ -2527,6 +2683,35 @@ function Library:Create(options)
 					function BigTextbox:SetName(Name)
 						BigTextbox["69"].Text = Name
 					end
+
+					function BigTextbox:Destroy()
+						table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, BigTextbox.Connections))
+
+						local TotalConnection = #BigTextbox.Connections
+						local Disconnected = 0
+						for i, v in next, BigTextbox.Connections do
+							pcall(function()
+								v:Disconnect()
+								Disconnected = Disconnected + 1
+							end)
+						end
+
+						BigTextbox["66"]:Destroy()
+						warn(
+							"Removed bigTextbox, "
+								.. tostring(Disconnected)
+								.. " connections out of "
+								.. TotalConnection
+								.. " were disconnected."
+						)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+
+					table.insert(ControlsConnectionBin, BigTextbox.Connections)
 				end
 
 				BigTextbox:SetText(options.Default)
@@ -2554,6 +2739,7 @@ function Library:Create(options)
 					ContainerOpened = false,
 					NameText = options.Name,
 					Hover = false,
+					Connections = {},
 				}
 
 				do
@@ -2651,7 +2837,7 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					Dropdown.Connections,
 					Dropdown["46"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -2660,7 +2846,7 @@ function Library:Create(options)
 				-- Handler
 				do
 					table.insert(
-						ConnectionBin,
+						Dropdown.Connections,
 						Dropdown["46"].MouseEnter:Connect(function()
 							Dropdown.Hover = true
 
@@ -2672,7 +2858,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Dropdown.Connections,
 						Dropdown["46"].MouseLeave:Connect(function()
 							Dropdown.Hover = false
 
@@ -2684,7 +2870,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Dropdown.Connections,
 						UserInputService.InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 and Dropdown.Hover then
 								Library:Tween(Dropdown["4a"], {
@@ -2912,6 +3098,35 @@ function Library:Create(options)
 					end)
 				end
 
+				function Dropdown:Destroy()
+					table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Dropdown.Connections))
+
+					local TotalConnection = #Dropdown.Connections
+					local Disconnected = 0
+					for i, v in next, Dropdown.Connections do
+						pcall(function()
+							v:Disconnect()
+							Disconnected = Disconnected + 1
+						end)
+					end
+
+					Dropdown["46"]:Destroy()
+					warn(
+						"Removed dropdown, "
+							.. tostring(Disconnected)
+							.. " connections out of "
+							.. TotalConnection
+							.. " were disconnected."
+					)
+
+					task.spawn(function()
+						Library:ResizeSection(Section["1e"])
+						Library:ResizeCanvas(Tab["1d"])
+					end)
+				end
+
+				table.insert(ControlsConnectionBin, Dropdown.Connections)
+
 				task.spawn(function()
 					Library:ResizeSection(Section["1e"])
 					Library:ResizeCanvas(Tab["1d"])
@@ -2925,7 +3140,9 @@ function Library:Create(options)
 					Name = "Label",
 				}, options or {})
 
-				local Label = {}
+				local Label = {
+					Connections = {},
+				}
 
 				do
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label
@@ -2968,7 +3185,7 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					Label.Connections,
 					Label["78"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -2987,6 +3204,35 @@ function Library:Create(options)
 							Label["7b"]["Size"] = UDim2.new(0, 398, 0, Label["7b"].TextBounds.Y + 21)
 						until Val == Label["7b"].TextBounds.Y
 					end
+
+					function Label:Destroy()
+						table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Label.Connections))
+
+						local TotalConnection = #Label.Connections
+						local Disconnected = 0
+						for i, v in next, Label.Connections do
+							pcall(function()
+								v:Disconnect()
+								Disconnected = Disconnected + 1
+							end)
+						end
+
+						Label["78"]:Destroy()
+						warn(
+							"Removed label, "
+								.. tostring(Disconnected)
+								.. " connections out of "
+								.. TotalConnection
+								.. " were disconnected."
+						)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
+
+					table.insert(ControlsConnectionBin, Label.Connections)
 				end
 
 				task.spawn(function()
@@ -3022,6 +3268,7 @@ function Library:Create(options)
 					ColorV = 1,
 					Toggled = false,
 					OldVal = nil,
+					Connections = {},
 				}
 
 				do
@@ -3323,7 +3570,7 @@ function Library:Create(options)
 				end
 
 				table.insert(
-					ConnectionBin,
+					Colorpicker.Connections,
 					Colorpicker["7d"]:GetPropertyChangedSignal("Size"):Connect(function()
 						Library:ResizeSection(Section["1e"])
 					end)
@@ -3388,12 +3635,39 @@ function Library:Create(options)
 
 						Colorpicker["9b"].Text = Colorpicker.OldVal:ToHex()
 					end
+
+					function Colorpicker:Destroy()
+						table.remove(ControlsConnectionBin, table.find(ControlsConnectionBin, Colorpicker.Connections))
+
+						local TotalConnection = #Colorpicker.Connections
+						local Disconnected = 0
+						for i, v in next, Colorpicker.Connections do
+							pcall(function()
+								v:Disconnect()
+								Disconnected = Disconnected + 1
+							end)
+						end
+
+						Colorpicker["7d"]:Destroy()
+						warn(
+							"Removed colorpicker, "
+								.. tostring(Disconnected)
+								.. " connections out of "
+								.. TotalConnection
+								.. " were disconnected."
+						)
+
+						task.spawn(function()
+							Library:ResizeSection(Section["1e"])
+							Library:ResizeCanvas(Tab["1d"])
+						end)
+					end
 				end
 
 				-- Handler
 				do
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["7d"].MouseEnter:Connect(function()
 							Library:Tween(Colorpicker["4a"], {
 								Length = 0.5,
@@ -3403,7 +3677,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["7d"].MouseLeave:Connect(function()
 							Library:Tween(Colorpicker["4a"], {
 								Length = 0.5,
@@ -3439,7 +3713,7 @@ function Library:Create(options)
 						)
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["9d"].MouseButton1Click:Connect(function()
 							Colorpicker.Toggled = not Colorpicker.Toggled
 
@@ -3470,7 +3744,7 @@ function Library:Create(options)
 					local SelectingColor
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["84"].InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
 								if SelectingColor then
@@ -3503,7 +3777,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["84"].InputEnded:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
 								if SelectingColor then
@@ -3517,7 +3791,7 @@ function Library:Create(options)
 					local SelectingHue
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["7f"].InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
 								if SelectingHue then
@@ -3553,7 +3827,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["7f"].InputEnded:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
 								if SelectingHue then
@@ -3581,7 +3855,7 @@ function Library:Create(options)
 					end
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["9b"].FocusLost:Connect(function()
 							local HexCode = Colorpicker["9b"].Text
 							local isHex = checkHex(HexCode)
@@ -3594,7 +3868,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["8e"].FocusLost:Connect(function()
 							local numVal
 							local success = pcall(function()
@@ -3618,7 +3892,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["93"].FocusLost:Connect(function()
 							local numVal
 							local success = pcall(function()
@@ -3642,7 +3916,7 @@ function Library:Create(options)
 					)
 
 					table.insert(
-						ConnectionBin,
+						Colorpicker.Connections,
 						Colorpicker["97"].FocusLost:Connect(function()
 							local numVal
 							local success = pcall(function()
@@ -3664,6 +3938,8 @@ function Library:Create(options)
 							end
 						end)
 					)
+
+					table.insert(ControlsConnectionBin, Colorpicker.Connections)
 				end
 
 				Colorpicker:SetColor(options.DefaultColor)
@@ -4397,7 +4673,10 @@ end
 
 function Library:Destroy()
 	local DestroyedConnection = 0
+	local DestroyedControlConection = 0
+	local TotalControlConnections = 0
 	local TotalConnections = #ConnectionBin
+	local TotalControls = #ControlsConnectionBin
 
 	for i, v in next, ConnectionBin do
 		pcall(function()
@@ -4407,12 +4686,34 @@ function Library:Destroy()
 		end)
 	end
 
-	print(
+	for i, controls in next, ControlsConnectionBin do
+		for i, event in next, controls do
+			TotalControlConnections = TotalControlConnections + 1
+
+			pcall(function()
+				event:Disconnect()
+
+				DestroyedControlConection += 1
+			end)
+		end
+	end
+
+	warn(
 		"Disconnected "
 			.. tostring(DestroyedConnection)
 			.. " connections out of "
 			.. tostring(TotalConnections)
 			.. " connections."
+	)
+
+	warn(
+		"Disconnected "
+			.. tostring(DestroyedControlConection)
+			.. " connections out of "
+			.. tostring(TotalControlConnections)
+			.. " connections in "
+			.. TotalControls
+			.. " controls."
 	)
 
 	LibFrame["1"]:Destroy()
