@@ -108,6 +108,12 @@ local Label = Section:Label({
 Label:SetName("New Label Name") -- String
 ```
 
+### Deleting the label
+
+```lua
+Label:Destroy()
+```
+
 ## 🟣Creating a Button
 
 ```lua
@@ -149,6 +155,12 @@ Toggle:SetName("New Toggle Name") -- String
 Toggle:Set(false) -- Boolean
 ```
 
+### Deleting the toggle
+
+```lua
+Toggle:Destroy()
+```
+
 ## 🟣Creating a Slider
 
 ```lua
@@ -175,6 +187,12 @@ Slider:SetName("New Slider Name") -- String
 Slider:SetValue(100) -- Integer
 ```
 
+### Deleting the slider
+
+```lua
+Slider:Destroy()
+```
+
 ## 🟣Creating a Keybind
 
 ```lua
@@ -194,6 +212,12 @@ local Keybind = Section:Keybind({
 
 ```lua
 Keybind:SetName("New keybind Name") -- String
+```
+
+### Deleting the keybind
+
+```lua
+Keybind:Destroy()
 ```
 
 ## 🟣Creating a Small Textbox
@@ -220,10 +244,16 @@ SmallTextbox:SetName("New Textbox name") -- String
 SmallTextbox:SetText("Another text") -- String
 ```
 
+### Deleting the small textbox
+
+```lua
+SmallTextbox:Destroy()
+```
+
 ## 🟣Creating a Big Textbox
 
 ```lua
-local SmallTextbox = Section:SmallTextbox({
+local BigTextbox = Section:BigTextbox({
 	Name = "Big Textbox", -- String
 	Default = "Default Text", -- String
 	PlaceHolderText = "Textbox | Placeholder Text", -- String
@@ -237,13 +267,19 @@ local SmallTextbox = Section:SmallTextbox({
 ### Updating big textbox name
 
 ```lua
-SmallTextbox:SetName("New Textbox name") -- String
+BigTextbox:SetName("New Textbox name") -- String
 ```
 
 ### Updating big textbox text
 
 ```lua
-SmallTextbox:SetText("Another text") -- String
+BigTextbox:SetText("Another text") -- String
+```
+
+### Deleting the big textbox
+
+```lua
+BigTextbox:Destroy()
 ```
 
 ## 🟣Creating a Dropdown
@@ -279,6 +315,12 @@ Dropdown:AddItem("Item") -- String, Integer, Instance
 Dropdown:Clear()
 ```
 
+### Deleting the dropdown
+
+```lua
+Dropdown:Destroy()
+```
+
 ## 🟣Creating a Colour Picker
 
 ```lua
@@ -295,6 +337,12 @@ local Colorpicker = Section:Colorpicker({
 
 ```lua
 Colorpicker:SetColor(Colorpicker:SetColor(Color3.new(0, 0, 0))) -- Color 3
+```
+
+### Deleting the colour picker
+
+```lua
+Colorpicker:Destroy()
 ```
 
 ## ⚪Use this to test
