@@ -1733,6 +1733,8 @@ function Library:Create(options)
 					Attempts = Gui.MaxAttempts,
 				}
 
+				local KeyConnectionBin = {}
+
 				do
 					-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.Key
 					KeySystem["a0"] = Instance.new("Frame", StartAnimation["92"])
@@ -1831,7 +1833,7 @@ function Library:Create(options)
 					-- Methods
 					do
 						table.insert(
-							ConnectionBin,
+							KeyConnectionBin,
 							KeySystem["a0"].MouseEnter:Connect(function()
 								Library:Tween(KeySystem["a2"], {
 									Length = 0.2,
@@ -1843,7 +1845,7 @@ function Library:Create(options)
 						)
 
 						table.insert(
-							ConnectionBin,
+							KeyConnectionBin,
 							KeySystem["a0"].MouseLeave:Connect(function()
 								Library:Tween(KeySystem["a2"], {
 									Length = 0.2,
@@ -1855,7 +1857,7 @@ function Library:Create(options)
 						)
 
 						table.insert(
-							ConnectionBin,
+							KeyConnectionBin,
 							KeySystem["a4"].FocusLost:Connect(function()
 								local keyEntered = KeySystem["a4"]["Text"]
 
@@ -2034,7 +2036,7 @@ function Library:Create(options)
 					-- Handler
 					do
 						table.insert(
-							ConnectionBin,
+							KeyConnectionBin,
 							KeySystem["ab"].MouseEnter:Connect(function()
 								Library:Tween(KeySystem["ad"], {
 									Length = 0.2,
@@ -2044,7 +2046,7 @@ function Library:Create(options)
 						)
 
 						table.insert(
-							ConnectionBin,
+							KeyConnectionBin,
 							KeySystem["ab"].MouseLeave:Connect(function()
 								Library:Tween(KeySystem["ad"], {
 									Length = 0.2,
@@ -2054,7 +2056,7 @@ function Library:Create(options)
 						)
 
 						table.insert(
-							ConnectionBin,
+							KeyConnectionBin,
 							KeySystem["ab"].MouseButton1Click:Connect(function()
 								task.spawn(function()
 									Library:ForceNotify({
@@ -2158,6 +2160,15 @@ function Library:Create(options)
 					Length = 0.7,
 					Goal = { TextTransparency = 0 },
 				})
+
+				task.spawn(function()
+					task.wait(1)
+					KeySystem["a0"]:Destroy()
+
+					for i, v in next, KeyConnectionBin do
+						v:Disconnect()
+					end
+				end)
 
 				KeyChecked = true
 			else
