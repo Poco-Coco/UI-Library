@@ -40,7 +40,7 @@ Library:Notify({
 })
 ```
 
-## 🟡Changing UI Drag Speed
+## 🟡Changing UI DragSpeed
 
 ```lua
 Library:SetDragSpeed(7) -- Default 7, Ranging from 0 - 100
