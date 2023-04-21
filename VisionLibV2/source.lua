@@ -4319,7 +4319,6 @@ function Library:Create(options)
 		table.insert(
 			ConnectionBin,
 			Gui["2"].MouseEnter:Connect(function()
-				Library:PlaySound(LibSettings.HoverSound)
 				Library.MainFrameHover = true
 			end)
 		)
