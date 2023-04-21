@@ -32,11 +32,36 @@ Library:Notify({
 	Name = "Ring Ring", -- String
 	Text = "Notification!!", -- String
 	Icon = "rbxassetid://11401835376", -- String
+	Sound = "rbxassetid://6647898215", -- String
 	Duration = 5, -- Integer
 	Callback = function()
 		-- Function
 	end
 })
+```
+
+## 🟡Changing UI Drag Speed
+
+```lua
+Library:SetDragSpeed(7) -- Default 7, Ranging from 0 - 100
+```
+
+## 🟡Changing UI Sound Effects Volume
+
+```lua
+Library:SetVolume(50) -- Default 50, Ranging from 0 - 100
+```
+
+## 🟡Changing Controls Hover Sound
+
+```lua
+ibrary:SetHoverSound("") -- Sound ID
+```
+
+## 🟡Changing Controls Click Sound
+
+```lua
+Library:SetClickSound("") -- Sound ID
 ```
 
 ## 🟡Creating a Window

@@ -1,5 +1,3 @@
-print([[Vision UI Library v2 | Made by Raphs Software > https://raph.lococto.com]])
-
 -- Services
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -16,20 +14,63 @@ local ControlsConnectionBin = {}
 
 -- Var
 local Library = {
-	DragSpeed = 0.07,
 	MainFrameHover = false,
 	Sliding = false,
 	Loaded = false,
 }
 
+local LibSettings = {
+	DragSpeed = 0.07,
+	SoundVolume = 0.5,
+	HoverSound = "rbxassetid://10066931761",
+	ClickSound = "rbxassetid://6895079853",
+}
+
 local TabIndex = 0
 
-local ScreeenY = Mouse.ViewSizeY
-local ScreeenX = Mouse.ViewSizeX
-
 -- Lib
+local LibFrame = {}
+do
+	-- StarterGui.Vision Lib v2
+	LibFrame["1"] = Instance.new("ScreenGui")
+	LibFrame["1"]["Name"] = [[VisionLibv2]]
+	LibFrame["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+	LibFrame["1"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
+	LibFrame["1"]["IgnoreGuiInset"] = false
+
+	-- StarterGui.Vision Lib v2
+	LibFrame["2"] = Instance.new("ScreenGui")
+	LibFrame["2"]["Name"] = [[VisionLibBackground]]
+	LibFrame["2"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+	LibFrame["2"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
+	LibFrame["2"]["IgnoreGuiInset"] = true
+
+	-- StarterGui.Vision Lib v2.NotifFrame
+	LibFrame["81"] = Instance.new("Frame", LibFrame["1"])
+	LibFrame["81"]["Active"] = true
+	LibFrame["81"]["BorderSizePixel"] = 0
+	LibFrame["81"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+	LibFrame["81"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+	LibFrame["81"]["BackgroundTransparency"] = 1
+	LibFrame["81"]["Size"] = UDim2.new(0.154, 0, 0, 0)
+	LibFrame["81"]["Position"] = UDim2.new(0.925, 0, 0.995, 0)
+	LibFrame["81"]["Name"] = [[NotifFrame]]
+
+	-- StarterGui.Vision Lib v2.NotifFrame.UIListLayout
+	LibFrame["82"] = Instance.new("UIListLayout", LibFrame["81"])
+	LibFrame["82"]["VerticalAlignment"] = Enum.VerticalAlignment.Bottom
+	LibFrame["82"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
+	LibFrame["82"]["Padding"] = UDim.new(0, 5)
+	LibFrame["82"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+
+	-- StarterGui.Vision Lib v2.NotifFrame.UIPadding
+	LibFrame["83"] = Instance.new("UIPadding", LibFrame["81"])
+	LibFrame["83"]["PaddingRight"] = UDim.new(0, 40)
+	LibFrame["83"]["PaddingBottom"] = UDim.new(0, 40)
+end
+
 function Library:Tween(object, options, callback)
-	local options = Library:Place_Defaults({
+	local options = Library:PlaceDefaults({
 		Length = 2,
 		Style = Enum.EasingStyle.Quint,
 		Direction = Enum.EasingDirection.Out,
@@ -103,7 +144,7 @@ function Library:ResizeSection(Section)
 	})
 end
 
-function Library:Place_Defaults(defaults, options)
+function Library:PlaceDefaults(defaults, options)
 	defaults = defaults or {}
 	options = options or {}
 	for option, value in next, options do
@@ -113,48 +154,65 @@ function Library:Place_Defaults(defaults, options)
 	return defaults
 end
 
-local LibFrame = {}
-do
-	-- StarterGui.Vision Lib v2
-	LibFrame["1"] = Instance.new("ScreenGui")
-	LibFrame["1"]["Name"] = [[VisionLibv2]]
-	LibFrame["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
-	LibFrame["1"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
-	LibFrame["1"]["IgnoreGuiInset"] = false
+function Library:SetDragSpeed(DragSpeed)
+	if DragSpeed < 0 then
+		DragSpeed = 0
+	end
+	if DragSpeed > 100 then
+		DragSpeed = 100
+	end
 
-	-- StarterGui.Vision Lib v2
-	LibFrame["2"] = Instance.new("ScreenGui")
-	LibFrame["2"]["Name"] = [[VisionLibBackground]]
-	LibFrame["2"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
-	LibFrame["2"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
-	LibFrame["2"]["IgnoreGuiInset"] = true
+	LibSettings.DragSpeed = DragSpeed / 100
 
-	-- StarterGui.Vision Lib v2.NotifFrame
-	LibFrame["81"] = Instance.new("Frame", LibFrame["1"])
-	LibFrame["81"]["Active"] = true
-	LibFrame["81"]["BorderSizePixel"] = 0
-	LibFrame["81"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-	LibFrame["81"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-	LibFrame["81"]["BackgroundTransparency"] = 1
-	LibFrame["81"]["Size"] = UDim2.new(0.154, 0, 0, 0)
-	LibFrame["81"]["Position"] = UDim2.new(0.925, 0, 0.995, 0)
-	LibFrame["81"]["Name"] = [[NotifFrame]]
+	return
+end
 
-	-- StarterGui.Vision Lib v2.NotifFrame.UIListLayout
-	LibFrame["82"] = Instance.new("UIListLayout", LibFrame["81"])
-	LibFrame["82"]["VerticalAlignment"] = Enum.VerticalAlignment.Bottom
-	LibFrame["82"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
-	LibFrame["82"]["Padding"] = UDim.new(0, 5)
-	LibFrame["82"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+function Library:SetVolume(Volume)
+	if Volume < 0 then
+		Volume = 0
+	end
+	if Volume > 100 then
+		Volume = 100
+	end
 
-	-- StarterGui.Vision Lib v2.NotifFrame.UIPadding
-	LibFrame["83"] = Instance.new("UIPadding", LibFrame["81"])
-	LibFrame["83"]["PaddingRight"] = UDim.new(0, 40)
-	LibFrame["83"]["PaddingBottom"] = UDim.new(0, 40)
+	LibSettings.SoundVolume = Volume / 100
+
+	return
+end
+
+function Library:SetHoverSound(SoundID)
+	LibSettings.HoverSound = SoundID
+
+	return
+end
+
+function Library:SetClickSound(SoundID)
+	LibSettings.ClickSound = SoundID
+
+	return
+end
+
+function Library:PlaySound(SoundID)
+	local NotifSound = Instance.new("Sound")
+	NotifSound.Name = "NotificationSound"
+	NotifSound.SoundId = SoundID
+	NotifSound.Parent = game:GetService("SoundService")
+	NotifSound.PlaybackSpeed = Random.new():NextNumber(0.98, 1.02)
+	NotifSound.Volume = LibSettings.SoundVolume
+	NotifSound:Play()
+
+	task.spawn(function()
+		NotifSound.Ended:Wait()
+		NotifSound:Destroy()
+	end)
+
+	return
 end
 
 function Library:ToolTip(Text)
 	local ToolTip = {}
+
+	Library:PlaySound(LibSettings.HoverSound)
 
 	do
 		-- StarterGui.ScreenGui.ToolTip
@@ -192,7 +250,7 @@ function Library:ToolTip(Text)
 end
 
 function Library:Create(options)
-	options = Library:Place_Defaults({
+	options = Library:PlaceDefaults({
 		Name = "Vision UI Lib v2",
 		Footer = "By Loco_CTO, Sius and BruhOOFBoi",
 		ToggleKey = Enum.KeyCode.RightShift,
@@ -228,7 +286,7 @@ function Library:Create(options)
 		if options.ToggledRelativeYOffset ~= nil then
 			Library:Tween(Gui["2"], {
 				Length = 0.3,
-				Goal = { Position = UDim2.new(0.5, 0, 0, ScreeenY - options.ToggledRelativeYOffset - 221) },
+				Goal = { Position = UDim2.new(0.5, 0, 0, Mouse.ViewSizeY - options.ToggledRelativeYOffset - 221) },
 			})
 		end
 	end)
@@ -744,6 +802,7 @@ function Library:Create(options)
 								})
 
 								KeySystem.KeyTextboxHover = true
+								Library:PlaySound(LibSettings.HoverSound)
 							end)
 						)
 
@@ -945,6 +1004,8 @@ function Library:Create(options)
 									Length = 0.2,
 									Goal = { Color = Color3.fromRGB(137, 145, 213) },
 								})
+
+								Library:PlaySound(LibSettings.HoverSound)
 							end)
 						)
 
@@ -961,6 +1022,7 @@ function Library:Create(options)
 						table.insert(
 							KeyConnectionBin,
 							KeySystem["ab"].MouseButton1Click:Connect(function()
+								Library:PlaySound(LibSettings.ClickSound)
 								task.spawn(function()
 									Library:ForceNotify({
 										Name = "Discord",
@@ -1164,7 +1226,7 @@ function Library:Create(options)
 	end
 
 	function Gui:Tab(options)
-		options = Library:Place_Defaults({
+		options = Library:PlaceDefaults({
 			Name = "Tab",
 			Icon = "rbxassetid://11396131982",
 			Color = Color3.new(1, 0.290196, 0.290196),
@@ -1179,16 +1241,34 @@ function Library:Create(options)
 		TabIndex = TabIndex + 1
 
 		do
+			local Color = options.Color
+			local h, s, v = Color:ToHSV()
+			local NewV = v - 0.75
+			if NewV < 0 then
+				NewV = 0
+			end
+
+			local p0 = Color3.fromHSV(h, s, v)
+			local p1 = Color3.fromHSV(h, s, NewV)
+
 			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton
-			Tab["8"] = Instance.new("Frame", Gui["6"])
+			Tab["8"] = Instance.new("TextButton", Gui["6"])
 			Tab["8"]["BorderSizePixel"] = 0
-			Tab["8"]["BackgroundColor3"] = Color3.fromRGB(74, 74, 74)
+			Tab["8"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 			Tab["8"]["Size"] = UDim2.new(0, 28, 0, 28)
 			Tab["8"]["Name"] = [[TabButton]]
+			Tab["8"]["Text"] = [[]]
+			Tab["8"]["AutoButtonColor"] = true
 
 			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton.UICorner
 			Tab["9"] = Instance.new("UICorner", Tab["8"])
 			Tab["9"]["CornerRadius"] = UDim.new(0, 5)
+
+			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton.UIGradient
+			Tab["a"] = Instance.new("UIGradient", Tab["8"])
+			Tab["a"]["Rotation"] = 45
+			Tab["a"]["Color"] =
+				ColorSequence.new({ ColorSequenceKeypoint.new(0, p0), ColorSequenceKeypoint.new(1, p1) })
 
 			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton.ImageLabel
 			Tab["b"] = Instance.new("ImageLabel", Tab["8"])
@@ -1233,7 +1313,7 @@ function Library:Create(options)
 		end
 
 		function Tab:Section(options)
-			options = Library:Place_Defaults({
+			options = Library:PlaceDefaults({
 				Name = "Section",
 			}, options or {})
 
@@ -1306,7 +1386,7 @@ function Library:Create(options)
 			)
 
 			function Section:Button(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Button",
 					Callback = function()
 						return
@@ -1377,6 +1457,7 @@ function Library:Create(options)
 							})
 
 							Button.Hover = true
+							Library:PlaySound(LibSettings.HoverSound)
 						end)
 					)
 
@@ -1396,6 +1477,7 @@ function Library:Create(options)
 						Button.Connections,
 						UserInputService.InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 and Button.Hover then
+								Library:PlaySound(LibSettings.ClickSound)
 								Library:Tween(Button["78"], {
 									Length = 0.2,
 									Goal = { Color = Color3.fromRGB(86, 86, 86) },
@@ -1450,7 +1532,7 @@ function Library:Create(options)
 						end
 
 						Button["74"]:Destroy()
-						warn(
+						print(
 							"Removed button, "
 								.. tostring(Disconnected)
 								.. " connections out of "
@@ -1487,7 +1569,7 @@ function Library:Create(options)
 			end
 
 			function Section:Toggle(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Toggle",
 					Default = false,
 					Callback = function()
@@ -1596,6 +1678,7 @@ function Library:Create(options)
 								Goal = { Color = Color3.fromRGB(65, 65, 65) },
 							})
 
+							Library:PlaySound(LibSettings.HoverSound)
 							Toggle.Hover = true
 						end)
 					)
@@ -1616,6 +1699,7 @@ function Library:Create(options)
 						Toggle.Connections,
 						UserInputService.InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 and Toggle.Hover then
+								Library:PlaySound(LibSettings.ClickSound)
 								Library:Tween(Toggle["2e"], {
 									Length = 0.2,
 									Goal = { Color = Color3.fromRGB(86, 86, 86) },
@@ -1654,7 +1738,7 @@ function Library:Create(options)
 						end
 
 						Toggle["24"]:Destroy()
-						warn(
+						print(
 							"Removed toggle, "
 								.. tostring(Disconnected)
 								.. " connections out of "
@@ -1734,7 +1818,7 @@ function Library:Create(options)
 			end
 
 			function Section:Slider(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Slider",
 					Max = 100,
 					Min = 0,
@@ -1858,6 +1942,7 @@ function Library:Create(options)
 						Slider.Connections,
 						Slider["36"].MouseEnter:Connect(function()
 							Slider.Hover = true
+							Library:PlaySound(LibSettings.HoverSound)
 
 							Library:Tween(Slider["40"], {
 								Length = 0.5,
@@ -1882,6 +1967,7 @@ function Library:Create(options)
 						Slider.Connections,
 						Slider["3g"].MouseEnter:Connect(function()
 							Slider.TextboxHover = true
+							Library:PlaySound(LibSettings.HoverSound)
 						end)
 					)
 
@@ -1898,6 +1984,7 @@ function Library:Create(options)
 							Slider["3g"]["Text"] = [[]]
 
 							Library.Sliding = true
+							Library:PlaySound(LibSettings.ClickSound)
 						end)
 					)
 
@@ -2005,7 +2092,7 @@ function Library:Create(options)
 						end
 
 						Slider["36"]:Destroy()
-						warn(
+						print(
 							"Removed slider, "
 								.. tostring(Disconnected)
 								.. " connections out of "
@@ -2033,7 +2120,7 @@ function Library:Create(options)
 			end
 
 			function Section:Keybind(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Keybind",
 					Default = Enum.KeyCode.Return,
 					Callback = function()
@@ -2142,6 +2229,8 @@ function Library:Create(options)
 								Length = 0.5,
 								Goal = { Color = Color3.fromRGB(65, 65, 65) },
 							})
+
+							Library:PlaySound(LibSettings.HoverSound)
 						end)
 					)
 
@@ -2158,6 +2247,7 @@ function Library:Create(options)
 					table.insert(
 						Keybind.Connections,
 						Keybind["5d"].MouseButton1Click:Connect(function()
+							Library:PlaySound(LibSettings.ClickSound)
 							Keybind.Focused = true
 
 							Keybind["60"]["Text"] = "..."
@@ -2207,7 +2297,7 @@ function Library:Create(options)
 							end
 
 							Keybind["59"]:Destroy()
-							warn(
+							print(
 								"Removed keybind, "
 									.. tostring(Disconnected)
 									.. " connections out of "
@@ -2234,7 +2324,7 @@ function Library:Create(options)
 			end
 
 			function Section:SmallTextbox(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Small Textbox",
 					Default = "Text",
 					Callback = function()
@@ -2340,6 +2430,8 @@ function Library:Create(options)
 								Length = 0.5,
 								Goal = { Color = Color3.fromRGB(65, 65, 65) },
 							})
+
+							Library:PlaySound(LibSettings.HoverSound)
 						end)
 					)
 
@@ -2356,6 +2448,7 @@ function Library:Create(options)
 					table.insert(
 						Textbox.Connections,
 						Textbox["34"].Focused:Connect(function()
+							Library:PlaySound(LibSettings.ClickSound)
 							Textbox["34"].Text = ""
 
 							Library.Sliding = true
@@ -2421,7 +2514,7 @@ function Library:Create(options)
 						end
 
 						Textbox["2e"]:Destroy()
-						warn(
+						print(
 							"Removed textbox, "
 								.. tostring(Disconnected)
 								.. " connections out of "
@@ -2470,7 +2563,7 @@ function Library:Create(options)
 			end
 
 			function Section:BigTextbox(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Big Textbox",
 					Default = "",
 					PlaceHolderText = "Placeholder | Text",
@@ -2605,6 +2698,8 @@ function Library:Create(options)
 								Length = 0.5,
 								Goal = { Color = Color3.fromRGB(65, 65, 65) },
 							})
+
+							Library:PlaySound(LibSettings.HoverSound)
 						end)
 					)
 
@@ -2621,6 +2716,7 @@ function Library:Create(options)
 					table.insert(
 						BigTextbox.Connections,
 						BigTextbox["6f"].Focused:Connect(function()
+							Library:PlaySound(LibSettings.ClickSound)
 							if options.ResetOnFocus then
 								BigTextbox["6f"].Text = ""
 							end
@@ -2697,7 +2793,7 @@ function Library:Create(options)
 						end
 
 						BigTextbox["66"]:Destroy()
-						warn(
+						print(
 							"Removed bigTextbox, "
 								.. tostring(Disconnected)
 								.. " connections out of "
@@ -2725,7 +2821,7 @@ function Library:Create(options)
 			end
 
 			function Section:Dropdown(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Dropdown",
 					Items = {},
 					Callback = function(item)
@@ -2849,6 +2945,7 @@ function Library:Create(options)
 						Dropdown.Connections,
 						Dropdown["46"].MouseEnter:Connect(function()
 							Dropdown.Hover = true
+							Library:PlaySound(LibSettings.HoverSound)
 
 							Library:Tween(Dropdown["4a"], {
 								Length = 0.5,
@@ -2873,6 +2970,7 @@ function Library:Create(options)
 						Dropdown.Connections,
 						UserInputService.InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 and Dropdown.Hover then
+								Library:PlaySound(LibSettings.ClickSound)
 								Library:Tween(Dropdown["4a"], {
 									Length = 0.2,
 									Goal = { Color = Color3.fromRGB(86, 86, 86) },
@@ -2979,6 +3077,7 @@ function Library:Create(options)
 							ConnectionBin,
 							DropdownOption["4d"].MouseEnter:Connect(function()
 								DropdownOption.Hover = true
+								Library:PlaySound(LibSettings.HoverSound)
 
 								Library:Tween(DropdownOption["50"], {
 									Length = 0.5,
@@ -3003,6 +3102,7 @@ function Library:Create(options)
 							ConnectionBin,
 							UserInputService.InputBegan:Connect(function(input)
 								if input.UserInputType == Enum.UserInputType.MouseButton1 and DropdownOption.Hover then
+									Library:PlaySound(LibSettings.ClickSound)
 									Library:Tween(DropdownOption["50"], {
 										Length = 0.2,
 										Goal = { Color = Color3.fromRGB(86, 86, 86) },
@@ -3071,7 +3171,7 @@ function Library:Create(options)
 					end
 
 					function Dropdown:UpdateList(options)
-						options = Library:Place_Defaults({
+						options = Library:PlaceDefaults({
 							Items = {},
 							Replace = true,
 						}, options or {})
@@ -3111,7 +3211,7 @@ function Library:Create(options)
 					end
 
 					Dropdown["46"]:Destroy()
-					warn(
+					print(
 						"Removed dropdown, "
 							.. tostring(Disconnected)
 							.. " connections out of "
@@ -3136,7 +3236,7 @@ function Library:Create(options)
 			end
 
 			function Section:Label(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Label",
 				}, options or {})
 
@@ -3218,7 +3318,7 @@ function Library:Create(options)
 						end
 
 						Label["78"]:Destroy()
-						warn(
+						print(
 							"Removed label, "
 								.. tostring(Disconnected)
 								.. " connections out of "
@@ -3254,7 +3354,7 @@ function Library:Create(options)
 			end
 
 			function Section:Colorpicker(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Colorpicker",
 					DefaultColor = Color3.new(1, 1, 1),
 					Callback = function()
@@ -3382,7 +3482,7 @@ function Library:Create(options)
 					Colorpicker["8a"]["TextSize"] = 13
 					Colorpicker["8a"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
 					Colorpicker["8a"]["Size"] = UDim2.new(0, 301, 0, 33)
-					Colorpicker["8a"]["Text"] = [[Colorpicker]]
+					Colorpicker["8a"]["Text"] = options.Name
 					Colorpicker["8a"]["Name"] = [[Label]]
 					Colorpicker["8a"]["Font"] = Enum.Font.GothamMedium
 					Colorpicker["8a"]["BackgroundTransparency"] = 1
@@ -3649,7 +3749,7 @@ function Library:Create(options)
 						end
 
 						Colorpicker["7d"]:Destroy()
-						warn(
+						print(
 							"Removed colorpicker, "
 								.. tostring(Disconnected)
 								.. " connections out of "
@@ -3673,6 +3773,8 @@ function Library:Create(options)
 								Length = 0.5,
 								Goal = { Color = Color3.fromRGB(65, 65, 65) },
 							})
+
+							Library:PlaySound(LibSettings.HoverSound)
 						end)
 					)
 
@@ -3715,6 +3817,7 @@ function Library:Create(options)
 					table.insert(
 						Colorpicker.Connections,
 						Colorpicker["9d"].MouseButton1Click:Connect(function()
+							Library:PlaySound(LibSettings.ClickSound)
 							Colorpicker.Toggled = not Colorpicker.Toggled
 
 							if Colorpicker.Toggled then
@@ -3747,6 +3850,8 @@ function Library:Create(options)
 						Colorpicker.Connections,
 						Colorpicker["84"].InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
+								Library:PlaySound(LibSettings.ClickSound)
+
 								if SelectingColor then
 									SelectingColor:Disconnect()
 								end
@@ -3780,6 +3885,8 @@ function Library:Create(options)
 						Colorpicker.Connections,
 						Colorpicker["84"].InputEnded:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
+								Library:PlaySound(LibSettings.ClickSound)
+
 								if SelectingColor then
 									SelectingColor:Disconnect()
 								end
@@ -3794,6 +3901,8 @@ function Library:Create(options)
 						Colorpicker.Connections,
 						Colorpicker["7f"].InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
+								Library:PlaySound(LibSettings.ClickSound)
+
 								if SelectingHue then
 									SelectingHue:Disconnect()
 								end
@@ -3830,6 +3939,8 @@ function Library:Create(options)
 						Colorpicker.Connections,
 						Colorpicker["7f"].InputEnded:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 then
+								Library:PlaySound(LibSettings.ClickSound)
+
 								if SelectingHue then
 									SelectingHue:Disconnect()
 								end
@@ -3953,7 +4064,7 @@ function Library:Create(options)
 
 			--[[
 			function Section:Template(options)
-				options = Library:Place_Defaults({
+				options = Library:PlaceDefaults({
 					Name = "Template",
 					Callback = function() return end
 				}, options or {})
@@ -3989,15 +4100,33 @@ function Library:Create(options)
 			table.insert(
 				ConnectionBin,
 				Tab["8"].MouseEnter:Connect(function()
+					Library:PlaySound(LibSettings.HoverSound)
 					ToolTip = Library:ToolTip(options.Name)
 					Tab.Hover = true
 
-					if not Tab.Active then
-						Library:Tween(Tab["8"], {
-							Length = 0.5,
-							Goal = { BackgroundColor3 = Color3.fromRGB(54, 54, 54) },
-						})
-					end
+					local tweeninfo = TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+					local tween = TweenService:Create(Tab["a"], tweeninfo, { Rotation = 180 })
+					tween:Play()
+
+					tween.Completed:Wait()
+
+					repeat
+						local rot = Tab["a"].Rotation + 45
+
+						if rot == 405 then
+							rot = 45
+						end
+
+						local tweeninfo = TweenInfo.new(0.4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+						local tween = TweenService:Create(Tab["a"], tweeninfo, { Rotation = rot })
+						tween:Play()
+
+						tween.Completed:Wait()
+
+						if Tab["a"].Rotation == 360 then
+							Tab["a"].Rotation = 0
+						end
+					until Tab.Hover == false
 				end)
 			)
 
@@ -4005,14 +4134,13 @@ function Library:Create(options)
 				ConnectionBin,
 				Tab["8"].MouseLeave:Connect(function()
 					ToolTip:Destroy()
-					Tab.Hover = false
 
-					if not Tab.Active then
-						Library:Tween(Tab["8"], {
-							Length = 0.5,
-							Goal = { BackgroundColor3 = Color3.fromRGB(74, 74, 74) },
-						})
-					end
+					Library:Tween(Tab["a"], {
+						Length = 0.3,
+						Goal = { Rotation = 45 },
+					})
+
+					Tab.Hover = false
 				end)
 			)
 
@@ -4020,6 +4148,7 @@ function Library:Create(options)
 				ConnectionBin,
 				UserInputService.InputBegan:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 and Tab.Hover then
+						Library:PlaySound(LibSettings.ClickSound)
 						if Gui.CurrentTab == Tab and not Gui.Hidden then
 							Library:Tween(Gui["18"], {
 								Length = 0.3,
@@ -4058,11 +4187,6 @@ function Library:Create(options)
 					end
 
 					Tab.Active = true
-
-					Library:Tween(Tab["8"], {
-						Length = 0.5,
-						Goal = { BackgroundColor3 = options.Color },
-					})
 
 					if Gui.CurrentTabIndex < Tab.Index then
 						task.spawn(function()
@@ -4112,11 +4236,6 @@ function Library:Create(options)
 					Tab.Active = false
 
 					if Gui.CurrentTabIndex < newtabindex then
-						Library:Tween(Tab["8"], {
-							Length = 0.5,
-							Goal = { BackgroundColor3 = Color3.fromRGB(74, 74, 74) },
-						})
-
 						task.spawn(function()
 							Library:Tween(Gui["1c"], {
 								Length = 0.3,
@@ -4132,11 +4251,6 @@ function Library:Create(options)
 							Tab["1d"]["Visible"] = false
 						end)
 					else
-						Library:Tween(Tab["8"], {
-							Length = 0.5,
-							Goal = { BackgroundColor3 = Color3.fromRGB(74, 74, 74) },
-						})
-
 						task.spawn(function()
 							Library:Tween(Gui["1c"], {
 								Length = 0.3,
@@ -4193,7 +4307,7 @@ function Library:Create(options)
 									},
 									Style = Enum.EasingStyle.Linear,
 									Direction = Enum.EasingDirection.InOut,
-									Length = Library.DragSpeed,
+									Length = LibSettings.DragSpeed,
 								})
 							end
 						end
@@ -4205,6 +4319,7 @@ function Library:Create(options)
 		table.insert(
 			ConnectionBin,
 			Gui["2"].MouseEnter:Connect(function()
+				Library:PlaySound(LibSettings.HoverSound)
 				Library.MainFrameHover = true
 			end)
 		)
@@ -4338,10 +4453,11 @@ function Library:Create(options)
 end
 
 function Library:Notify(options)
-	options = Library:Place_Defaults({
+	options = Library:PlaceDefaults({
 		Name = "Ring Ring",
 		Text = "Notification!!",
 		Icon = "rbxassetid://11401835376",
+		Sound = "rbxassetid://6647898215",
 		Duration = 5,
 		Callback = function()
 			return
@@ -4470,6 +4586,8 @@ function Library:Notify(options)
 
 			local Completed = false
 
+			Library:PlaySound(options.Sound)
+
 			Library:Tween(Notification["84"], {
 				Length = 0.5,
 				Goal = { Size = UDim2.new(0, 257, 0, 62) },
@@ -4507,10 +4625,11 @@ function Library:Notify(options)
 end
 
 function Library:ForceNotify(options)
-	options = Library:Place_Defaults({
+	options = Library:PlaceDefaults({
 		Name = "Ring Ring",
 		Text = "Notification!!",
 		Icon = "rbxassetid://11401835376",
+		Sound = "rbxassetid://6647898215",
 		Duration = 5,
 		Callback = function()
 			return
@@ -4648,6 +4767,8 @@ function Library:ForceNotify(options)
 				Completed = true
 			end)
 
+			Library:PlaySound(options.Sound)
+
 			repeat
 				task.wait()
 			until Completed
@@ -4698,7 +4819,7 @@ function Library:Destroy()
 		end
 	end
 
-	warn(
+	print(
 		"Disconnected "
 			.. tostring(DestroyedConnection)
 			.. " connections out of "
@@ -4706,7 +4827,7 @@ function Library:Destroy()
 			.. " connections."
 	)
 
-	warn(
+	print(
 		"Disconnected "
 			.. tostring(DestroyedControlConection)
 			.. " connections out of "
