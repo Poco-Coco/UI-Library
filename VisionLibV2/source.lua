@@ -40,7 +40,7 @@ do
 
 	-- StarterGui.Vision Lib v2
 	LibFrame["2"] = Instance.new("ScreenGui")
-	LibFrame["2"]["Name"] = [[VisionLibBackground]]
+	LibFrame["2"]["Name"] = [[VisionLibOverlay]]
 	LibFrame["2"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
 	LibFrame["2"]["Parent"] = (RunService:IsStudio() and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
 	LibFrame["2"]["IgnoreGuiInset"] = true
@@ -1241,16 +1241,6 @@ function Library:Create(options)
 		TabIndex = TabIndex + 1
 
 		do
-			local Color = options.Color
-			local h, s, v = Color:ToHSV()
-			local NewV = v - 0.75
-			if NewV < 0 then
-				NewV = 0
-			end
-
-			local p0 = Color3.fromHSV(h, s, v)
-			local p1 = Color3.fromHSV(h, s, NewV)
-
 			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton
 			Tab["8"] = Instance.new("TextButton", Gui["6"])
 			Tab["8"]["BorderSizePixel"] = 0
@@ -1267,8 +1257,10 @@ function Library:Create(options)
 			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton.UIGradient
 			Tab["a"] = Instance.new("UIGradient", Tab["8"])
 			Tab["a"]["Rotation"] = 45
-			Tab["a"]["Color"] =
-				ColorSequence.new({ ColorSequenceKeypoint.new(0, p0), ColorSequenceKeypoint.new(1, p1) })
+			Tab["a"]["Color"] = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.fromRGB(125, 125, 125)),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(31, 31, 31)),
+			})
 
 			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton.ImageLabel
 			Tab["b"] = Instance.new("ImageLabel", Tab["8"])
@@ -4186,6 +4178,46 @@ function Library:Create(options)
 						Gui.CurrentTab:Deactivate(Tab.Index)
 					end
 
+					task.spawn(function()
+						local Color = options.Color
+						local h, s, v = Color:ToHSV()
+						local NewV = v - 0.75
+						if NewV < 0 then
+							NewV = 0
+						end
+
+						local p0 = Color3.fromHSV(h, s, v)
+						local p1 = Color3.fromHSV(h, s, NewV)
+
+						local defaultP0 = Instance.new("Color3Value")
+						defaultP0.Value = Color3.fromRGB(125, 125, 125)
+
+						local defaultP1 = Instance.new("Color3Value")
+						defaultP1.Value = Color3.fromRGB(31, 31, 31)
+
+						Library:Tween(defaultP0, {
+							Length = 0.5,
+							Goal = { Value = p0 },
+						})
+
+						local TweenCompleted = false
+
+						Library:Tween(defaultP1, {
+							Length = 0.5,
+							Goal = { Value = p1 },
+						}, function()
+							TweenCompleted = true
+						end)
+
+						repeat
+							Tab["a"]["Color"] = ColorSequence.new({
+								ColorSequenceKeypoint.new(0, defaultP0.Value),
+								ColorSequenceKeypoint.new(1, defaultP1.Value),
+							})
+							RunService.RenderStepped:Wait()
+						until TweenCompleted
+					end)
+
 					Tab.Active = true
 
 					if Gui.CurrentTabIndex < Tab.Index then
@@ -4234,6 +4266,46 @@ function Library:Create(options)
 			function Tab:Deactivate(newtabindex)
 				if Tab.Active then
 					Tab.Active = false
+
+					task.spawn(function()
+						local Color = options.Color
+						local h, s, v = Color:ToHSV()
+						local NewV = v - 0.75
+						if NewV < 0 then
+							NewV = 0
+						end
+
+						local p0 = Color3.fromHSV(h, s, v)
+						local p1 = Color3.fromHSV(h, s, NewV)
+
+						local defaultP0 = Instance.new("Color3Value")
+						defaultP0.Value = p0
+
+						local defaultP1 = Instance.new("Color3Value")
+						defaultP1.Value = p1
+
+						Library:Tween(defaultP0, {
+							Length = 0.5,
+							Goal = { Value = Color3.fromRGB(125, 125, 125) },
+						})
+
+						local TweenCompleted = false
+
+						Library:Tween(defaultP1, {
+							Length = 0.5,
+							Goal = { Value = Color3.fromRGB(31, 31, 31) },
+						}, function()
+							TweenCompleted = true
+						end)
+
+						repeat
+							Tab["a"]["Color"] = ColorSequence.new({
+								ColorSequenceKeypoint.new(0, defaultP0.Value),
+								ColorSequenceKeypoint.new(1, defaultP1.Value),
+							})
+							RunService.RenderStepped:Wait()
+						until TweenCompleted
+					end)
 
 					if Gui.CurrentTabIndex < newtabindex then
 						task.spawn(function()
