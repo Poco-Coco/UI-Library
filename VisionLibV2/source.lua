@@ -4103,20 +4103,24 @@ function Library:Create(options)
 					tween.Completed:Wait()
 
 					repeat
-						local rot = Tab["a"].Rotation + 45
+						if not Tab.Active then
+							local rot = Tab["a"].Rotation + 45
 
-						if rot == 405 then
-							rot = 45
-						end
+							if rot == 405 then
+								rot = 45
+							end
 
-						local tweeninfo = TweenInfo.new(0.4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-						local tween = TweenService:Create(Tab["a"], tweeninfo, { Rotation = rot })
-						tween:Play()
+							local tweeninfo = TweenInfo.new(0.4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+							local tween = TweenService:Create(Tab["a"], tweeninfo, { Rotation = rot })
+							tween:Play()
 
-						tween.Completed:Wait()
+							tween.Completed:Wait()
 
-						if Tab["a"].Rotation == 360 then
-							Tab["a"].Rotation = 0
+							if Tab["a"].Rotation == 360 then
+								Tab["a"].Rotation = 0
+							end
+						else
+							task.wait()
 						end
 					until Tab.Hover == false
 				end)
@@ -4127,10 +4131,12 @@ function Library:Create(options)
 				Tab["8"].MouseLeave:Connect(function()
 					ToolTip:Destroy()
 
-					Library:Tween(Tab["a"], {
-						Length = 0.3,
-						Goal = { Rotation = 45 },
-					})
+					if not Tab.Active then
+						Library:Tween(Tab["a"], {
+							Length = 0.3,
+							Goal = { Rotation = 45 },
+						})
+					end
 
 					Tab.Hover = false
 				end)
@@ -4219,6 +4225,26 @@ function Library:Create(options)
 					end)
 
 					Tab.Active = true
+
+					task.spawn(function()
+						while Tab.Active do
+							local rot = Tab["a"].Rotation + 45
+
+							if rot == 405 then
+								rot = 45
+							end
+
+							local tweeninfo = TweenInfo.new(0.4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+							local tween = TweenService:Create(Tab["a"], tweeninfo, { Rotation = rot })
+							tween:Play()
+
+							tween.Completed:Wait()
+
+							if Tab["a"].Rotation == 360 then
+								Tab["a"].Rotation = 0
+							end
+						end
+					end)
 
 					if Gui.CurrentTabIndex < Tab.Index then
 						task.spawn(function()
