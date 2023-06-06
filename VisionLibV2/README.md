@@ -40,6 +40,19 @@ Library:Notify({
 })
 ```
 
+## 🟡Creating a Pop-up/Prompt
+
+```lua
+Library:Popup({
+	Name = "Popup", -- String
+	Text = "Do you want to accept?", -- String
+	Options = { "Yes", "No" }, -- Table
+	Callback = function(option)
+		-- Function (Returns the option)
+	end,
+})
+```
+
 ## 🟡Changing UI DragSpeed
 
 ```lua
@@ -62,6 +75,12 @@ ibrary:SetHoverSound("") -- Sound ID
 
 ```lua
 Library:SetClickSound("") -- Sound ID
+```
+
+## 🟡Changing Pop-up Sound
+
+```lua
+Library:SetPopupSound("") -- Sound ID
 ```
 
 ## 🟡Creating a Window
@@ -108,6 +127,12 @@ local Tab = Window:Tab({
 	Name = "Main", -- String
 	Icon = "rbxassetid://11396131982", -- String
 	Color = Color3.new(1, 0, 0) -- Color3
+	ActivationCallback = function()
+		-- Function
+	end,
+	DeativationCallback = function()
+		-- Function
+	end,
 })
 ```
 

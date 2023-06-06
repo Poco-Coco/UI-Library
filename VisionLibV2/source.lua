@@ -24,6 +24,7 @@ local LibSettings = {
 	SoundVolume = 0.5,
 	HoverSound = "rbxassetid://10066931761",
 	ClickSound = "rbxassetid://6895079853",
+	PopupSound = "rbxassetid://225320558",
 }
 
 local TabIndex = 0
@@ -192,6 +193,12 @@ function Library:SetClickSound(SoundID)
 	return
 end
 
+function Library:SetPopupSound(SoundID)
+	LibSettings.PopupSound = SoundID
+
+	return
+end
+
 function Library:PlaySound(SoundID)
 	local NotifSound = Instance.new("Sound")
 	NotifSound.Name = "NotificationSound"
@@ -290,7 +297,7 @@ function Library:Create(options)
 			})
 		end
 	end)
-
+	
 	do
 		-- StarterGui.Vision Lib v2.GuiFrame
 		Gui["2"] = Instance.new("Frame", LibFrame["1"])
@@ -438,57 +445,6 @@ function Library:Create(options)
 		Gui["1c"]["Font"] = Enum.Font.GothamBold
 		Gui["1c"]["BackgroundTransparency"] = 1
 		Gui["1c"]["Position"] = UDim2.new(0, 14, 0, 5)
-	end
-
-	function Library:ResizeTabCanvas()
-		local NumChild = 0
-		local ChildOffset = 0
-
-		for i, v in pairs(Gui["6"]:GetChildren()) do
-			if v:IsA("Frame") then
-				NumChild = NumChild + 1
-				ChildOffset = ChildOffset + v.Size.X.Offset
-			end
-		end
-
-		local NumChildOffset = NumChild * 7
-
-		local CanvasSizeX = NumChildOffset + ChildOffset + 7
-
-		Library:Tween(Gui["6"], {
-			Length = 0.5,
-			Goal = { CanvasSize = UDim2.new(0, CanvasSizeX, 0, 0) },
-		})
-
-		task.spawn(function()
-			task.wait(1)
-
-			local MaxPos = Gui["6"].CanvasSize.X.Offset - Gui["6"].Size.X.Offset
-
-			if Gui["6"].CanvasPosition.X > 0 then
-				Library:Tween(Gui["15"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
-				})
-			else
-				Library:Tween(Gui["15"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
-				})
-			end
-
-			if Gui["6"].CanvasPosition.X < MaxPos then
-				Library:Tween(Gui["16"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
-				})
-			else
-				Library:Tween(Gui["16"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
-				})
-			end
-		end)
 	end
 
 	table.insert(
@@ -1224,12 +1180,69 @@ function Library:Create(options)
 			Library.Loaded = true
 		end)
 	end
+	
+	function Library:ResizeTabCanvas()
+		task.spawn(function()
+			task.wait(1)
+			
+			local NumChild = 0
+			local ChildOffset = 0
+
+			for i, v in pairs(Gui["6"]:GetChildren()) do
+				if v:IsA("TextButton") then
+					NumChild = NumChild + 1
+					ChildOffset = ChildOffset + v.Size.X.Offset
+				end
+			end
+
+			local NumChildOffset = NumChild * 7
+
+			local CanvasSizeX = NumChildOffset + ChildOffset + 7
+
+			Library:Tween(Gui["6"], {
+				Length = 0.5,
+				Goal = { CanvasSize = UDim2.new(0, CanvasSizeX, 0, 0) },
+			})
+			
+			local MaxPos = Gui["6"].CanvasSize.X.Offset - Gui["6"].Size.X.Offset
+
+			if Gui["6"].CanvasPosition.X > 0 then
+				Library:Tween(Gui["15"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
+				})
+			else
+				Library:Tween(Gui["15"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
+				})
+			end
+
+			if Gui["6"].CanvasPosition.X < MaxPos then
+				Library:Tween(Gui["16"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
+				})
+			else
+				Library:Tween(Gui["16"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
+				})
+			end
+		end)
+	end
 
 	function Gui:Tab(options)
 		options = Library:PlaceDefaults({
 			Name = "Tab",
 			Icon = "rbxassetid://11396131982",
 			Color = Color3.new(1, 0.290196, 0.290196),
+			ActivationCallback = function()
+				return
+			end,
+			DeativationCallback = function()
+				return
+			end,
 		}, options or {})
 
 		local Tab = {
@@ -3119,16 +3132,21 @@ function Library:Create(options)
 									Dropdown.SelectedItem = DropdownOption.CallbackVal
 									Dropdown["5b"].Text = tostring(Dropdown.SelectedItem)
 
-									local Bound = TextService:GetTextSize(
-										Dropdown["5b"].Text,
-										Dropdown["5b"].TextSize,
-										Dropdown["5b"].Font,
-										Vector2.new(Dropdown["5b"].AbsoluteSize.X, Dropdown["5b"].AbsoluteSize.Y)
-									)
+									local Val
+									repeat
+										Val = Dropdown["5b"].TextBounds.X
+
+										Library:Tween(Dropdown["5b"], {
+											Length = 0.2,
+											Goal = {
+												Size = UDim2.new(0, (Dropdown["5b"].TextBounds.X + 14), 0, 21),
+											},
+										})
+									until Val == Dropdown["5b"].TextBounds.X
 
 									Library:Tween(Dropdown["5b"], {
 										Length = 0.2,
-										Goal = { Size = UDim2.new(0, (Bound.X + 14), 0, 21) },
+										Goal = { Size = UDim2.new(0, (Dropdown["5b"].TextBounds.X + 14), 0, 21) },
 									})
 								end
 							end)
@@ -3138,16 +3156,21 @@ function Library:Create(options)
 							Dropdown.SelectedItem = DropdownOption.CallbackVal
 							Dropdown["5b"].Text = tostring(Dropdown.SelectedItem)
 
-							local Bound = TextService:GetTextSize(
-								Dropdown["5b"].Text,
-								Dropdown["5b"].TextSize,
-								Dropdown["5b"].Font,
-								Vector2.new(Dropdown["5b"].AbsoluteSize.X, Dropdown["5b"].AbsoluteSize.Y)
-							)
+							local Val
+							repeat
+								Val = Dropdown["5b"].TextBounds.X
+
+								Library:Tween(Dropdown["5b"], {
+									Length = 0.2,
+									Goal = {
+										Size = UDim2.new(0, (Dropdown["5b"].TextBounds.X + 14), 0, 21),
+									},
+								})
+							until Val == Dropdown["5b"].TextBounds.X
 
 							Library:Tween(Dropdown["5b"], {
 								Length = 0.2,
-								Goal = { Size = UDim2.new(0, (Bound.X + 14), 0, 21) },
+								Goal = { Size = UDim2.new(0, (Dropdown["5b"].TextBounds.X + 14), 0, 21) },
 							})
 						end
 					end
@@ -3781,15 +3804,15 @@ function Library:Create(options)
 					)
 
 					Colorpicker.ColorH = 1
-						- (
-							1
-							- math.clamp(
-									Colorpicker["82"].AbsolutePosition.Y - Colorpicker["7f"].AbsolutePosition.Y,
-									0,
-									Colorpicker["7f"].AbsoluteSize.Y
-								)
-								/ Colorpicker["7f"].AbsoluteSize.Y
+					- (
+						1
+						- math.clamp(
+							Colorpicker["82"].AbsolutePosition.Y - Colorpicker["7f"].AbsolutePosition.Y,
+							0,
+							Colorpicker["7f"].AbsoluteSize.Y
 						)
+							/ Colorpicker["7f"].AbsoluteSize.Y
+					)
 					Colorpicker.ColorS = (
 						math.clamp(
 							Colorpicker["86"].AbsolutePosition.X - Colorpicker["84"].AbsolutePosition.X,
@@ -3798,13 +3821,13 @@ function Library:Create(options)
 						) / Colorpicker["84"].AbsoluteSize.X
 					)
 					Colorpicker.ColorV = 1
-						- (
-							math.clamp(
-								Colorpicker["86"].AbsolutePosition.Y - Colorpicker["84"].AbsolutePosition.Y,
-								0,
-								Colorpicker["84"].AbsoluteSize.Y
-							) / Colorpicker["84"].AbsoluteSize.Y
-						)
+					- (
+						math.clamp(
+							Colorpicker["86"].AbsolutePosition.Y - Colorpicker["84"].AbsolutePosition.Y,
+							0,
+							Colorpicker["84"].AbsoluteSize.Y
+						) / Colorpicker["84"].AbsoluteSize.Y
+					)
 
 					table.insert(
 						Colorpicker.Connections,
@@ -3904,10 +3927,10 @@ function Library:Create(options)
 									local HueY = (
 										1
 										- math.clamp(
-												Mouse.Y - Colorpicker["7f"].AbsolutePosition.Y,
-												0,
-												Colorpicker["7f"].AbsoluteSize.Y
-											)
+											Mouse.Y - Colorpicker["7f"].AbsolutePosition.Y,
+											0,
+											Colorpicker["7f"].AbsoluteSize.Y
+										)
 											/ Colorpicker["7f"].AbsoluteSize.Y
 									)
 									local VisualHueY = (
@@ -4103,24 +4126,20 @@ function Library:Create(options)
 					tween.Completed:Wait()
 
 					repeat
-						if not Tab.Active then
-							local rot = Tab["a"].Rotation + 45
+						local rot = Tab["a"].Rotation + 45
 
-							if rot == 405 then
-								rot = 45
-							end
+						if rot == 405 then
+							rot = 45
+						end
 
-							local tweeninfo = TweenInfo.new(0.4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-							local tween = TweenService:Create(Tab["a"], tweeninfo, { Rotation = rot })
-							tween:Play()
+						local tweeninfo = TweenInfo.new(0.4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+						local tween = TweenService:Create(Tab["a"], tweeninfo, { Rotation = rot })
+						tween:Play()
 
-							tween.Completed:Wait()
+						tween.Completed:Wait()
 
-							if Tab["a"].Rotation == 360 then
-								Tab["a"].Rotation = 0
-							end
-						else
-							task.wait()
+						if Tab["a"].Rotation == 360 then
+							Tab["a"].Rotation = 0
 						end
 					until Tab.Hover == false
 				end)
@@ -4131,12 +4150,10 @@ function Library:Create(options)
 				Tab["8"].MouseLeave:Connect(function()
 					ToolTip:Destroy()
 
-					if not Tab.Active then
-						Library:Tween(Tab["a"], {
-							Length = 0.3,
-							Goal = { Rotation = 45 },
-						})
-					end
+					Library:Tween(Tab["a"], {
+						Length = 0.3,
+						Goal = { Rotation = 45 },
+					})
 
 					Tab.Hover = false
 				end)
@@ -4183,6 +4200,10 @@ function Library:Create(options)
 					if Gui.CurrentTab ~= nil then
 						Gui.CurrentTab:Deactivate(Tab.Index)
 					end
+
+					task.spawn(function()
+						options.ActivationCallback()
+					end)
 
 					task.spawn(function()
 						local Color = options.Color
@@ -4294,6 +4315,10 @@ function Library:Create(options)
 					Tab.Active = false
 
 					task.spawn(function()
+						options.DeativationCallback()
+					end)
+
+					task.spawn(function()
 						local Color = options.Color
 						local h, s, v = Color:ToHSV()
 						local NewV = v - 0.75
@@ -4396,10 +4421,10 @@ function Library:Create(options)
 									Goal = {
 										Position = UDim2.fromOffset(
 											Mouse.X
-												- ObjectPosition.X
+											- ObjectPosition.X
 												+ (Gui["2"].Size.X.Offset * Gui["2"].AnchorPoint.X),
 											Mouse.Y
-												- ObjectPosition.Y
+											- ObjectPosition.Y
 												+ (Gui["2"].Size.Y.Offset * Gui["2"].AnchorPoint.Y)
 										),
 									},
@@ -4889,6 +4914,237 @@ function Library:ForceNotify(options)
 	end
 end
 
+function Library:Popup(options)
+	local Prompt = {}
+	options = Library:PlaceDefaults({
+		Name = "Popup",
+		Text = "Do you want to accept?",
+		Options = { "Yes", "No" },
+		Callback = function()
+			return
+		end,
+	}, options or {})
+
+	do
+		-- StarterGui.Vision Lib v2.Prompt
+		Prompt["1e9"] = Instance.new("Frame", LibFrame["2"])
+		Prompt["1e9"]["ZIndex"] = 10
+		Prompt["1e9"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+		Prompt["1e9"]["BackgroundTransparency"] = 1
+		Prompt["1e9"]["Size"] = UDim2.new(1, 0, 1, 0)
+		Prompt["1e9"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+		Prompt["1e9"]["Visible"] = true
+		Prompt["1e9"]["Name"] = [[Prompt]]
+		Prompt["1e9"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+		Prompt["1e9"]["ClipsDescendants"] = true
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt
+		Prompt["1ea"] = Instance.new("Frame", Prompt["1e9"])
+		Prompt["1ea"]["ZIndex"] = 11
+		Prompt["1ea"]["BorderSizePixel"] = 0
+		Prompt["1ea"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Prompt["1ea"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+		Prompt["1ea"]["Size"] = UDim2.new(0, 0, 0, 0)
+		Prompt["1ea"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+		Prompt["1ea"]["Name"] = [[Prompt]]
+		Prompt["1ea"]["ClipsDescendants"] = true
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.UICorner
+		Prompt["1eb"] = Instance.new("UICorner", Prompt["1ea"])
+		Prompt["1eb"]["CornerRadius"] = UDim.new(0, 4)
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.UIGradient
+		Prompt["1ec"] = Instance.new("UIGradient", Prompt["1ea"])
+		Prompt["1ec"]["Rotation"] = 90
+		Prompt["1ec"]["Color"] = ColorSequence.new({
+			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(46, 46, 46)),
+			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(40, 40, 40)),
+		})
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.Controls
+		Prompt["1ed"] = Instance.new("Frame", Prompt["1ea"])
+		Prompt["1ed"]["ZIndex"] = 15
+		Prompt["1ed"]["BorderSizePixel"] = 0
+		Prompt["1ed"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Prompt["1ed"]["BackgroundTransparency"] = 1
+		Prompt["1ed"]["Size"] = UDim2.new(0, 400, 0, 30)
+		Prompt["1ed"]["Position"] = UDim2.new(0, -1, 0, 109)
+		Prompt["1ed"]["Name"] = [[Controls]]
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.Controls.UIListLayout
+		Prompt["1ee"] = Instance.new("UIListLayout", Prompt["1ed"])
+		Prompt["1ee"]["FillDirection"] = Enum.FillDirection.Horizontal
+		Prompt["1ee"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Center
+		Prompt["1ee"]["Padding"] = UDim.new(0, 20)
+		Prompt["1ee"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.Frame
+		Prompt["1f7"] = Instance.new("Frame", Prompt["1ea"])
+		Prompt["1f7"]["ZIndex"] = 12
+		Prompt["1f7"]["BorderSizePixel"] = 0
+		Prompt["1f7"]["BackgroundColor3"] = Color3.fromRGB(86, 86, 86)
+		Prompt["1f7"]["Size"] = UDim2.new(0, 371, 0, 1)
+		Prompt["1f7"]["Position"] = UDim2.new(0, 14, 0, 35)
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.Frame.TerrainDetail
+		Prompt["1f8"] = Instance.new("TerrainDetail", Prompt["1f7"])
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.Description
+		Prompt["1f9"] = Instance.new("TextLabel", Prompt["1ea"])
+		Prompt["1f9"]["TextWrapped"] = true
+		Prompt["1f9"]["ZIndex"] = 11
+		Prompt["1f9"]["TextYAlignment"] = Enum.TextYAlignment.Top
+		Prompt["1f9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Prompt["1f9"]["FontFace"] =
+			Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+		Prompt["1f9"]["TextSize"] = 13
+		Prompt["1f9"]["TextColor3"] = Color3.fromRGB(228, 228, 228)
+		Prompt["1f9"]["Size"] = UDim2.new(0, 360, 0, 95)
+		Prompt["1f9"]["Text"] = options.Text
+		Prompt["1f9"]["Name"] = [[Description]]
+		Prompt["1f9"]["BackgroundTransparency"] = 1
+		Prompt["1f9"]["Position"] = UDim2.new(0, 20, 0, 44)
+
+		-- StarterGui.Vision Lib v2.Prompt.Prompt.Title
+		Prompt["1fa"] = Instance.new("TextLabel", Prompt["1ea"])
+		Prompt["1fa"]["TextWrapped"] = true
+		Prompt["1fa"]["ZIndex"] = 11
+		Prompt["1fa"]["TextYAlignment"] = Enum.TextYAlignment.Top
+		Prompt["1fa"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		Prompt["1fa"]["FontFace"] =
+			Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+		Prompt["1fa"]["TextSize"] = 16
+		Prompt["1fa"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Prompt["1fa"]["Size"] = UDim2.new(0, 400, 0, 20)
+		Prompt["1fa"]["Text"] = options.Name
+		Prompt["1fa"]["Name"] = [[Title]]
+		Prompt["1fa"]["BackgroundTransparency"] = 1
+		Prompt["1fa"]["Position"] = UDim2.new(0, 0, 0, 12)
+	end
+
+	do
+		Library:Tween(Prompt["1e9"], {
+			Goal = {
+				BackgroundTransparency = 0.65,
+			},
+			Style = Enum.EasingStyle.Quart,
+			Direction = Enum.EasingDirection.Out,
+			Length = 0.5,
+		})
+
+		Library:Tween(Prompt["1ea"], {
+			Goal = {
+				Size = UDim2.new(0, 400, 0, 146),
+			},
+			Style = Enum.EasingStyle.Quart,
+			Direction = Enum.EasingDirection.Out,
+			Length = 0.5,
+		})
+
+		Library:PlaySound(LibSettings.PopupSound)
+	end
+
+	do
+		for i, text in next, options.Options do
+			do
+				local PromptOption = {}
+				-- StarterGui.Vision Lib v2.Prompt.Prompt.Controls.B1
+				PromptOption["1ef"] = Instance.new("TextButton", Prompt["1ed"])
+				PromptOption["1ef"]["ZIndex"] = 11
+				PromptOption["1ef"]["BorderSizePixel"] = 0
+				PromptOption["1ef"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+				PromptOption["1ef"]["TextSize"] = 14
+				PromptOption["1ef"]["FontFace"] = Font.new(
+					[[rbxasset://fonts/families/GothamSSm.json]],
+					Enum.FontWeight.Regular,
+					Enum.FontStyle.Normal
+				)
+				PromptOption["1ef"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+				PromptOption["1ef"]["Size"] = UDim2.new(0, 120, 0, 30)
+				PromptOption["1ef"]["LayoutOrder"] = 1
+				PromptOption["1ef"]["Name"] = [[B1]]
+				PromptOption["1ef"]["Text"] = tostring(text)
+				PromptOption["1ef"]["Position"] = UDim2.new(0, 68, 0, 567)
+
+				-- StarterGui.Vision Lib v2.PromptOption.PromptOption.Controls.B1.UICorner
+				PromptOption["1f0"] = Instance.new("UICorner", PromptOption["1ef"])
+				PromptOption["1f0"]["CornerRadius"] = UDim.new(0, 4)
+
+				-- StarterGui.Vision Lib v2.PromptOption.PromptOption.Controls.B1.UIGradient
+				PromptOption["1f1"] = Instance.new("UIGradient", PromptOption["1ef"])
+				PromptOption["1f1"]["Transparency"] = NumberSequence.new({
+					NumberSequenceKeypoint.new(0.000, 0.6000000238418579),
+					NumberSequenceKeypoint.new(1.000, 0.6000000238418579),
+				})
+				PromptOption["1f1"]["Rotation"] = 270
+				PromptOption["1f1"]["Color"] = ColorSequence.new({
+					ColorSequenceKeypoint.new(0.000, Color3.fromRGB(13, 13, 13)),
+					ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25)),
+				})
+
+				-- StarterGui.Vision Lib v2.PromptOption.PromptOption.Controls.B1.NameLabel
+				PromptOption["1f2"] = Instance.new("TextLabel", PromptOption["1ef"])
+				PromptOption["1f2"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+				PromptOption["1f2"]["FontFace"] = Font.new(
+					[[rbxasset://fonts/families/GothamSSm.json]],
+					Enum.FontWeight.Regular,
+					Enum.FontStyle.Normal
+				)
+				PromptOption["1f2"]["TextSize"] = 11
+				PromptOption["1f2"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+				PromptOption["1f2"]["Size"] = UDim2.new(0, 120, 0, 30)
+				PromptOption["1f2"]["Text"] = tostring(text)
+				PromptOption["1f2"]["Name"] = [[NameLabel]]
+				PromptOption["1f2"]["BackgroundTransparency"] = 1
+
+				table.insert(
+					ConnectionBin,
+					PromptOption["1ef"].MouseButton1Click:Connect(function()
+						Library:PlaySound(LibSettings.ClickSound)
+
+						Library:Tween(Prompt["1e9"], {
+							Goal = {
+								BackgroundTransparency = 1,
+							},
+							Style = Enum.EasingStyle.Quart,
+							Direction = Enum.EasingDirection.Out,
+							Length = 0.5,
+						})
+
+						Library:Tween(Prompt["1ea"], {
+							Goal = {
+								Size = UDim2.new(0, 0, 0, 0),
+							},
+							Style = Enum.EasingStyle.Quart,
+							Direction = Enum.EasingDirection.Out,
+							Length = 0.5,
+						})
+
+						do
+							task.spawn(function()
+								options.Callback(text)
+							end)
+						end
+
+						task.spawn(function()
+							task.wait(1.5)
+
+							Prompt["1e9"]:Destroy()
+						end)
+					end)
+				)
+
+				table.insert(
+					ConnectionBin,
+					PromptOption["1ef"].MouseEnter:Connect(function()
+						Library:PlaySound(LibSettings.HoverSound)
+					end)
+				)
+			end
+		end
+	end
+end
+
 function Library:Destroy()
 	local DestroyedConnection = 0
 	local DestroyedControlConection = 0
@@ -4935,6 +5191,7 @@ function Library:Destroy()
 	)
 
 	LibFrame["1"]:Destroy()
+	LibFrame["2"]:Destroy()
 end
 
 return Library
