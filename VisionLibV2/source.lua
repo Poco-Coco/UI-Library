@@ -280,6 +280,7 @@ function Library:Create(options)
 		MaxAttempts = options.MaxAttempts,
 		DiscordLink = options.DiscordLink,
 		Key = options.Key,
+		KeySystem = options.KeySystem,
 	}
 
 	local StartAnimation = {}
@@ -297,7 +298,7 @@ function Library:Create(options)
 			})
 		end
 	end)
-	
+
 	do
 		-- StarterGui.Vision Lib v2.GuiFrame
 		Gui["2"] = Instance.new("Frame", LibFrame["1"])
@@ -445,6 +446,57 @@ function Library:Create(options)
 		Gui["1c"]["Font"] = Enum.Font.GothamBold
 		Gui["1c"]["BackgroundTransparency"] = 1
 		Gui["1c"]["Position"] = UDim2.new(0, 14, 0, 5)
+	end
+
+	function Library:ResizeTabCanvas()
+		local NumChild = 0
+		local ChildOffset = 0
+
+		for i, v in pairs(Gui["6"]:GetChildren()) do
+			if v:IsA("Frame") then
+				NumChild = NumChild + 1
+				ChildOffset = ChildOffset + v.Size.X.Offset
+			end
+		end
+
+		local NumChildOffset = NumChild * 7
+
+		local CanvasSizeX = NumChildOffset + ChildOffset + 7
+
+		Library:Tween(Gui["6"], {
+			Length = 0.5,
+			Goal = { CanvasSize = UDim2.new(0, CanvasSizeX, 0, 0) },
+		})
+
+		task.spawn(function()
+			task.wait(1)
+
+			local MaxPos = Gui["6"].CanvasSize.X.Offset - Gui["6"].Size.X.Offset
+
+			if Gui["6"].CanvasPosition.X > 0 then
+				Library:Tween(Gui["15"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
+				})
+			else
+				Library:Tween(Gui["15"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
+				})
+			end
+
+			if Gui["6"].CanvasPosition.X < MaxPos then
+				Library:Tween(Gui["16"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
+				})
+			else
+				Library:Tween(Gui["16"], {
+					Length = 0.1,
+					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
+				})
+			end
+		end)
 	end
 
 	table.insert(
@@ -612,6 +664,8 @@ function Library:Create(options)
 		StartAnimation["9e"]["Position"] = UDim2.new(0, 98, 0, 49)
 	end
 
+	local KeySystem = {}
+
 	-- Start animation
 	do
 		task.spawn(function()
@@ -644,7 +698,7 @@ function Library:Create(options)
 			local KeyChecked = false
 
 			if options.KeySystem then
-				local KeySystem = {
+				KeySystem = {
 					CorrectKey = false,
 					KeyTextboxHover = false,
 					Attempts = Gui.MaxAttempts,
@@ -1180,57 +1234,6 @@ function Library:Create(options)
 			Library.Loaded = true
 		end)
 	end
-	
-	function Library:ResizeTabCanvas()
-		task.spawn(function()
-			task.wait(1)
-			
-			local NumChild = 0
-			local ChildOffset = 0
-
-			for i, v in pairs(Gui["6"]:GetChildren()) do
-				if v:IsA("TextButton") then
-					NumChild = NumChild + 1
-					ChildOffset = ChildOffset + v.Size.X.Offset
-				end
-			end
-
-			local NumChildOffset = NumChild * 7
-
-			local CanvasSizeX = NumChildOffset + ChildOffset + 7
-
-			Library:Tween(Gui["6"], {
-				Length = 0.5,
-				Goal = { CanvasSize = UDim2.new(0, CanvasSizeX, 0, 0) },
-			})
-			
-			local MaxPos = Gui["6"].CanvasSize.X.Offset - Gui["6"].Size.X.Offset
-
-			if Gui["6"].CanvasPosition.X > 0 then
-				Library:Tween(Gui["15"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
-				})
-			else
-				Library:Tween(Gui["15"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
-				})
-			end
-
-			if Gui["6"].CanvasPosition.X < MaxPos then
-				Library:Tween(Gui["16"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(255, 255, 255) },
-				})
-			else
-				Library:Tween(Gui["16"], {
-					Length = 0.1,
-					Goal = { TextColor3 = Color3.fromRGB(96, 96, 96) },
-				})
-			end
-		end)
-	end
 
 	function Gui:Tab(options)
 		options = Library:PlaceDefaults({
@@ -1252,6 +1255,12 @@ function Library:Create(options)
 		}
 
 		TabIndex = TabIndex + 1
+
+		if Gui.KeySystem then
+			repeat
+				task.wait()
+			until KeySystem.CorrectKey
+		end
 
 		do
 			-- StarterGui.Vision Lib v2.GuiFrame.NavBar.TabButtonContainer.TabButton
@@ -2935,6 +2944,30 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.TextLabel.UICorner
 					Dropdown["5c"] = Instance.new("UICorner", Dropdown["5b"])
 					Dropdown["5c"]["CornerRadius"] = UDim.new(0, 4)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.TextBox
+					Dropdown["5e"] = Instance.new("TextBox", Dropdown["46"])
+					Dropdown["5e"]["CursorPosition"] = -1
+					Dropdown["5e"]["PlaceholderColor3"] = Color3.fromRGB(157, 157, 157)
+					Dropdown["5e"]["BorderSizePixel"] = 0
+					Dropdown["5e"]["TextSize"] = 9
+					Dropdown["5e"]["TextXAlignment"] = Enum.TextXAlignment.Left
+					Dropdown["5e"]["BackgroundColor3"] = Color3.fromRGB(37, 37, 37)
+					Dropdown["5e"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["5e"]["FontFace"] = Font.new(
+						[[rbxasset://fonts/families/GothamSSm.json]],
+						Enum.FontWeight.Regular,
+						Enum.FontStyle.Normal
+					)
+					Dropdown["5e"]["PlaceholderText"] = [[  > Search]]
+					Dropdown["5e"]["Size"] = UDim2.new(0, 189, 0, 15)
+					Dropdown["5e"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+					Dropdown["5e"]["Text"] = [[]]
+					Dropdown["5e"]["Position"] = UDim2.new(0.34278959035873413, 0, 0.0949999988079071, 0)
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.TextBox.UICorner
+					Dropdown["5f"] = Instance.new("UICorner", Dropdown["5e"])
+					Dropdown["5f"]["CornerRadius"] = UDim.new(0, 4)
 				end
 
 				table.insert(
@@ -3010,7 +3043,7 @@ function Library:Create(options)
 											local NumChild = 0
 
 											for i, v in pairs(Dropdown["4b"]:GetChildren()) do
-												if v:IsA("Frame") then
+												if v:IsA("Frame") and v.Visible == true then
 													NumChild = NumChild + 1
 												end
 											end
@@ -3804,15 +3837,15 @@ function Library:Create(options)
 					)
 
 					Colorpicker.ColorH = 1
-					- (
-						1
-						- math.clamp(
-							Colorpicker["82"].AbsolutePosition.Y - Colorpicker["7f"].AbsolutePosition.Y,
-							0,
-							Colorpicker["7f"].AbsoluteSize.Y
+						- (
+							1
+							- math.clamp(
+									Colorpicker["82"].AbsolutePosition.Y - Colorpicker["7f"].AbsolutePosition.Y,
+									0,
+									Colorpicker["7f"].AbsoluteSize.Y
+								)
+								/ Colorpicker["7f"].AbsoluteSize.Y
 						)
-							/ Colorpicker["7f"].AbsoluteSize.Y
-					)
 					Colorpicker.ColorS = (
 						math.clamp(
 							Colorpicker["86"].AbsolutePosition.X - Colorpicker["84"].AbsolutePosition.X,
@@ -3821,13 +3854,13 @@ function Library:Create(options)
 						) / Colorpicker["84"].AbsoluteSize.X
 					)
 					Colorpicker.ColorV = 1
-					- (
-						math.clamp(
-							Colorpicker["86"].AbsolutePosition.Y - Colorpicker["84"].AbsolutePosition.Y,
-							0,
-							Colorpicker["84"].AbsoluteSize.Y
-						) / Colorpicker["84"].AbsoluteSize.Y
-					)
+						- (
+							math.clamp(
+								Colorpicker["86"].AbsolutePosition.Y - Colorpicker["84"].AbsolutePosition.Y,
+								0,
+								Colorpicker["84"].AbsoluteSize.Y
+							) / Colorpicker["84"].AbsoluteSize.Y
+						)
 
 					table.insert(
 						Colorpicker.Connections,
@@ -3927,10 +3960,10 @@ function Library:Create(options)
 									local HueY = (
 										1
 										- math.clamp(
-											Mouse.Y - Colorpicker["7f"].AbsolutePosition.Y,
-											0,
-											Colorpicker["7f"].AbsoluteSize.Y
-										)
+												Mouse.Y - Colorpicker["7f"].AbsolutePosition.Y,
+												0,
+												Colorpicker["7f"].AbsoluteSize.Y
+											)
 											/ Colorpicker["7f"].AbsoluteSize.Y
 									)
 									local VisualHueY = (
@@ -4421,10 +4454,10 @@ function Library:Create(options)
 									Goal = {
 										Position = UDim2.fromOffset(
 											Mouse.X
-											- ObjectPosition.X
+												- ObjectPosition.X
 												+ (Gui["2"].Size.X.Offset * Gui["2"].AnchorPoint.X),
 											Mouse.Y
-											- ObjectPosition.Y
+												- ObjectPosition.Y
 												+ (Gui["2"].Size.Y.Offset * Gui["2"].AnchorPoint.Y)
 										),
 									},
