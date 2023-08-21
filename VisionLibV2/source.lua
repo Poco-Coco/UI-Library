@@ -2849,6 +2849,7 @@ function Library:Create(options)
 					ContainerOpened = false,
 					NameText = options.Name,
 					Hover = false,
+					SearchHover = false,
 					Connections = {},
 				}
 
@@ -2899,7 +2900,7 @@ function Library:Create(options)
 					Dropdown["4b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Dropdown["4b"]["BackgroundTransparency"] = 1
 					Dropdown["4b"]["Size"] = UDim2.new(0, 423, 0, 72)
-					Dropdown["4b"]["Position"] = UDim2.new(0, 0, 0, 39)
+					Dropdown["4b"]["Position"] = UDim2.new(0, 0, 0, 59)
 					Dropdown["4b"]["Name"] = [[Container]]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.UIListLayout
@@ -2929,8 +2930,9 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.UIListLayout
 					Dropdown["5a"] = Instance.new("UIListLayout", Dropdown["59"])
 					Dropdown["5a"]["VerticalAlignment"] = Enum.VerticalAlignment.Center
+					Dropdown["5a"]["FillDirection"] = Enum.FillDirection.Horizontal
 					Dropdown["5a"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
-					Dropdown["5a"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+					Dropdown["5a"]["Padding"] = UDim.new(0, 8)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.TextLabel
 					Dropdown["5b"] = Instance.new("TextLabel", Dropdown["59"])
@@ -2940,10 +2942,6 @@ function Library:Create(options)
 					Dropdown["5b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
 					Dropdown["5b"]["Size"] = UDim2.new(0, 50, 0, 15)
 					Dropdown["5b"]["Font"] = Enum.Font.Gotham
-
-					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.TextLabel.UICorner
-					Dropdown["5c"] = Instance.new("UICorner", Dropdown["5b"])
-					Dropdown["5c"]["CornerRadius"] = UDim.new(0, 4)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.TextBox
 					Dropdown["5e"] = Instance.new("TextBox", Dropdown["46"])
@@ -2959,15 +2957,18 @@ function Library:Create(options)
 						Enum.FontWeight.Regular,
 						Enum.FontStyle.Normal
 					)
-					Dropdown["5e"]["PlaceholderText"] = [[  > Search]]
-					Dropdown["5e"]["Size"] = UDim2.new(0, 189, 0, 15)
+					Dropdown["5e"]["PlaceholderText"] = [[ Search]]
+					Dropdown["5e"]["Size"] = UDim2.new(0, 397, 0, 9)
 					Dropdown["5e"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
 					Dropdown["5e"]["Text"] = [[]]
-					Dropdown["5e"]["Position"] = UDim2.new(0.34278959035873413, 0, 0.0949999988079071, 0)
+					Dropdown["5e"]["Position"] = UDim2.new(0, 13, 0, 38)
 
-					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.TextBox.UICorner
-					Dropdown["5f"] = Instance.new("UICorner", Dropdown["5e"])
-					Dropdown["5f"]["CornerRadius"] = UDim.new(0, 4)
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.TextBox.UIStroke
+					Dropdown["5f"] = Instance.new("UIStroke", Dropdown["5e"])
+					Dropdown["5f"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+					Dropdown["5f"]["Color"] = Color3.fromRGB(36, 36, 36)
+					Dropdown["5f"]["LineJoinMode"] = Enum.LineJoinMode.Round
+					Dropdown["5f"]["Thickness"] = 7
 				end
 
 				table.insert(
@@ -3006,6 +3007,45 @@ function Library:Create(options)
 
 					table.insert(
 						Dropdown.Connections,
+						Dropdown["5e"].MouseEnter:Connect(function()
+							Dropdown.SearchHover = true
+						end)
+					)
+
+					table.insert(
+						Dropdown.Connections,
+						Dropdown["5e"].MouseLeave:Connect(function()
+							Dropdown.SearchHover = false
+						end)
+					)
+
+					table.insert(
+						Dropdown.Connections,
+						Dropdown["5e"]:GetPropertyChangedSignal("Text"):Connect(function()
+							if Dropdown["5e"].Text == "" then
+								for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+									if v:IsA("Frame") then
+										v.Visible = true
+									end
+								end
+							else
+								for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+									if v:IsA("Frame") then
+										if string.find(v.Name, Dropdown["5e"].Text) then
+											v.Visible = true
+										else
+											v.Visible = false
+										end
+									end
+								end
+							end
+
+							Dropdown:ResizeContainer()
+						end)
+					)
+
+					table.insert(
+						Dropdown.Connections,
 						UserInputService.InputBegan:Connect(function(input)
 							if input.UserInputType == Enum.UserInputType.MouseButton1 and Dropdown.Hover then
 								Library:PlaySound(LibSettings.ClickSound)
@@ -3027,7 +3067,7 @@ function Library:Create(options)
 								end
 
 								do
-									if Dropdown.ContainerOpened then
+									if Dropdown.ContainerOpened and not Dropdown.SearchHover then
 										Dropdown.ContainerOpened = false
 
 										Library:Tween(Dropdown["46"], {
@@ -3048,7 +3088,7 @@ function Library:Create(options)
 												end
 											end
 
-											local FrameYOffset = 27 * NumChild + 4 * NumChild + 38
+											local FrameYOffset = 27 * NumChild + 4 * NumChild + 38 + 23
 
 											Library:Tween(Dropdown["46"], {
 												Length = 0.5,
@@ -3066,6 +3106,25 @@ function Library:Create(options)
 
 				-- Methods
 				do
+					function Dropdown:ResizeContainer()
+						if Dropdown.ContainerOpened then
+							local NumChild = 0
+
+							for i, v in pairs(Dropdown["4b"]:GetChildren()) do
+								if v:IsA("Frame") and v.Visible == true then
+									NumChild = NumChild + 1
+								end
+							end
+
+							local FrameYOffset = 27 * NumChild + 4 * NumChild + 38 + 23
+
+							Library:Tween(Dropdown["46"], {
+								Length = 0.5,
+								Goal = { Size = UDim2.fromOffset(423, FrameYOffset) },
+							})
+						end
+					end
+
 					function Dropdown:AddItem(value)
 						local DropdownOption = {
 							Hover = false,
@@ -3078,7 +3137,8 @@ function Library:Create(options)
 							DropdownOption["4d"]["BackgroundColor3"] = Color3.fromRGB(149, 149, 149)
 							DropdownOption["4d"]["Size"] = UDim2.new(0, 407, 0, 27)
 							DropdownOption["4d"]["Position"] = UDim2.new(0, 7, 0, 22)
-							DropdownOption["4d"]["Name"] = [[Option 1]]
+							DropdownOption["4d"]["Name"] = tostring(DropdownOption.CallbackVal)
+							DropdownOption["4d"]["Visible"] = true
 
 							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1.UICorner
 							DropdownOption["4e"] = Instance.new("UICorner", DropdownOption["4d"])
@@ -3206,6 +3266,8 @@ function Library:Create(options)
 								Goal = { Size = UDim2.new(0, (Dropdown["5b"].TextBounds.X + 14), 0, 21) },
 							})
 						end
+
+						Dropdown:ResizeContainer()
 					end
 
 					function Dropdown:Clear()
@@ -3216,6 +3278,8 @@ function Library:Create(options)
 						end
 
 						local FrameYOffset = 34 + 4
+
+						Dropdown:ResizeContainer()
 					end
 
 					function Dropdown:UpdateList(options)
