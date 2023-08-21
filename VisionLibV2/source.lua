@@ -19,6 +19,14 @@ local Library = {
 	Loaded = false,
 }
 
+pcall(function()
+	getgenv().VisionUILibrary:Destroy()
+end)
+
+pcall(function()
+	getgenv().VisionUILibrary = Library
+end)
+
 local LibSettings = {
 	DragSpeed = 0.07,
 	SoundVolume = 0.5,
