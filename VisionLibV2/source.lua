@@ -17,6 +17,7 @@ local Library = {
 	MainFrameHover = false,
 	Sliding = false,
 	Loaded = false,
+	CurrentTheme = {},
 }
 
 pcall(function()
@@ -122,6 +123,23 @@ function Library:ResizeCanvas(Tab)
 		Length = 0.5,
 		Goal = { CanvasSize = UDim2.new(0, 0, 0, CanvasSizeY) },
 	})
+end
+
+function Library:CalGradient(BaseColor, Diff)
+	local h, s, v = BaseColor:ToHSV()
+
+	local p0 = Color3.fromHSV(h, s, v)
+	local p1
+
+	Diff = Diff / 100
+
+	if (v - Diff) < 0 then
+		p1 = Color3.fromHSV(h, s, 0)
+	else
+		p1 = Color3.fromHSV(h, s, v - Diff)
+	end
+
+	return ColorSequence.new({ ColorSequenceKeypoint.new(0.000, p0), ColorSequenceKeypoint.new(1.000, p1) })
 end
 
 function Library:ResizeSection(Section)
@@ -264,6 +282,196 @@ function Library:ToolTip(Text)
 	return ToolTip
 end
 
+local ThemeInstances = {
+	["Main"] = {},
+	["MainTrue"] = {},
+	["Secondary"] = {},
+	["SecondaryTrue"] = {},
+	["Tertiary"] = {},
+	["TertiaryTrue"] = {},
+	["Text"] = {},
+	["PlaceholderText"] = {},
+	["Textbox"] = {},
+	["NavBar"] = {},
+	["Theme"] = {},
+	["ThemeTrue"] = {},
+}
+
+local ThemeColor = {
+	Main = ColorSequence.new({ -- 6
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(45, 45, 45)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(39, 39, 39)),
+	}),
+	MainTrue = Color3.fromRGB(45, 45, 45),
+	Secondary = ColorSequence.new({ -- 7
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(31, 31, 31)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(24, 24, 24)),
+	}),
+	SecondaryTrue = Color3.fromRGB(31, 31, 31),
+	Tertiary = ColorSequence.new({ -- 4
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(31, 31, 31)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(27, 27, 27)),
+	}),
+	TertiaryTrue = Color3.fromRGB(31, 31, 31),
+	Text = Color3.fromRGB(255, 255, 255),
+	PlaceholderText = Color3.fromRGB(175, 175, 175),
+	Textbox = Color3.fromRGB(61, 61, 61),
+	NavBar = ColorSequence.new({ -- 9
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(35, 35, 35)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(24, 24, 24)),
+	}),
+	NavBarTrue = Color3.fromRGB(35, 35, 35),
+	Theme = ColorSequence.new({
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(132, 65, 185)),
+	}),
+	ThemeTrue = Color3.fromRGB(132, 65, 232),
+}
+
+function Library:SetTheme(Theme)
+	Theme = Library:PlaceDefaults({
+		Main = ThemeColor.MainTrue,
+		Secondary = ThemeColor.SecondaryTrue,
+		Tertiary = ThemeColor.TertiaryTrue,
+		Text = ThemeColor.Text,
+		PlaceholderText = ThemeColor.PlaceholderText,
+		Textbox = ThemeColor.Textbox,
+		NavBar = ThemeColor.NavBarTrue,
+		Theme = ThemeColor.ThemeTrue,
+	}, Theme or {})
+
+	Library.CurrentTheme = Theme
+
+	ThemeColor = {
+		Main = Library:CalGradient(Theme.Main, 6),
+		MainTrue = Theme.Main,
+		Secondary = Library:CalGradient(Theme.Secondary, 7),
+		SecondaryTrue = Theme.Secondary,
+		Tertiary = Library:CalGradient(Theme.Tertiary, 4),
+		TertiaryTrue = Theme.Tertiary,
+		Text = Theme.Text,
+		PlaceholderText = Theme.PlaceholderText,
+		Textbox = Theme.Textbox,
+		NavBar = Library:CalGradient(Theme.NavBar, 9),
+		NavBarTrue = Theme.NavBar,
+		Theme = Library:CalGradient(Theme.Theme, 47),
+		ThemeTrue = Theme.Theme,
+	}
+
+	for i, v in next, ThemeInstances.Main do
+		pcall(function()
+			v.Color = ThemeColor.Main
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.Main
+		end)
+	end
+
+	for i, v in next, ThemeInstances.MainTrue do
+		pcall(function()
+			v.Color = ThemeColor.MainTrue
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.MainTrue
+		end)
+	end
+
+	for i, v in next, ThemeInstances.Secondary do
+		pcall(function()
+			v.Color = ThemeColor.Secondary
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.Secondary
+		end)
+	end
+
+	for i, v in next, ThemeInstances.SecondaryTrue do
+		pcall(function()
+			v.Color = ThemeColor.SecondaryTrue
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.SecondaryTrue
+		end)
+	end
+
+	for i, v in next, ThemeInstances.Tertiary do
+		pcall(function()
+			v.Color = ThemeColor.Tertiary
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.Tertiary
+		end)
+	end
+
+	for i, v in next, ThemeInstances.TertiaryTrue do
+		pcall(function()
+			v.Color = ThemeColor.TertiaryTrue
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.TertiaryTrue
+		end)
+	end
+
+	for i, v in next, ThemeInstances.Text do
+		pcall(function()
+			v.TextColor3 = ThemeColor.Text
+		end)
+	end
+
+	for i, v in next, ThemeInstances.PlaceholderText do
+		pcall(function()
+			v.PlaceholderColor3 = ThemeColor.PlaceholderText
+		end)
+	end
+
+	for i, v in next, ThemeInstances.Textbox do
+		pcall(function()
+			v.Color = ThemeColor.Textbox
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.Textbox
+		end)
+	end
+
+	for i, v in next, ThemeInstances.NavBar do
+		pcall(function()
+			v.Color = ThemeColor.NavBar
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.NavBar
+		end)
+	end
+
+	for i, v in next, ThemeInstances.Theme do
+		pcall(function()
+			v.Color = ThemeColor.Theme
+		end)
+		pcall(function()
+			v.BackgroundColor3 = ThemeColor.Theme
+		end)
+	end
+
+	for i, v in next, ThemeInstances.ThemeTrue do
+		pcall(function()
+			if v:FindFirstChild("ToggleVal").Value == true then
+				v.BackgroundColor3 = ThemeColor.ThemeTrue
+			end
+		end)
+	end
+
+	task.spawn(function()
+		task.wait(0.2)
+
+		for i, v in next, ThemeInstances.ThemeTrue do
+			pcall(function()
+				if v:FindFirstChild("ToggleVal").Value == true then
+					v.BackgroundColor3 = ThemeColor.ThemeTrue
+				end
+			end)
+		end
+	end)
+end
+
 function Library:Create(options)
 	options = Library:PlaceDefaults({
 		Name = "Vision UI Lib v2",
@@ -340,7 +548,10 @@ function Library:Create(options)
 		Gui["5"]["BorderSizePixel"] = 0
 		Gui["5"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		Gui["5"]["TextSize"] = 14
-		Gui["5"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Gui["5"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Gui["5"]
+
 		Gui["5"]["Size"] = UDim2.new(0, 89, 0, 40)
 		Gui["5"]["Text"] = [[14:12]]
 		Gui["5"]["Name"] = [[Time]]
@@ -395,7 +606,9 @@ function Library:Create(options)
 		Gui["16"]["AutoButtonColor"] = false
 		Gui["16"]["TextSize"] = 14
 		Gui["16"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-		Gui["16"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Gui["16"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Gui["16"]
 		Gui["16"]["Size"] = UDim2.new(0, 18, 0, 40)
 		Gui["16"]["Name"] = [[RightControl]]
 		Gui["16"]["Text"] = [[>]]
@@ -406,10 +619,9 @@ function Library:Create(options)
 		-- StarterGui.Vision Lib v2.GuiFrame.NavBar.UIGradient
 		Gui["17"] = Instance.new("UIGradient", Gui["3"])
 		Gui["17"]["Rotation"] = 90
-		Gui["17"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(36, 36, 36)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25)),
-		})
+		Gui["17"]["Color"] = ThemeColor.NavBar
+
+		ThemeInstances["NavBar"][#ThemeInstances["NavBar"] + 1] = Gui["17"]
 
 		-- StarterGui.Vision Lib v2.GuiFrame.MainFrame
 		Gui["18"] = Instance.new("Frame", Gui["2"])
@@ -426,18 +638,23 @@ function Library:Create(options)
 		-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.UIGradient
 		Gui["1a"] = Instance.new("UIGradient", Gui["18"])
 		Gui["1a"]["Rotation"] = 90
-		Gui["1a"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(46, 46, 46)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(40, 40, 40)),
-		})
+		Gui["1a"]["Color"] = ThemeColor.Main
+
+		ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Gui["1a"]
 
 		-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Seperator
 		Gui["1b"] = Instance.new("Frame", Gui["18"])
 		Gui["1b"]["ZIndex"] = 2
 		Gui["1b"]["BorderSizePixel"] = 0
-		Gui["1b"]["BackgroundColor3"] = Color3.fromRGB(55, 55, 55)
+		Gui["1b"]["BackgroundColor3"] = ThemeColor.Textbox
+
+		ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Gui["1b"]
+
 		Gui["1b"]["Size"] = UDim2.new(0, 496, 0, 2)
-		Gui["1b"]["BorderColor3"] = Color3.fromRGB(51, 51, 51)
+		Gui["1b"]["BorderColor3"] = ThemeColor.Textbox
+
+		ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Gui["1b"]
+
 		Gui["1b"]["Position"] = UDim2.new(0, 0, 0, 33)
 		Gui["1b"]["Name"] = [[Seperator]]
 
@@ -447,7 +664,9 @@ function Library:Create(options)
 		Gui["1c"]["TextXAlignment"] = Enum.TextXAlignment.Left
 		Gui["1c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		Gui["1c"]["TextSize"] = 15
-		Gui["1c"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Gui["1c"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Gui["1c"]
 		Gui["1c"]["Size"] = UDim2.new(0, 212, 0, 27)
 		Gui["1c"]["Text"] = [[Home Tab]]
 		Gui["1c"]["Name"] = [[Title]]
@@ -565,10 +784,9 @@ function Library:Create(options)
 		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.UIGradient
 		StartAnimation["93"] = Instance.new("UIGradient", StartAnimation["92"])
 		StartAnimation["93"]["Rotation"] = 90
-		StartAnimation["93"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(46, 46, 46)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(40, 40, 40)),
-		})
+		StartAnimation["93"]["Color"] = ThemeColor.Main
+
+		ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = StartAnimation["93"]
 
 		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.UICorner
 		StartAnimation["94"] = Instance.new("UICorner", StartAnimation["92"])
@@ -581,7 +799,9 @@ function Library:Create(options)
 		StartAnimation["95"]["TextXAlignment"] = Enum.TextXAlignment.Left
 		StartAnimation["95"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		StartAnimation["95"]["TextSize"] = 20
-		StartAnimation["95"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["95"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = StartAnimation["95"]
 		StartAnimation["95"]["Size"] = UDim2.new(0, 255, 0, 32)
 		StartAnimation["95"]["Text"] = options.Name
 		StartAnimation["95"]["Name"] = [[Title]]
@@ -597,7 +817,9 @@ function Library:Create(options)
 		StartAnimation["96"]["TextYAlignment"] = Enum.TextYAlignment.Top
 		StartAnimation["96"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		StartAnimation["96"]["TextSize"] = 11
-		StartAnimation["96"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["96"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = StartAnimation["96"]
 		StartAnimation["96"]["Size"] = UDim2.new(0, 255, 0, 18)
 		StartAnimation["96"]["Text"] = options.Footer
 		StartAnimation["96"]["Name"] = [[Title]]
@@ -608,7 +830,10 @@ function Library:Create(options)
 		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack
 		StartAnimation["97"] = Instance.new("Frame", StartAnimation["92"])
 		StartAnimation["97"]["ZIndex"] = 2
-		StartAnimation["97"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["97"]["BackgroundColor3"] = ThemeColor.Textbox
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = StartAnimation["97"]
+
 		StartAnimation["97"]["Size"] = UDim2.new(0, 285, 0, 6)
 		StartAnimation["97"]["Position"] = UDim2.new(0.03870967775583267, 0, 0.942219614982605, 0)
 		StartAnimation["97"]["Name"] = [[LoadBack]]
@@ -620,7 +845,7 @@ function Library:Create(options)
 		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack.LoadFront
 		StartAnimation["99"] = Instance.new("Frame", StartAnimation["97"])
 		StartAnimation["99"]["ZIndex"] = 2
-		StartAnimation["99"]["BackgroundColor3"] = Color3.fromRGB(191, 191, 191)
+		StartAnimation["99"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		StartAnimation["99"]["Size"] = UDim2.new(0.035087719559669495, 0, 1, 0)
 		StartAnimation["99"]["Position"] = UDim2.new(-0.007017544005066156, 0, 0, 0)
 		StartAnimation["99"]["Name"] = [[LoadFront]]
@@ -631,10 +856,9 @@ function Library:Create(options)
 
 		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.LoadBack.LoadFront.UIGradient
 		StartAnimation["9b"] = Instance.new("UIGradient", StartAnimation["99"])
-		StartAnimation["9b"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99)),
-		})
+		StartAnimation["9b"]["Color"] = ThemeColor.Tertiary
+
+		ThemeInstances["Tertiary"][#ThemeInstances["Tertiary"] + 1] = StartAnimation["9b"]
 
 		-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.CharAva
 		StartAnimation["9c"] = Instance.new("ImageLabel", StartAnimation["92"])
@@ -663,7 +887,9 @@ function Library:Create(options)
 		StartAnimation["9e"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		StartAnimation["9e"]["TextSize"] = 19
 		StartAnimation["9e"]["TextTransparency"] = 1
-		StartAnimation["9e"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		StartAnimation["9e"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = StartAnimation["9e"]
 		StartAnimation["9e"]["Size"] = UDim2.new(0, 282, 0, 70)
 		StartAnimation["9e"]["Text"] = [[Welcome, ]] .. Players.LocalPlayer.Name
 		StartAnimation["9e"]["Name"] = [[WelcomeText]]
@@ -718,7 +944,10 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.StartAnimationFrame.Main.Key
 					KeySystem["a0"] = Instance.new("Frame", StartAnimation["92"])
 					KeySystem["a0"]["ZIndex"] = 3
-					KeySystem["a0"]["BackgroundColor3"] = Color3.fromRGB(149, 149, 149)
+					KeySystem["a0"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = KeySystem["a0"]
+
 					KeySystem["a0"]["Size"] = UDim2.new(0, 253, 0, 20)
 					KeySystem["a0"]["Position"] = UDim2.new(0, 28, 0, 33)
 					KeySystem["a0"]["Name"] = [[Key]]
@@ -729,26 +958,28 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.UIStroke
 					KeySystem["a2"] = Instance.new("UIStroke", KeySystem["a0"])
-					KeySystem["a2"]["Color"] = Color3.fromRGB(43, 43, 43)
+					KeySystem["a2"]["Color"] = ThemeColor.MainTrue
 
-					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.UIGradient
-					KeySystem["a3"] = Instance.new("UIGradient", KeySystem["a0"])
-					KeySystem["a3"]["Rotation"] = 270
-					KeySystem["a3"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(86, 86, 86)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(89, 89, 89)),
-					})
+					ThemeInstances["MainTrue"][#ThemeInstances["MainTrue"] + 1] = KeySystem["a2"]
 
 					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.Key.TextBox
 					KeySystem["a4"] = Instance.new("TextBox", KeySystem["a0"])
 					KeySystem["a4"]["CursorPosition"] = -1
-					KeySystem["a4"]["PlaceholderColor3"] = Color3.fromRGB(127, 127, 127)
+					KeySystem["a4"]["PlaceholderColor3"] = ThemeColor.PlaceholderText
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = KeySystem["a4"]
+
 					KeySystem["a4"]["ZIndex"] = 3
 					KeySystem["a4"]["RichText"] = true
-					KeySystem["a4"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["a4"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = KeySystem["a4"]
 					KeySystem["a4"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					KeySystem["a4"]["TextSize"] = 11
-					KeySystem["a4"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					KeySystem["a4"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = KeySystem["a4"]
+
 					KeySystem["a4"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
 					KeySystem["a4"]["PlaceholderText"] = [[Key | e.g abc123]]
 					KeySystem["a4"]["Size"] = UDim2.new(0.8999999761581421, 0, 0.8999999761581421, 0)
@@ -767,7 +998,9 @@ function Library:Create(options)
 					KeySystem["a6"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					KeySystem["a6"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					KeySystem["a6"]["TextSize"] = 11
-					KeySystem["a6"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["a6"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = KeySystem["a6"]
 					KeySystem["a6"]["Size"] = UDim2.new(0, 158, 0, 16)
 					KeySystem["a6"]["Text"] = [[Key System]]
 					KeySystem["a6"]["Name"] = [[KeySystemTitle]]
@@ -778,10 +1011,12 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.KeySystemNote
 					KeySystem["a8"] = Instance.new("Frame", StartAnimation["92"])
 					KeySystem["a8"]["ZIndex"] = 3
-					KeySystem["a8"]["BackgroundColor3"] = Color3.fromRGB(27, 27, 27)
+					KeySystem["a8"]["BackgroundColor3"] = ThemeColor.TertiaryTrue
 					KeySystem["a8"]["Size"] = UDim2.new(0, 215, 0, 50)
 					KeySystem["a8"]["Position"] = UDim2.new(0, 49, 0, 61)
 					KeySystem["a8"]["Name"] = [[KeySystemNote]]
+
+					ThemeInstances["TertiaryTrue"][#ThemeInstances["TertiaryTrue"] + 1] = KeySystem["a8"]
 
 					-- StarterGui.Vision Lib v2.KeySystemFrame.Main.KeySystemNote.TextLabel
 					KeySystem["a9"] = Instance.new("TextLabel", KeySystem["a8"])
@@ -791,7 +1026,10 @@ function Library:Create(options)
 					KeySystem["a9"]["TextYAlignment"] = Enum.TextYAlignment.Top
 					KeySystem["a9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					KeySystem["a9"]["TextSize"] = 9
-					KeySystem["a9"]["TextColor3"] = Color3.fromRGB(205, 205, 205)
+					KeySystem["a9"]["TextColor3"] = ThemeColor.PlaceholderText
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = KeySystem["a9"]
+
 					KeySystem["a9"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
 					KeySystem["a9"]["Size"] = UDim2.new(0.949999988079071, 0, 0.800000011920929, 0)
 					KeySystem["a9"]["Text"] = [[Note: Join our discord to get the key!]]
@@ -816,7 +1054,7 @@ function Library:Create(options)
 							KeySystem["a0"].MouseEnter:Connect(function()
 								Library:Tween(KeySystem["a2"], {
 									Length = 0.2,
-									Goal = { Color = Color3.fromRGB(93, 93, 93) },
+									Goal = { Color = ThemeColor.SecondaryTrue },
 								})
 
 								KeySystem.KeyTextboxHover = true
@@ -829,7 +1067,7 @@ function Library:Create(options)
 							KeySystem["a0"].MouseLeave:Connect(function()
 								Library:Tween(KeySystem["a2"], {
 									Length = 0.2,
-									Goal = { Color = Color3.fromRGB(43, 43, 43) },
+									Goal = { Color = ThemeColor.MainTrue },
 								})
 
 								KeySystem.KeyTextboxHover = false
@@ -878,7 +1116,7 @@ function Library:Create(options)
 									else
 										Library:Tween(KeySystem["a2"], {
 											Length = 0.2,
-											Goal = { Color = Color3.fromRGB(43, 43, 43) },
+											Goal = { Color = ThemeColor.SecondaryTrue },
 										})
 									end
 								end
@@ -955,7 +1193,9 @@ function Library:Create(options)
 					KeySystem["ab"]["AutoButtonColor"] = false
 					KeySystem["ab"]["TextSize"] = 12
 					KeySystem["ab"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-					KeySystem["ab"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["ab"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = KeySystem["ab"]
 					KeySystem["ab"]["Size"] = UDim2.new(0, 100, 0, 19)
 					KeySystem["ab"]["Name"] = [[DiscordServerButton]]
 					KeySystem["ab"]["Text"] = [[Copy discord invite]]
@@ -968,7 +1208,9 @@ function Library:Create(options)
 					KeySystem["ac"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					KeySystem["ac"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255)
 					KeySystem["ac"]["TextSize"] = 9
-					KeySystem["ac"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					KeySystem["ac"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = KeySystem["ac"]
 					KeySystem["ac"]["Size"] = UDim2.new(1, 0, 1, 0)
 					KeySystem["ac"]["Text"] = [[Copy discord invite]]
 					KeySystem["ac"]["Font"] = Enum.Font.GothamMedium
@@ -1354,10 +1596,9 @@ function Library:Create(options)
 				-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.UIGradient
 				Section["1f"] = Instance.new("UIGradient", Section["1e"])
 				Section["1f"]["Rotation"] = 90
-				Section["1f"]["Color"] = ColorSequence.new({
-					ColorSequenceKeypoint.new(0.000, Color3.fromRGB(32, 32, 32)),
-					ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25)),
-				})
+				Section["1f"]["Color"] = ThemeColor.Secondary
+
+				ThemeInstances["Secondary"][#ThemeInstances["Secondary"] + 1] = Section["1f"]
 
 				-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionLabel
 				Section["20"] = Instance.new("TextLabel", Section["1e"])
@@ -1365,7 +1606,9 @@ function Library:Create(options)
 				Section["20"]["TextXAlignment"] = Enum.TextXAlignment.Left
 				Section["20"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 				Section["20"]["TextSize"] = 12
-				Section["20"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+				Section["20"]["TextColor3"] = ThemeColor.Text
+
+				ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Section["20"]
 				Section["20"]["Size"] = UDim2.new(0, 408, 0, 18)
 				Section["20"]["Text"] = options.Name
 				Section["20"]["Name"] = [[SectionLabel]]
@@ -1397,7 +1640,9 @@ function Library:Create(options)
 
 				-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.UIStroke
 				Section["7b"] = Instance.new("UIStroke", Section["1e"])
-				Section["7b"]["Color"] = Color3.fromRGB(43, 43, 43)
+				Section["7b"]["Color"] = ThemeColor.SecondaryTrue
+
+				ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Section["7b"]
 			end
 
 			table.insert(
@@ -1434,11 +1679,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Button.UIGradient
 					Button["76"] = Instance.new("UIGradient", Button["74"])
-					Button["76"]["Rotation"] = 270
-					Button["76"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					Button["76"]["Rotation"] = 90
+					Button["76"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Button["76"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Button.Label
 					Button["77"] = Instance.new("TextLabel", Button["74"])
@@ -1446,7 +1690,9 @@ function Library:Create(options)
 					Button["77"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Button["77"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Button["77"]["TextSize"] = 13
-					Button["77"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Button["77"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Button["77"]
 					Button["77"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Button["77"]["Text"] = options.Name
 					Button["77"]["Name"] = [[Label]]
@@ -1456,7 +1702,9 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Button.UIStroke
 					Button["78"] = Instance.new("UIStroke", Button["74"])
-					Button["78"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Button["78"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Button["78"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Button.ImageLabel
 					Button["79"] = Instance.new("ImageLabel", Button["74"])
@@ -1475,7 +1723,7 @@ function Library:Create(options)
 						Button["74"].MouseEnter:Connect(function()
 							Library:Tween(Button["78"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 
 							Button.Hover = true
@@ -1488,7 +1736,7 @@ function Library:Create(options)
 						Button["74"].MouseLeave:Connect(function()
 							Library:Tween(Button["78"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 
 							Button.Hover = false
@@ -1526,12 +1774,12 @@ function Library:Create(options)
 								if Button.Hover then
 									Library:Tween(Button["78"], {
 										Length = 0.2,
-										Goal = { Color = Color3.fromRGB(65, 65, 65) },
+										Goal = { Color = ThemeColor.MainTrue },
 									})
 								else
 									Library:Tween(Button["78"], {
 										Length = 0.2,
-										Goal = { Color = Color3.fromRGB(43, 43, 43) },
+										Goal = { Color = ThemeColor.SecondaryTrue },
 									})
 								end
 							end
@@ -1619,18 +1867,20 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Toggle.UIGradient
 					Toggle["26"] = Instance.new("UIGradient", Toggle["24"])
-					Toggle["26"]["Rotation"] = 270
-					Toggle["26"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					Toggle["26"]["Rotation"] = 90
+					Toggle["26"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Toggle["26"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Toggle.Toggle
 					Toggle["27"] = Instance.new("TextButton", Toggle["24"])
 					Toggle["27"]["BorderSizePixel"] = 0
 					Toggle["27"]["AutoButtonColor"] = false
 					Toggle["27"]["TextSize"] = 14
-					Toggle["27"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Toggle["27"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Toggle["27"]
+
 					Toggle["27"]["TextColor3"] = Color3.fromRGB(0, 0, 0)
 					Toggle["27"]["Size"] = UDim2.new(0, 38, 0, 18)
 					Toggle["27"]["Name"] = [[Toggle]]
@@ -1641,13 +1891,6 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Toggle.Toggle.UICorner
 					Toggle["28"] = Instance.new("UICorner", Toggle["27"])
 					Toggle["28"]["CornerRadius"] = UDim.new(2, 0)
-
-					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Toggle.Toggle.UIGradient
-					Toggle["29"] = Instance.new("UIGradient", Toggle["27"])
-					Toggle["29"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99)),
-					})
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Toggle.Toggle.Indicator
 					Toggle["2a"] = Instance.new("TextLabel", Toggle["27"])
@@ -1660,6 +1903,12 @@ function Library:Create(options)
 					Toggle["2a"]["Font"] = Enum.Font.SourceSans
 					Toggle["2a"]["Position"] = UDim2.new(0, 0, 0, -1)
 
+					ThemeInstances["ThemeTrue"][#ThemeInstances["ThemeTrue"] + 1] = Toggle["2a"]
+
+					Toggle["29"] = Instance.new("BoolValue", Toggle["2a"])
+					Toggle["29"]["Name"] = [[ToggleVal]]
+					Toggle["29"]["Value"] = options.Default
+
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Toggle.Toggle.Indicator.UICorner
 					Toggle["2b"] = Instance.new("UICorner", Toggle["2a"])
 					Toggle["2b"]["CornerRadius"] = UDim.new(1, 0)
@@ -1670,7 +1919,9 @@ function Library:Create(options)
 					Toggle["2d"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Toggle["2d"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Toggle["2d"]["TextSize"] = 13
-					Toggle["2d"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Toggle["2d"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Toggle["2d"]
 					Toggle["2d"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Toggle["2d"]["Text"] = options.Name
 					Toggle["2d"]["Name"] = [[Label]]
@@ -1680,7 +1931,9 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Toggle.UIStroke
 					Toggle["2e"] = Instance.new("UIStroke", Toggle["24"])
-					Toggle["2e"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Toggle["2e"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Toggle["2e"]
 				end
 
 				table.insert(
@@ -1697,7 +1950,7 @@ function Library:Create(options)
 						Toggle["24"].MouseEnter:Connect(function()
 							Library:Tween(Toggle["2e"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 
 							Library:PlaySound(LibSettings.HoverSound)
@@ -1710,7 +1963,7 @@ function Library:Create(options)
 						Toggle["24"].MouseLeave:Connect(function()
 							Library:Tween(Toggle["2e"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 
 							Toggle.Hover = false
@@ -1732,12 +1985,12 @@ function Library:Create(options)
 								if Toggle.Hover then
 									Library:Tween(Toggle["2e"], {
 										Length = 0.2,
-										Goal = { Color = Color3.fromRGB(65, 65, 65) },
+										Goal = { Color = ThemeColor.MainTrue },
 									})
 								else
 									Library:Tween(Toggle["2e"], {
 										Length = 0.2,
-										Goal = { Color = Color3.fromRGB(43, 43, 43) },
+										Goal = { Color = ThemeColor.SecondaryTrue },
 									})
 								end
 							end
@@ -1779,6 +2032,7 @@ function Library:Create(options)
 					function Toggle:Toggle(toggle)
 						if toggle then
 							Toggle.Bool = true
+							Toggle["29"]["Value"] = true
 
 							task.spawn(function()
 								Library:Tween(Toggle["2a"], {
@@ -1788,11 +2042,12 @@ function Library:Create(options)
 
 								Library:Tween(Toggle["2a"], {
 									Length = 0.2,
-									Goal = { BackgroundColor3 = Color3.fromRGB(105, 53, 189) },
+									Goal = { BackgroundColor3 = ThemeColor.ThemeTrue },
 								})
 							end)
 						else
 							Toggle.Bool = false
+							Toggle["29"]["Value"] = false
 
 							task.spawn(function()
 								Library:Tween(Toggle["2a"], {
@@ -1871,11 +2126,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.UIGradient
 					Slider["38"] = Instance.new("UIGradient", Slider["36"])
-					Slider["38"]["Rotation"] = 270
-					Slider["38"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					Slider["38"]["Rotation"] = 90
+					Slider["38"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Slider["38"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Label
 					Slider["39"] = Instance.new("TextLabel", Slider["36"])
@@ -1883,7 +2137,9 @@ function Library:Create(options)
 					Slider["39"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Slider["39"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Slider["39"]["TextSize"] = 13
-					Slider["39"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Slider["39"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Slider["39"]
 					Slider["39"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Slider["39"]["Text"] = options.Name
 					Slider["39"]["Name"] = [[Label]]
@@ -1893,7 +2149,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Slider
 					Slider["3a"] = Instance.new("Frame", Slider["36"])
-					Slider["3a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+					Slider["3a"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Slider["3a"]
+
 					Slider["3a"]["Size"] = UDim2.new(0, 136, 0, 10)
 					Slider["3a"]["Position"] = UDim2.new(0, 229, 0, 12)
 					Slider["3a"]["Name"] = [[Slider]]
@@ -1917,36 +2176,42 @@ function Library:Create(options)
 					Slider["3e"] = Instance.new("UIGradient", Slider["3c"])
 					Slider["3e"]["Name"] = [[ThemeColorGradient]]
 					Slider["3e"]["Rotation"] = 90
-					Slider["3e"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185)),
-					})
+					Slider["3e"]["Color"] = ThemeColor.Theme
 
-					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.Slider.UIGradient
-					Slider["3f"] = Instance.new("UIGradient", Slider["3a"])
-					Slider["3f"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99)),
-					})
+					ThemeInstances["Theme"][#ThemeInstances["Theme"] + 1] = Slider["3e"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.UIStroke
 					Slider["40"] = Instance.new("UIStroke", Slider["36"])
-					Slider["40"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Slider["40"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Slider["40"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.TextBox
 					Slider["3g"] = Instance.new("TextBox", Slider["36"])
 					Slider["3g"]["CursorPosition"] = -1
-					Slider["3g"]["PlaceholderColor3"] = Color3.fromRGB(127, 127, 127)
+					Slider["3g"]["PlaceholderColor3"] = ThemeColor.PlaceholderText
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Slider["3g"]
+
 					Slider["3g"]["RichText"] = true
-					Slider["3g"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Slider["3g"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Slider["3g"]
 					Slider["3g"]["TextSize"] = 11
-					Slider["3g"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Slider["3g"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Slider["3g"]
+
 					Slider["3g"]["PlaceholderText"] = [[]]
 					Slider["3g"]["Size"] = UDim2.new(0, 45, 0, 18)
 					Slider["3g"]["Text"] = [[]]
 					Slider["3g"]["Position"] = UDim2.new(0, 373, 0, 6)
 					Slider["3g"]["Font"] = Enum.Font.Gotham
 					Slider["3g"]["BorderSizePixel"] = 0
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Slider.TextBox
+					Slider["41"] = Instance.new("UICorner", Slider["3g"])
+					Slider["41"]["CornerRadius"] = UDim.new(0, 4)
 				end
 
 				table.insert(
@@ -1968,7 +2233,7 @@ function Library:Create(options)
 
 							Library:Tween(Slider["40"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 						end)
 					)
@@ -1980,7 +2245,7 @@ function Library:Create(options)
 
 							Library:Tween(Slider["40"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 						end)
 					)
@@ -2173,11 +2438,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.UIGradient
 					Keybind["5b"] = Instance.new("UIGradient", Keybind["59"])
-					Keybind["5b"]["Rotation"] = 270
-					Keybind["5b"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					Keybind["5b"]["Rotation"] = 90
+					Keybind["5b"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Keybind["5b"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.Label
 					Keybind["5c"] = Instance.new("TextLabel", Keybind["59"])
@@ -2185,7 +2449,9 @@ function Library:Create(options)
 					Keybind["5c"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Keybind["5c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Keybind["5c"]["TextSize"] = 13
-					Keybind["5c"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["5c"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Keybind["5c"]
 					Keybind["5c"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Keybind["5c"]["Text"] = options.Name
 					Keybind["5c"]["Name"] = [[Label]]
@@ -2197,8 +2463,13 @@ function Library:Create(options)
 					Keybind["5d"] = Instance.new("TextButton", Keybind["59"])
 					Keybind["5d"]["AutoButtonColor"] = false
 					Keybind["5d"]["TextSize"] = 11
-					Keybind["5d"]["BackgroundColor3"] = Color3.fromRGB(195, 195, 195)
-					Keybind["5d"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["5d"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Keybind["5d"]
+
+					Keybind["5d"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Keybind["5d"]
 					Keybind["5d"]["Size"] = UDim2.new(0, 80, 0, 21)
 					Keybind["5d"]["Text"] = [[]]
 					Keybind["5d"]["Font"] = Enum.Font.Gotham
@@ -2208,23 +2479,20 @@ function Library:Create(options)
 					Keybind["5e"] = Instance.new("UICorner", Keybind["5d"])
 					Keybind["5e"]["CornerRadius"] = UDim.new(0, 4)
 
-					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.TextButton.UIGradient
-					Keybind["5f"] = Instance.new("UIGradient", Keybind["5d"])
-					Keybind["5f"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(75, 75, 75)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(99, 99, 99)),
-					})
-
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.UIStroke
 					Keybind["5g"] = Instance.new("UIStroke", Keybind["59"])
-					Keybind["5g"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Keybind["5g"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Keybind["5g"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Keybind.TextButton.TextLabel
 					Keybind["60"] = Instance.new("TextLabel", Keybind["5d"])
 					Keybind["60"]["BorderSizePixel"] = 0
 					Keybind["60"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Keybind["60"]["TextSize"] = 10
-					Keybind["60"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Keybind["60"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Keybind["60"]
 					Keybind["60"]["Size"] = UDim2.new(0, 79, 0, 21)
 					Keybind["60"]["Text"] = [[LeftShift]]
 					Keybind["60"]["Font"] = Enum.Font.Gotham
@@ -2249,7 +2517,7 @@ function Library:Create(options)
 						Keybind["59"].MouseEnter:Connect(function()
 							Library:Tween(Keybind["5g"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 
 							Library:PlaySound(LibSettings.HoverSound)
@@ -2261,7 +2529,7 @@ function Library:Create(options)
 						Keybind["59"].MouseLeave:Connect(function()
 							Library:Tween(Keybind["5g"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 						end)
 					)
@@ -2373,11 +2641,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.UIGradient
 					Textbox["30"] = Instance.new("UIGradient", Textbox["2e"])
-					Textbox["30"]["Rotation"] = 270
-					Textbox["30"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					Textbox["30"]["Rotation"] = 90
+					Textbox["30"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Textbox["30"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Label
 					Textbox["31"] = Instance.new("TextLabel", Textbox["2e"])
@@ -2385,7 +2652,9 @@ function Library:Create(options)
 					Textbox["31"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Textbox["31"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Textbox["31"]["TextSize"] = 13
-					Textbox["31"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Textbox["31"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Textbox["31"]
 					Textbox["31"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Textbox["31"]["Text"] = options.Name
 					Textbox["31"]["Name"] = [[Label]]
@@ -2395,7 +2664,9 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.UIStroke
 					Textbox["32"] = Instance.new("UIStroke", Textbox["2e"])
-					Textbox["32"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Textbox["32"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Textbox["32"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Frame
 					Textbox["33"] = Instance.new("Frame", Textbox["2e"])
@@ -2406,11 +2677,19 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox1.Frame.TextBox
 					Textbox["34"] = Instance.new("TextBox", Textbox["33"])
-					Textbox["34"]["PlaceholderColor3"] = Color3.fromRGB(127, 127, 127)
+					Textbox["34"]["PlaceholderColor3"] = ThemeColor.PlaceholderText
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Textbox["34"]
+
 					Textbox["34"]["RichText"] = true
-					Textbox["34"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Textbox["34"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Textbox["34"]
 					Textbox["34"]["TextSize"] = 11
-					Textbox["34"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Textbox["34"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Textbox["34"]
+
 					Textbox["34"]["Size"] = UDim2.new(0, 92, 0, 21)
 					Textbox["34"]["Text"] = [[]]
 					Textbox["34"]["Position"] = UDim2.new(0.7612293362617493, 0, 0.1764705926179886, 0)
@@ -2450,7 +2729,7 @@ function Library:Create(options)
 						Textbox["2e"].MouseEnter:Connect(function()
 							Library:Tween(Textbox["32"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 
 							Library:PlaySound(LibSettings.HoverSound)
@@ -2462,7 +2741,7 @@ function Library:Create(options)
 						Textbox["2e"].MouseLeave:Connect(function()
 							Library:Tween(Textbox["32"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 						end)
 					)
@@ -2614,11 +2893,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.UIGradient
 					BigTextbox["68"] = Instance.new("UIGradient", BigTextbox["66"])
-					BigTextbox["68"]["Rotation"] = 270
-					BigTextbox["68"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					BigTextbox["68"]["Rotation"] = 90
+					BigTextbox["68"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = BigTextbox["68"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Label
 					BigTextbox["69"] = Instance.new("TextLabel", BigTextbox["66"])
@@ -2626,7 +2904,9 @@ function Library:Create(options)
 					BigTextbox["69"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					BigTextbox["69"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					BigTextbox["69"]["TextSize"] = 13
-					BigTextbox["69"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					BigTextbox["69"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = BigTextbox["69"]
 					BigTextbox["69"]["Size"] = UDim2.new(0, 301, 0, 33)
 					BigTextbox["69"]["Text"] = options.Name
 					BigTextbox["69"]["Name"] = [[Label]]
@@ -2636,11 +2916,16 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.UIStroke
 					BigTextbox["6a"] = Instance.new("UIStroke", BigTextbox["66"])
-					BigTextbox["6a"]["Color"] = Color3.fromRGB(43, 43, 43)
+					BigTextbox["6a"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = BigTextbox["6a"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1
 					BigTextbox["6b"] = Instance.new("Frame", BigTextbox["66"])
-					BigTextbox["6b"]["BackgroundColor3"] = Color3.fromRGB(149, 149, 149)
+					BigTextbox["6b"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = BigTextbox["6b"]
+
 					BigTextbox["6b"]["Size"] = UDim2.new(0, 407, 0, 27)
 					BigTextbox["6b"]["Position"] = UDim2.new(0, 8, 0, 32)
 					BigTextbox["6b"]["Name"] = [[Option 1]]
@@ -2651,24 +2936,26 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.UIStroke
 					BigTextbox["6d"] = Instance.new("UIStroke", BigTextbox["6b"])
-					BigTextbox["6d"]["Color"] = Color3.fromRGB(43, 43, 43)
+					BigTextbox["6d"]["Color"] = ThemeColor.SecondaryTrue
 
-					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.UIGradient
-					BigTextbox["6e"] = Instance.new("UIGradient", BigTextbox["6b"])
-					BigTextbox["6e"]["Rotation"] = 270
-					BigTextbox["6e"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(86, 86, 86)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(89, 89, 89)),
-					})
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = BigTextbox["6d"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Textbox2.Option 1.TextBox
 					BigTextbox["6f"] = Instance.new("TextBox", BigTextbox["6b"])
-					BigTextbox["6f"]["PlaceholderColor3"] = Color3.fromRGB(127, 127, 127)
+					BigTextbox["6f"]["PlaceholderColor3"] = ThemeColor.PlaceholderText
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = BigTextbox["6f"]
+
 					BigTextbox["6f"]["RichText"] = true
-					BigTextbox["6f"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					BigTextbox["6f"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = BigTextbox["6f"]
 					BigTextbox["6f"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					BigTextbox["6f"]["TextSize"] = 11
-					BigTextbox["6f"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					BigTextbox["6f"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = BigTextbox["6f"]
+
 					BigTextbox["6f"]["PlaceholderText"] = options.PlaceHolderText
 					BigTextbox["6f"]["Size"] = UDim2.new(0, 389, 0, 21)
 					BigTextbox["6f"]["Text"] = [[]]
@@ -2718,7 +3005,7 @@ function Library:Create(options)
 						BigTextbox["66"].MouseEnter:Connect(function()
 							Library:Tween(BigTextbox["6a"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 
 							Library:PlaySound(LibSettings.HoverSound)
@@ -2730,7 +3017,7 @@ function Library:Create(options)
 						BigTextbox["66"].MouseLeave:Connect(function()
 							Library:Tween(BigTextbox["6a"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 						end)
 					)
@@ -2880,7 +3167,9 @@ function Library:Create(options)
 					Dropdown["48"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Dropdown["48"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Dropdown["48"]["TextSize"] = 13
-					Dropdown["48"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["48"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Dropdown["48"]
 					Dropdown["48"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Dropdown["48"]["Text"] = options.Name
 					Dropdown["48"]["Name"] = [[Label]]
@@ -2900,7 +3189,9 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.UIStroke
 					Dropdown["4a"] = Instance.new("UIStroke", Dropdown["46"])
-					Dropdown["4a"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Dropdown["4a"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Dropdown["4a"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container
 					Dropdown["4b"] = Instance.new("Frame", Dropdown["46"])
@@ -2922,11 +3213,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.UIGradient
 					Dropdown["58"] = Instance.new("UIGradient", Dropdown["46"])
-					Dropdown["58"]["Rotation"] = 270
-					Dropdown["58"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					Dropdown["58"]["Rotation"] = 90
+					Dropdown["58"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Dropdown["58"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame
 					Dropdown["59"] = Instance.new("Frame", Dropdown["46"])
@@ -2945,21 +3235,35 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.TextLabel
 					Dropdown["5b"] = Instance.new("TextLabel", Dropdown["59"])
 					Dropdown["5b"]["BorderSizePixel"] = 0
-					Dropdown["5b"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Dropdown["5b"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Dropdown["5b"]
+
 					Dropdown["5b"]["TextSize"] = 9
-					Dropdown["5b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["5b"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Dropdown["5b"]
 					Dropdown["5b"]["Size"] = UDim2.new(0, 50, 0, 15)
 					Dropdown["5b"]["Font"] = Enum.Font.Gotham
+
+					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Frame.TextLabel.UICorner
+					Dropdown["5c"] = Instance.new("UICorner", Dropdown["5b"])
+					Dropdown["5c"]["CornerRadius"] = UDim.new(0, 4)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.TextBox
 					Dropdown["5e"] = Instance.new("TextBox", Dropdown["46"])
 					Dropdown["5e"]["CursorPosition"] = -1
-					Dropdown["5e"]["PlaceholderColor3"] = Color3.fromRGB(157, 157, 157)
+					Dropdown["5e"]["PlaceholderColor3"] = ThemeColor.PlaceholderText
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Dropdown["5e"]
+
 					Dropdown["5e"]["BorderSizePixel"] = 0
 					Dropdown["5e"]["TextSize"] = 9
 					Dropdown["5e"]["TextXAlignment"] = Enum.TextXAlignment.Left
-					Dropdown["5e"]["BackgroundColor3"] = Color3.fromRGB(37, 37, 37)
-					Dropdown["5e"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Dropdown["5e"]["BackgroundColor3"] = ThemeColor.SecondaryTrue
+					Dropdown["5e"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Dropdown["5e"]
 					Dropdown["5e"]["FontFace"] = Font.new(
 						[[rbxasset://fonts/families/GothamSSm.json]],
 						Enum.FontWeight.Regular,
@@ -2971,12 +3275,16 @@ function Library:Create(options)
 					Dropdown["5e"]["Text"] = [[]]
 					Dropdown["5e"]["Position"] = UDim2.new(0, 13, 0, 38)
 
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Dropdown["5e"]
+
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.TextBox.UIStroke
 					Dropdown["5f"] = Instance.new("UIStroke", Dropdown["5e"])
 					Dropdown["5f"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
-					Dropdown["5f"]["Color"] = Color3.fromRGB(36, 36, 36)
+					Dropdown["5f"]["Color"] = ThemeColor.SecondaryTrue
 					Dropdown["5f"]["LineJoinMode"] = Enum.LineJoinMode.Round
 					Dropdown["5f"]["Thickness"] = 7
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Dropdown["5f"]
 				end
 
 				table.insert(
@@ -2996,7 +3304,7 @@ function Library:Create(options)
 
 							Library:Tween(Dropdown["4a"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 						end)
 					)
@@ -3008,7 +3316,7 @@ function Library:Create(options)
 
 							Library:Tween(Dropdown["4a"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 						end)
 					)
@@ -3065,12 +3373,12 @@ function Library:Create(options)
 								if Dropdown.Hover then
 									Library:Tween(Dropdown["4a"], {
 										Length = 0.2,
-										Goal = { Color = Color3.fromRGB(65, 65, 65) },
+										Goal = { Color = ThemeColor.MainTrue },
 									})
 								else
 									Library:Tween(Dropdown["4a"], {
 										Length = 0.2,
-										Goal = { Color = Color3.fromRGB(43, 43, 43) },
+										Goal = { Color = ThemeColor.SecondaryTrue },
 									})
 								end
 
@@ -3142,7 +3450,10 @@ function Library:Create(options)
 						do
 							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1
 							DropdownOption["4d"] = Instance.new("Frame", Dropdown["4b"])
-							DropdownOption["4d"]["BackgroundColor3"] = Color3.fromRGB(149, 149, 149)
+							DropdownOption["4d"]["BackgroundColor3"] = ThemeColor.Textbox
+
+							ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = DropdownOption["4d"]
+
 							DropdownOption["4d"]["Size"] = UDim2.new(0, 407, 0, 27)
 							DropdownOption["4d"]["Position"] = UDim2.new(0, 7, 0, 22)
 							DropdownOption["4d"]["Name"] = tostring(DropdownOption.CallbackVal)
@@ -3158,7 +3469,9 @@ function Library:Create(options)
 							DropdownOption["4f"]["TextXAlignment"] = Enum.TextXAlignment.Left
 							DropdownOption["4f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 							DropdownOption["4f"]["TextSize"] = 13
-							DropdownOption["4f"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+							DropdownOption["4f"]["TextColor3"] = ThemeColor.Text
+
+							ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = DropdownOption["4f"]
 							DropdownOption["4f"]["Size"] = UDim2.new(0, 301, 0, 33)
 							DropdownOption["4f"]["Text"] = tostring(value)
 							DropdownOption["4f"]["Name"] = [[Label]]
@@ -3168,15 +3481,9 @@ function Library:Create(options)
 
 							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1.UIStroke
 							DropdownOption["50"] = Instance.new("UIStroke", DropdownOption["4d"])
-							DropdownOption["50"]["Color"] = Color3.fromRGB(43, 43, 43)
+							DropdownOption["50"]["Color"] = ThemeColor.MainTrue
 
-							-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Dropdown.Container.Option 1.UIGradient
-							DropdownOption["51"] = Instance.new("UIGradient", DropdownOption["4d"])
-							DropdownOption["51"]["Rotation"] = 270
-							DropdownOption["51"]["Color"] = ColorSequence.new({
-								ColorSequenceKeypoint.new(0.000, Color3.fromRGB(86, 86, 86)),
-								ColorSequenceKeypoint.new(1.000, Color3.fromRGB(89, 89, 89)),
-							})
+							ThemeInstances["MainTrue"][#ThemeInstances["MainTrue"] + 1] = DropdownOption["50"]
 						end
 
 						table.insert(
@@ -3187,7 +3494,7 @@ function Library:Create(options)
 
 								Library:Tween(DropdownOption["50"], {
 									Length = 0.5,
-									Goal = { Color = Color3.fromRGB(65, 65, 65) },
+									Goal = { Color = ThemeColor.SecondaryTrue },
 								})
 							end)
 						)
@@ -3199,7 +3506,7 @@ function Library:Create(options)
 
 								Library:Tween(DropdownOption["50"], {
 									Length = 0.5,
-									Goal = { Color = Color3.fromRGB(43, 43, 43) },
+									Goal = { Color = ThemeColor.MainTrue },
 								})
 							end)
 						)
@@ -3221,12 +3528,12 @@ function Library:Create(options)
 									if DropdownOption.Hover then
 										Library:Tween(DropdownOption["50"], {
 											Length = 0.2,
-											Goal = { Color = Color3.fromRGB(65, 65, 65) },
+											Goal = { Color = ThemeColor.MainTrue },
 										})
 									else
 										Library:Tween(DropdownOption["50"], {
 											Length = 0.2,
-											Goal = { Color = Color3.fromRGB(43, 43, 43) },
+											Goal = { Color = ThemeColor.SecondaryTrue },
 										})
 									end
 
@@ -3378,11 +3685,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.UIGradient
 					Label["7a"] = Instance.new("UIGradient", Label["78"])
-					Label["7a"]["Rotation"] = 270
-					Label["7a"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(28, 28, 28)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(32, 32, 32)),
-					})
+					Label["7a"]["Rotation"] = 90
+					Label["7a"]["Color"] = ThemeColor.Tertiary
+
+					ThemeInstances["Tertiary"][#ThemeInstances["Tertiary"] + 1] = Label["7a"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.Label
 					Label["7b"] = Instance.new("TextLabel", Label["78"])
@@ -3391,7 +3697,9 @@ function Library:Create(options)
 					Label["7b"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Label["7b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Label["7b"]["TextSize"] = 13
-					Label["7b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Label["7b"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Label["7b"]
 					Label["7b"]["Name"] = "Label"
 					Label["7b"]["Text"] = options.Name
 					Label["7b"]["Font"] = Enum.Font.GothamMedium
@@ -3401,7 +3709,9 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Label.UIStroke
 					Label["7c"] = Instance.new("UIStroke", Label["78"])
-					Label["7c"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Label["7c"]["Color"] = ThemeColor.MainTrue
+
+					ThemeInstances["MainTrue"][#ThemeInstances["MainTrue"] + 1] = Label["7c"]
 				end
 
 				table.insert(
@@ -3507,7 +3817,9 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.UIStroke
 					Colorpicker["4a"] = Instance.new("UIStroke", Colorpicker["7d"])
-					Colorpicker["4a"]["Color"] = Color3.fromRGB(43, 43, 43)
+					Colorpicker["4a"]["Color"] = ThemeColor.SecondaryTrue
+
+					ThemeInstances["SecondaryTrue"][#ThemeInstances["SecondaryTrue"] + 1] = Colorpicker["4a"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.Hue
 					Colorpicker["7f"] = Instance.new("ImageLabel", Colorpicker["7d"])
@@ -3525,7 +3837,7 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.Hue.HueGradient
 					Colorpicker["81"] = Instance.new("UIGradient", Colorpicker["7f"])
 					Colorpicker["81"]["Name"] = [[HueGradient]]
-					Colorpicker["81"]["Rotation"] = 270
+					Colorpicker["81"]["Rotation"] = 90
 					Colorpicker["81"]["Color"] = ColorSequence.new({
 						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(255, 0, 5)),
 						ColorSequenceKeypoint.new(0.087, Color3.fromRGB(239, 0, 255)),
@@ -3576,11 +3888,10 @@ function Library:Create(options)
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.UIGradient
 					Colorpicker["87"] = Instance.new("UIGradient", Colorpicker["7d"])
-					Colorpicker["87"]["Rotation"] = 270
-					Colorpicker["87"]["Color"] = ColorSequence.new({
-						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-						ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-					})
+					Colorpicker["87"]["Rotation"] = 90
+					Colorpicker["87"]["Color"] = ThemeColor.Main
+
+					ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Colorpicker["87"]
 
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.Box
 					Colorpicker["88"] = Instance.new("Frame", Colorpicker["7d"])
@@ -3600,7 +3911,9 @@ function Library:Create(options)
 					Colorpicker["8a"]["TextXAlignment"] = Enum.TextXAlignment.Left
 					Colorpicker["8a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Colorpicker["8a"]["TextSize"] = 13
-					Colorpicker["8a"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["8a"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["8a"]
 					Colorpicker["8a"]["Size"] = UDim2.new(0, 301, 0, 33)
 					Colorpicker["8a"]["Text"] = options.Name
 					Colorpicker["8a"]["Name"] = [[Label]]
@@ -3631,7 +3944,9 @@ function Library:Create(options)
 					Colorpicker["8d"]["BorderSizePixel"] = 0
 					Colorpicker["8d"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Colorpicker["8d"]["TextSize"] = 11
-					Colorpicker["8d"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["8d"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["8d"]
 					Colorpicker["8d"]["Size"] = UDim2.new(0, 45, 0, 25)
 					Colorpicker["8d"]["BorderColor3"] = Color3.fromRGB(28, 43, 54)
 					Colorpicker["8d"]["Text"] = [[Hue]]
@@ -3642,10 +3957,15 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.HSVHolder.Hue.TextBox
 					Colorpicker["8e"] = Instance.new("TextBox", Colorpicker["8c"])
 					Colorpicker["8e"]["ZIndex"] = 5
-					Colorpicker["8e"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["8e"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["8e"]
 					Colorpicker["8e"]["TextWrapped"] = true
 					Colorpicker["8e"]["TextSize"] = 11
-					Colorpicker["8e"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Colorpicker["8e"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Colorpicker["8e"]
+
 					Colorpicker["8e"]["Size"] = UDim2.new(0, 42, 0, 18)
 					Colorpicker["8e"]["Text"] = [[256]]
 					Colorpicker["8e"]["Position"] = UDim2.new(0.4914590120315552, 0, 0.25, 0)
@@ -3674,7 +3994,9 @@ function Library:Create(options)
 					Colorpicker["92"]["BorderSizePixel"] = 0
 					Colorpicker["92"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Colorpicker["92"]["TextSize"] = 11
-					Colorpicker["92"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["92"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["92"]
 					Colorpicker["92"]["Size"] = UDim2.new(0, 45, 0, 25)
 					Colorpicker["92"]["BorderColor3"] = Color3.fromRGB(28, 43, 54)
 					Colorpicker["92"]["Text"] = [[Sat]]
@@ -3685,10 +4007,15 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.HSVHolder.Sat.TextBox
 					Colorpicker["93"] = Instance.new("TextBox", Colorpicker["91"])
 					Colorpicker["93"]["ZIndex"] = 5
-					Colorpicker["93"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["93"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["93"]
 					Colorpicker["93"]["TextWrapped"] = true
 					Colorpicker["93"]["TextSize"] = 11
-					Colorpicker["93"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Colorpicker["93"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Colorpicker["93"]
+
 					Colorpicker["93"]["Size"] = UDim2.new(0, 42, 0, 18)
 					Colorpicker["93"]["Text"] = [[256]]
 					Colorpicker["93"]["Position"] = UDim2.new(0.4914590120315552, 0, 0.25, 0)
@@ -3712,7 +4039,9 @@ function Library:Create(options)
 					Colorpicker["96"]["BorderSizePixel"] = 0
 					Colorpicker["96"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Colorpicker["96"]["TextSize"] = 11
-					Colorpicker["96"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["96"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["96"]
 					Colorpicker["96"]["Size"] = UDim2.new(0, 45, 0, 25)
 					Colorpicker["96"]["BorderColor3"] = Color3.fromRGB(28, 43, 54)
 					Colorpicker["96"]["Text"] = [[Value]]
@@ -3723,10 +4052,15 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.HSVHolder.Value.TextBox
 					Colorpicker["97"] = Instance.new("TextBox", Colorpicker["95"])
 					Colorpicker["97"]["ZIndex"] = 5
-					Colorpicker["97"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["97"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["97"]
 					Colorpicker["97"]["TextWrapped"] = true
 					Colorpicker["97"]["TextSize"] = 11
-					Colorpicker["97"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Colorpicker["97"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Colorpicker["97"]
+
 					Colorpicker["97"]["Size"] = UDim2.new(0, 42, 0, 18)
 					Colorpicker["97"]["Text"] = [[256]]
 					Colorpicker["97"]["Position"] = UDim2.new(0.4914590120315552, 0, 0.25, 0)
@@ -3752,7 +4086,9 @@ function Library:Create(options)
 					Colorpicker["9a"]["BorderSizePixel"] = 0
 					Colorpicker["9a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 					Colorpicker["9a"]["TextSize"] = 11
-					Colorpicker["9a"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["9a"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["9a"]
 					Colorpicker["9a"]["Size"] = UDim2.new(0, 64, 0, 25)
 					Colorpicker["9a"]["BorderColor3"] = Color3.fromRGB(28, 43, 54)
 					Colorpicker["9a"]["Text"] = [[Hex Code]]
@@ -3764,10 +4100,15 @@ function Library:Create(options)
 					Colorpicker["9b"] = Instance.new("TextBox", Colorpicker["99"])
 					Colorpicker["9b"]["CursorPosition"] = -1
 					Colorpicker["9b"]["ZIndex"] = 5
-					Colorpicker["9b"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+					Colorpicker["9b"]["TextColor3"] = ThemeColor.Text
+
+					ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Colorpicker["9b"]
 					Colorpicker["9b"]["TextWrapped"] = true
 					Colorpicker["9b"]["TextSize"] = 11
-					Colorpicker["9b"]["BackgroundColor3"] = Color3.fromRGB(51, 51, 51)
+					Colorpicker["9b"]["BackgroundColor3"] = ThemeColor.Textbox
+
+					ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Colorpicker["9b"]
+
 					Colorpicker["9b"]["Size"] = UDim2.new(0, 63, 0, 18)
 					Colorpicker["9b"]["Text"] = [[#f1eaff]]
 					Colorpicker["9b"]["Position"] = UDim2.new(0.5354151725769043, 0, 0.25, 0)
@@ -3891,7 +4232,7 @@ function Library:Create(options)
 						Colorpicker["7d"].MouseEnter:Connect(function()
 							Library:Tween(Colorpicker["4a"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(65, 65, 65) },
+								Goal = { Color = ThemeColor.MainTrue },
 							})
 
 							Library:PlaySound(LibSettings.HoverSound)
@@ -3903,7 +4244,7 @@ function Library:Create(options)
 						Colorpicker["7d"].MouseLeave:Connect(function()
 							Library:Tween(Colorpicker["4a"], {
 								Length = 0.5,
-								Goal = { Color = Color3.fromRGB(43, 43, 43) },
+								Goal = { Color = ThemeColor.SecondaryTrue },
 							})
 						end)
 					)
@@ -4721,10 +5062,9 @@ function Library:Notify(options)
 		Notification["87"] = Instance.new("UIGradient", Notification["86"])
 		Notification["87"]["Name"] = [[ThemeColorGradient]]
 		Notification["87"]["Rotation"] = 90
-		Notification["87"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185)),
-		})
+		Notification["87"]["Color"] = ThemeColor.Theme
+
+		ThemeInstances["Theme"][#ThemeInstances["Theme"] + 1] = Notification["87"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifName
 		Notification["88"] = Instance.new("TextLabel", Notification["84"])
@@ -4732,7 +5072,9 @@ function Library:Notify(options)
 		Notification["88"]["TextXAlignment"] = Enum.TextXAlignment.Left
 		Notification["88"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		Notification["88"]["TextSize"] = 12
-		Notification["88"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["88"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Notification["88"]
 		Notification["88"]["Size"] = UDim2.new(0, 206, 0, 21)
 		Notification["88"]["Text"] = options.Name
 		Notification["88"]["Name"] = [[NotifName]]
@@ -4744,10 +5086,9 @@ function Library:Notify(options)
 		Notification["89"] = Instance.new("UIGradient", Notification["88"])
 		Notification["89"]["Name"] = [[ThemeColorGradient]]
 		Notification["89"]["Rotation"] = 90
-		Notification["89"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185)),
-		})
+		Notification["89"]["Color"] = ThemeColor.Theme
+
+		ThemeInstances["Theme"][#ThemeInstances["Theme"] + 1] = Notification["89"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifText
 		Notification["8a"] = Instance.new("TextLabel", Notification["84"])
@@ -4757,7 +5098,9 @@ function Library:Notify(options)
 		Notification["8a"]["TextYAlignment"] = Enum.TextYAlignment.Top
 		Notification["8a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		Notification["8a"]["TextSize"] = 10
-		Notification["8a"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8a"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Notification["8a"]
 		Notification["8a"]["Size"] = UDim2.new(0, 242, 0, 28)
 		Notification["8a"]["Text"] = options.Text
 		Notification["8a"]["Name"] = [[NotifText]]
@@ -4783,26 +5126,23 @@ function Library:Notify(options)
 		Notification["8d"] = Instance.new("UIGradient", Notification["8c"])
 		Notification["8d"]["Name"] = [[ThemeColorGradient]]
 		Notification["8d"]["Rotation"] = 90
-		Notification["8d"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185)),
-		})
+		Notification["8d"]["Color"] = ThemeColor.Theme
+
+		ThemeInstances["Theme"][#ThemeInstances["Theme"] + 1] = Notification["8d"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.UIGradient
 		Notification["8e"] = Instance.new("UIGradient", Notification["8b"])
-		Notification["8e"]["Rotation"] = 270
-		Notification["8e"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-		})
+		Notification["8e"]["Rotation"] = 90
+		Notification["8e"]["Color"] = ThemeColor.Tertiary
+
+		ThemeInstances["Tertiary"][#ThemeInstances["Tertiary"] + 1] = Notification["8e"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.UIGradient
 		Notification["8f"] = Instance.new("UIGradient", Notification["84"])
 		Notification["8f"]["Rotation"] = 90
-		Notification["8f"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(32, 32, 32)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25)),
-		})
+		Notification["8f"]["Color"] = ThemeColor.Main
+
+		ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Notification["8f"]
 	end
 
 	do
@@ -4893,10 +5233,9 @@ function Library:ForceNotify(options)
 		Notification["87"] = Instance.new("UIGradient", Notification["86"])
 		Notification["87"]["Name"] = [[ThemeColorGradient]]
 		Notification["87"]["Rotation"] = 90
-		Notification["87"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185)),
-		})
+		Notification["87"]["Color"] = ThemeColor.Theme
+
+		ThemeInstances["Theme"][#ThemeInstances["Theme"] + 1] = Notification["87"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifName
 		Notification["88"] = Instance.new("TextLabel", Notification["84"])
@@ -4904,7 +5243,9 @@ function Library:ForceNotify(options)
 		Notification["88"]["TextXAlignment"] = Enum.TextXAlignment.Left
 		Notification["88"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		Notification["88"]["TextSize"] = 12
-		Notification["88"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["88"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Notification["88"]
 		Notification["88"]["Size"] = UDim2.new(0, 206, 0, 21)
 		Notification["88"]["Text"] = options.Name
 		Notification["88"]["Name"] = [[NotifName]]
@@ -4916,10 +5257,9 @@ function Library:ForceNotify(options)
 		Notification["89"] = Instance.new("UIGradient", Notification["88"])
 		Notification["89"]["Name"] = [[ThemeColorGradient]]
 		Notification["89"]["Rotation"] = 90
-		Notification["89"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185)),
-		})
+		Notification["89"]["Color"] = ThemeColor.Theme
+
+		ThemeInstances["Theme"][#ThemeInstances["Theme"] + 1] = Notification["89"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.NotifText
 		Notification["8a"] = Instance.new("TextLabel", Notification["84"])
@@ -4929,7 +5269,9 @@ function Library:ForceNotify(options)
 		Notification["8a"]["TextYAlignment"] = Enum.TextYAlignment.Top
 		Notification["8a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 		Notification["8a"]["TextSize"] = 10
-		Notification["8a"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Notification["8a"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Notification["8a"]
 		Notification["8a"]["Size"] = UDim2.new(0, 242, 0, 28)
 		Notification["8a"]["Text"] = options.Text
 		Notification["8a"]["Name"] = [[NotifText]]
@@ -4955,26 +5297,23 @@ function Library:ForceNotify(options)
 		Notification["8d"] = Instance.new("UIGradient", Notification["8c"])
 		Notification["8d"]["Name"] = [[ThemeColorGradient]]
 		Notification["8d"]["Rotation"] = 90
-		Notification["8d"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(105, 52, 185)),
-		})
+		Notification["8d"]["Color"] = ThemeColor.Theme
+
+		ThemeInstances["Theme"][#ThemeInstances["Theme"] + 1] = Notification["8d"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.TimeBarBack.UIGradient
 		Notification["8e"] = Instance.new("UIGradient", Notification["8b"])
-		Notification["8e"]["Rotation"] = 270
-		Notification["8e"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(40, 40, 40)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(45, 45, 45)),
-		})
+		Notification["8e"]["Rotation"] = 90
+		Notification["8e"]["Color"] = ThemeColor.Tertiary
+
+		ThemeInstances["Tertiary"][#ThemeInstances["Tertiary"] + 1] = Notification["8e"]
 
 		-- StarterGui.Vision Lib v2.NotifFrame.Notif.UIGradient
 		Notification["8f"] = Instance.new("UIGradient", Notification["84"])
 		Notification["8f"]["Rotation"] = 90
-		Notification["8f"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(32, 32, 32)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25)),
-		})
+		Notification["8f"]["Color"] = ThemeColor.Main
+
+		ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Notification["8f"]
 	end
 
 	do
@@ -5061,10 +5400,9 @@ function Library:Popup(options)
 		-- StarterGui.Vision Lib v2.Prompt.Prompt.UIGradient
 		Prompt["1ec"] = Instance.new("UIGradient", Prompt["1ea"])
 		Prompt["1ec"]["Rotation"] = 90
-		Prompt["1ec"]["Color"] = ColorSequence.new({
-			ColorSequenceKeypoint.new(0.000, Color3.fromRGB(46, 46, 46)),
-			ColorSequenceKeypoint.new(1.000, Color3.fromRGB(40, 40, 40)),
-		})
+		Prompt["1ec"]["Color"] = ThemeColor.Main
+
+		ThemeInstances["Main"][#ThemeInstances["Main"] + 1] = Prompt["1ec"]
 
 		-- StarterGui.Vision Lib v2.Prompt.Prompt.Controls
 		Prompt["1ed"] = Instance.new("Frame", Prompt["1ea"])
@@ -5087,9 +5425,11 @@ function Library:Popup(options)
 		Prompt["1f7"] = Instance.new("Frame", Prompt["1ea"])
 		Prompt["1f7"]["ZIndex"] = 12
 		Prompt["1f7"]["BorderSizePixel"] = 0
-		Prompt["1f7"]["BackgroundColor3"] = Color3.fromRGB(86, 86, 86)
+		Prompt["1f7"]["BackgroundColor3"] = ThemeColor.TertiaryTrue
 		Prompt["1f7"]["Size"] = UDim2.new(0, 371, 0, 1)
 		Prompt["1f7"]["Position"] = UDim2.new(0, 14, 0, 35)
+
+		ThemeInstances["TertiaryTrue"][#ThemeInstances["TertiaryTrue"] + 1] = Prompt["1f7"]
 
 		-- StarterGui.Vision Lib v2.Prompt.Prompt.Frame.TerrainDetail
 		Prompt["1f8"] = Instance.new("TerrainDetail", Prompt["1f7"])
@@ -5103,7 +5443,10 @@ function Library:Popup(options)
 		Prompt["1f9"]["FontFace"] =
 			Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 		Prompt["1f9"]["TextSize"] = 13
-		Prompt["1f9"]["TextColor3"] = Color3.fromRGB(228, 228, 228)
+		Prompt["1f9"]["TextColor3"] = ThemeColor.PlaceholderText
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Prompt["1f9"]
+
 		Prompt["1f9"]["Size"] = UDim2.new(0, 360, 0, 95)
 		Prompt["1f9"]["Text"] = options.Text
 		Prompt["1f9"]["Name"] = [[Description]]
@@ -5119,7 +5462,9 @@ function Library:Popup(options)
 		Prompt["1fa"]["FontFace"] =
 			Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 		Prompt["1fa"]["TextSize"] = 16
-		Prompt["1fa"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+		Prompt["1fa"]["TextColor3"] = ThemeColor.Text
+
+		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Prompt["1fa"]
 		Prompt["1fa"]["Size"] = UDim2.new(0, 400, 0, 20)
 		Prompt["1fa"]["Text"] = options.Name
 		Prompt["1fa"]["Name"] = [[Title]]
@@ -5157,35 +5502,28 @@ function Library:Popup(options)
 				PromptOption["1ef"] = Instance.new("TextButton", Prompt["1ed"])
 				PromptOption["1ef"]["ZIndex"] = 11
 				PromptOption["1ef"]["BorderSizePixel"] = 0
-				PromptOption["1ef"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+				PromptOption["1ef"]["BackgroundColor3"] = ThemeColor.Textbox
+
+				ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = PromptOption["1ef"]
+
 				PromptOption["1ef"]["TextSize"] = 14
 				PromptOption["1ef"]["FontFace"] = Font.new(
 					[[rbxasset://fonts/families/GothamSSm.json]],
 					Enum.FontWeight.Regular,
 					Enum.FontStyle.Normal
 				)
-				PromptOption["1ef"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+				PromptOption["1ef"]["TextColor3"] = ThemeColor.Text
+
+				ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = PromptOption["1ef"]
 				PromptOption["1ef"]["Size"] = UDim2.new(0, 120, 0, 30)
 				PromptOption["1ef"]["LayoutOrder"] = 1
 				PromptOption["1ef"]["Name"] = [[B1]]
-				PromptOption["1ef"]["Text"] = tostring(text)
+				PromptOption["1ef"]["Text"] = ""
 				PromptOption["1ef"]["Position"] = UDim2.new(0, 68, 0, 567)
 
 				-- StarterGui.Vision Lib v2.PromptOption.PromptOption.Controls.B1.UICorner
 				PromptOption["1f0"] = Instance.new("UICorner", PromptOption["1ef"])
 				PromptOption["1f0"]["CornerRadius"] = UDim.new(0, 4)
-
-				-- StarterGui.Vision Lib v2.PromptOption.PromptOption.Controls.B1.UIGradient
-				PromptOption["1f1"] = Instance.new("UIGradient", PromptOption["1ef"])
-				PromptOption["1f1"]["Transparency"] = NumberSequence.new({
-					NumberSequenceKeypoint.new(0.000, 0.6000000238418579),
-					NumberSequenceKeypoint.new(1.000, 0.6000000238418579),
-				})
-				PromptOption["1f1"]["Rotation"] = 270
-				PromptOption["1f1"]["Color"] = ColorSequence.new({
-					ColorSequenceKeypoint.new(0.000, Color3.fromRGB(13, 13, 13)),
-					ColorSequenceKeypoint.new(1.000, Color3.fromRGB(25, 25, 25)),
-				})
 
 				-- StarterGui.Vision Lib v2.PromptOption.PromptOption.Controls.B1.NameLabel
 				PromptOption["1f2"] = Instance.new("TextLabel", PromptOption["1ef"])
@@ -5196,7 +5534,9 @@ function Library:Popup(options)
 					Enum.FontStyle.Normal
 				)
 				PromptOption["1f2"]["TextSize"] = 11
-				PromptOption["1f2"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+				PromptOption["1f2"]["TextColor3"] = ThemeColor.Text
+
+				ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = PromptOption["1f2"]
 				PromptOption["1f2"]["Size"] = UDim2.new(0, 120, 0, 30)
 				PromptOption["1f2"]["Text"] = tostring(text)
 				PromptOption["1f2"]["Name"] = [[NameLabel]]
