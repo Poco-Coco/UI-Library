@@ -465,6 +465,102 @@ function Library:SetTheme(Theme)
 	task.spawn(function()
 		task.wait(0.2)
 
+		for i, v in next, ThemeInstances.Main do
+			pcall(function()
+				v.Color = ThemeColor.Main
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.Main
+			end)
+		end
+
+		for i, v in next, ThemeInstances.MainTrue do
+			pcall(function()
+				v.Color = ThemeColor.MainTrue
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.MainTrue
+			end)
+			pcall(function()
+				v.ImageColor3 = ThemeColor.MainTrue
+			end)
+		end
+
+		for i, v in next, ThemeInstances.Secondary do
+			pcall(function()
+				v.Color = ThemeColor.Secondary
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.Secondary
+			end)
+		end
+
+		for i, v in next, ThemeInstances.SecondaryTrue do
+			pcall(function()
+				v.Color = ThemeColor.SecondaryTrue
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.SecondaryTrue
+			end)
+		end
+
+		for i, v in next, ThemeInstances.Tertiary do
+			pcall(function()
+				v.Color = ThemeColor.Tertiary
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.Tertiary
+			end)
+		end
+
+		for i, v in next, ThemeInstances.TertiaryTrue do
+			pcall(function()
+				v.Color = ThemeColor.TertiaryTrue
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.TertiaryTrue
+			end)
+		end
+
+		for i, v in next, ThemeInstances.Text do
+			pcall(function()
+				v.TextColor3 = ThemeColor.Text
+			end)
+		end
+
+		for i, v in next, ThemeInstances.PlaceholderText do
+			pcall(function()
+				v.PlaceholderColor3 = ThemeColor.PlaceholderText
+			end)
+		end
+
+		for i, v in next, ThemeInstances.Textbox do
+			pcall(function()
+				v.Color = ThemeColor.Textbox
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.Textbox
+			end)
+		end
+
+		for i, v in next, ThemeInstances.NavBar do
+			pcall(function()
+				v.Color = ThemeColor.NavBar
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.NavBar
+			end)
+		end
+
+		for i, v in next, ThemeInstances.Theme do
+			pcall(function()
+				v.Color = ThemeColor.Theme
+			end)
+			pcall(function()
+				v.BackgroundColor3 = ThemeColor.Theme
+			end)
+		end
+
 		for i, v in next, ThemeInstances.ThemeTrue do
 			pcall(function()
 				if v:FindFirstChild("ToggleVal").Value == true then
