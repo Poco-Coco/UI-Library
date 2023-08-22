@@ -374,6 +374,9 @@ function Library:SetTheme(Theme)
 		pcall(function()
 			v.BackgroundColor3 = ThemeColor.MainTrue
 		end)
+		pcall(function()
+			v.ImageColor3 = ThemeColor.MainTrue
+		end)
 	end
 
 	for i, v in next, ThemeInstances.Secondary do
@@ -1482,6 +1485,12 @@ function Library:Create(options)
 
 			Library.Sliding = false
 			Library.Loaded = true
+
+			task.spawn(function()
+				task.wait(1)
+
+				Library:SetTheme({})
+			end)
 		end)
 	end
 
@@ -5425,11 +5434,11 @@ function Library:Popup(options)
 		Prompt["1f7"] = Instance.new("Frame", Prompt["1ea"])
 		Prompt["1f7"]["ZIndex"] = 12
 		Prompt["1f7"]["BorderSizePixel"] = 0
-		Prompt["1f7"]["BackgroundColor3"] = ThemeColor.TertiaryTrue
+		Prompt["1f7"]["BackgroundColor3"] = ThemeColor.Textbox
 		Prompt["1f7"]["Size"] = UDim2.new(0, 371, 0, 1)
 		Prompt["1f7"]["Position"] = UDim2.new(0, 14, 0, 35)
 
-		ThemeInstances["TertiaryTrue"][#ThemeInstances["TertiaryTrue"] + 1] = Prompt["1f7"]
+		ThemeInstances["Textbox"][#ThemeInstances["Textbox"] + 1] = Prompt["1f7"]
 
 		-- StarterGui.Vision Lib v2.Prompt.Prompt.Frame.TerrainDetail
 		Prompt["1f8"] = Instance.new("TerrainDetail", Prompt["1f7"])
@@ -5465,6 +5474,7 @@ function Library:Popup(options)
 		Prompt["1fa"]["TextColor3"] = ThemeColor.Text
 
 		ThemeInstances["Text"][#ThemeInstances["Text"] + 1] = Prompt["1fa"]
+
 		Prompt["1fa"]["Size"] = UDim2.new(0, 400, 0, 20)
 		Prompt["1fa"]["Text"] = options.Name
 		Prompt["1fa"]["Name"] = [[Title]]
