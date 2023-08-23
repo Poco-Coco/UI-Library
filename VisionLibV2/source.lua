@@ -4170,7 +4170,7 @@ function Library:Create(options)
 					-- StarterGui.Vision Lib v2.GuiFrame.MainFrame.Container.SectionFrame.SectionContainer.Colorpicker.Hue.HueGradient
 					Colorpicker["81"] = Instance.new("UIGradient", Colorpicker["7f"])
 					Colorpicker["81"]["Name"] = [[HueGradient]]
-					Colorpicker["81"]["Rotation"] = 90
+					Colorpicker["81"]["Rotation"] = 270
 					Colorpicker["81"]["Color"] = ColorSequence.new({
 						ColorSequenceKeypoint.new(0.000, Color3.fromRGB(255, 0, 5)),
 						ColorSequenceKeypoint.new(0.087, Color3.fromRGB(239, 0, 255)),
