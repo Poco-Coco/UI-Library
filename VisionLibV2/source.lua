@@ -13,11 +13,66 @@ local ConnectionBin = {}
 local ControlsConnectionBin = {}
 
 -- Var
+local ThemeInstances = {
+	["Main"] = {},
+	["MainTrue"] = {},
+	["Secondary"] = {},
+	["SecondaryTrue"] = {},
+	["Tertiary"] = {},
+	["TertiaryTrue"] = {},
+	["Text"] = {},
+	["PlaceholderText"] = {},
+	["Textbox"] = {},
+	["NavBar"] = {},
+	["Theme"] = {},
+	["ThemeTrue"] = {},
+}
+
+local ThemeColor = {
+	Main = ColorSequence.new({ -- 6
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(45, 45, 45)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(39, 39, 39)),
+	}),
+	MainTrue = Color3.fromRGB(45, 45, 45),
+	Secondary = ColorSequence.new({ -- 7
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(31, 31, 31)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(24, 24, 24)),
+	}),
+	SecondaryTrue = Color3.fromRGB(31, 31, 31),
+	Tertiary = ColorSequence.new({ -- 4
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(31, 31, 31)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(27, 27, 27)),
+	}),
+	TertiaryTrue = Color3.fromRGB(31, 31, 31),
+	Text = Color3.fromRGB(255, 255, 255),
+	PlaceholderText = Color3.fromRGB(175, 175, 175),
+	Textbox = Color3.fromRGB(61, 61, 61),
+	NavBar = ColorSequence.new({ -- 9
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(35, 35, 35)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(24, 24, 24)),
+	}),
+	NavBarTrue = Color3.fromRGB(35, 35, 35),
+	Theme = ColorSequence.new({
+		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
+		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(132, 65, 185)),
+	}),
+	ThemeTrue = Color3.fromRGB(132, 65, 232),
+}
+
 local Library = {
 	MainFrameHover = false,
 	Sliding = false,
 	Loaded = false,
-	CurrentTheme = {},
+	CurrentTheme = {
+		Main = ThemeColor.MainTrue,
+		Secondary = ThemeColor.SecondaryTrue,
+		Tertiary = ThemeColor.TertiaryTrue,
+		Text = ThemeColor.Text,
+		PlaceholderText = ThemeColor.PlaceholderText,
+		Textbox = ThemeColor.Textbox,
+		NavBar = ThemeColor.NavBarTrue,
+		Theme = ThemeColor.ThemeTrue,
+	},
 }
 
 pcall(function()
@@ -281,52 +336,6 @@ function Library:ToolTip(Text)
 
 	return ToolTip
 end
-
-local ThemeInstances = {
-	["Main"] = {},
-	["MainTrue"] = {},
-	["Secondary"] = {},
-	["SecondaryTrue"] = {},
-	["Tertiary"] = {},
-	["TertiaryTrue"] = {},
-	["Text"] = {},
-	["PlaceholderText"] = {},
-	["Textbox"] = {},
-	["NavBar"] = {},
-	["Theme"] = {},
-	["ThemeTrue"] = {},
-}
-
-local ThemeColor = {
-	Main = ColorSequence.new({ -- 6
-		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(45, 45, 45)),
-		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(39, 39, 39)),
-	}),
-	MainTrue = Color3.fromRGB(45, 45, 45),
-	Secondary = ColorSequence.new({ -- 7
-		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(31, 31, 31)),
-		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(24, 24, 24)),
-	}),
-	SecondaryTrue = Color3.fromRGB(31, 31, 31),
-	Tertiary = ColorSequence.new({ -- 4
-		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(31, 31, 31)),
-		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(27, 27, 27)),
-	}),
-	TertiaryTrue = Color3.fromRGB(31, 31, 31),
-	Text = Color3.fromRGB(255, 255, 255),
-	PlaceholderText = Color3.fromRGB(175, 175, 175),
-	Textbox = Color3.fromRGB(61, 61, 61),
-	NavBar = ColorSequence.new({ -- 9
-		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(35, 35, 35)),
-		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(24, 24, 24)),
-	}),
-	NavBarTrue = Color3.fromRGB(35, 35, 35),
-	Theme = ColorSequence.new({
-		ColorSequenceKeypoint.new(0.000, Color3.fromRGB(132, 65, 232)),
-		ColorSequenceKeypoint.new(1.000, Color3.fromRGB(132, 65, 185)),
-	}),
-	ThemeTrue = Color3.fromRGB(132, 65, 232),
-}
 
 function Library:SetTheme(Theme)
 	Theme = Library:PlaceDefaults({
