@@ -1016,7 +1016,7 @@ function Library:Create(options)
 		local ChildOffset = 0
 
 		for i, v in pairs(Gui["6"]:GetChildren()) do
-			if v:IsA("Frame") then
+			if v:IsA("TextButton") then
 				NumChild = NumChild + 1
 				ChildOffset = ChildOffset + v.Size.X.Offset
 			end
@@ -3689,7 +3689,7 @@ function Library:Create(options)
 							else
 								for i, v in pairs(Dropdown["4b"]:GetChildren()) do
 									if v:IsA("Frame") then
-										if string.find(v.Name, Dropdown["5e"].Text) then
+										if string.find(string.lower(v.Name), string.lower(Dropdown["5e"].Text)) then
 											v.Visible = true
 										else
 											v.Visible = false
